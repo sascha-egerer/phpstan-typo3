@@ -1,0 +1,22 @@
+{
+    "name": "saschaegerer/phpstan-typo3",
+    "description": "TYPO3 CMS class reflection extension for PHPStan",
+    "license": ["MIT"],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.9-dev"
+        }
+    },
+    "require": {
+        "php": "~7.0",
+        "phpstan/phpstan": "^0.9",
+        "typo3/cms": "^8.7.0 || ~9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SaschaEgerer\\PhpstanTypo3\\": "src/"
+        }
+    }
+}
