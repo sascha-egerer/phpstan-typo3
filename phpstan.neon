@@ -1,0 +1,2 @@
+parameters:
+	bootstrap: src/PhpStanTypo3Bootstrap.php
