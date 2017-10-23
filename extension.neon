@@ -1,0 +1,17 @@
+services:
+    -
+        class: SaschaEgerer\PhpstanTypo3\Reflection\RepositoryMethodsClassReflectionExtension
+        tags:
+            - phpstan.broker.methodsClassReflectionExtension
+    -
+        class: SaschaEgerer\PhpstanTypo3\Type\GeneralUtilityDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicStaticMethodReturnTypeExtension
+    -
+        class: SaschaEgerer\PhpstanTypo3\Type\ObjectManagerDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
+        class: SaschaEgerer\PhpstanTypo3\Type\QueryInterfaceDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
