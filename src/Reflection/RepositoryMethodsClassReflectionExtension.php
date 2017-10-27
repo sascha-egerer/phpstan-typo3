@@ -36,7 +36,7 @@ class RepositoryMethodsClassReflectionExtension implements \PHPStan\Reflection\M
         if (0 === strpos($methodName, 'findOneBy')) {
             $methodReflection = new RepositoryFindOneByMethodReflection($classReflection, $methodName, $this->broker);
         } else {
-            $methodReflection = new RepositoryFindByMethodReflection($classReflection, $methodName);
+            $methodReflection = new RepositoryFindByMethodReflection($classReflection, $methodName, $this->broker);
         }
 
         return $methodReflection;

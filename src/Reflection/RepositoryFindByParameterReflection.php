@@ -8,7 +8,7 @@ use PHPStan\Type\IntegerType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 
-class RepositoryFindOneByParameterReflection implements ParameterReflection
+class RepositoryFindByParameterReflection implements ParameterReflection
 {
     /**
      * @var string

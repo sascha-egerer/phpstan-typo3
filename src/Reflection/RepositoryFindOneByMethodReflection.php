@@ -83,7 +83,7 @@ class RepositoryFindOneByMethodReflection implements MethodReflection
         $type = $modelReflection->getNativeProperty($this->getPropertyName())->getType();
 
         return [
-            new RepositoryFindOneByParameterReflection('arg', $type)
+            new RepositoryFindByParameterReflection('arg', $type)
         ];
     }
 
