@@ -8,6 +8,7 @@ use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 
 class RepositoryFindOneByMethodReflection implements MethodReflection
@@ -94,7 +95,6 @@ class RepositoryFindOneByMethodReflection implements MethodReflection
 
     public function getReturnType(): Type
     {
-        return new ObjectType($this->getModelName());
+        return TypeCombinator::addNull(new ObjectType($this->getModelName()));
     }
-
 }
