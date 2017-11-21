@@ -12,7 +12,7 @@ use PHPStan\Reflection\MethodReflection;
 
 class GeneralUtilityDynamicReturnTypeExtension implements DynamicStaticMethodReturnTypeExtension
 {
-    public static function getClass(): string
+    public function getClass(): string
     {
         return \TYPO3\CMS\Core\Utility\GeneralUtility::class;
     }

@@ -17,7 +17,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 class QueryInterfaceDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
-    public static function getClass(): string
+    public function getClass(): string
     {
         return QueryInterface::class;
     }
