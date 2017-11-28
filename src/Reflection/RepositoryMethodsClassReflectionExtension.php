@@ -4,11 +4,12 @@ declare(strict_types=1);
 namespace SaschaEgerer\PhpstanTypo3\Reflection;
 
 use PHPStan\Broker\Broker;
-use PHPStan\Reflection\BrokerAwareClassReflectionExtension;
+use PHPStan\Reflection\BrokerAwareExtension;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\MethodsClassReflectionExtension;
 
-class RepositoryMethodsClassReflectionExtension implements \PHPStan\Reflection\MethodsClassReflectionExtension, BrokerAwareClassReflectionExtension
+class RepositoryMethodsClassReflectionExtension implements MethodsClassReflectionExtension, BrokerAwareExtension
 {
     /**
      * @var Broker
