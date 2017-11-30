@@ -19,3 +19,7 @@ services:
         class: SaschaEgerer\PhpstanTypo3\Type\ObjectStorageDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
+        class: SaschaEgerer\PhpstanTypo3\Type\RepositoryDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
