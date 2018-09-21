@@ -30,7 +30,7 @@ class GeneralUtilityDynamicReturnTypeExtension implements DynamicStaticMethodRet
     ): Type {
         $arg = $methodCall->args[0]->value;
         if (!($arg instanceof \PhpParser\Node\Expr\ClassConstFetch)) {
-            return $methodReflection->getReturnType();
+            return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
         }
         $class = $arg->class;
 

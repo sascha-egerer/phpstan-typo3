@@ -9,6 +9,7 @@ use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\ParametersAcceptorSelector;
 
 class ObjectManagerDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -30,7 +31,7 @@ class ObjectManagerDynamicReturnTypeExtension implements DynamicMethodReturnType
     ): Type {
         $arg = $methodCall->args[0]->value;
         if (!($arg instanceof \PhpParser\Node\Expr\ClassConstFetch)) {
-            return $methodReflection->getReturnType();
+            return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
         }
         $class = $arg->class;
 

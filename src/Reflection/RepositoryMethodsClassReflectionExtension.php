@@ -16,7 +16,7 @@ class RepositoryMethodsClassReflectionExtension implements MethodsClassReflectio
      */
     private $broker;
 
-    public function setBroker(Broker $broker)
+    public function setBroker(Broker $broker): void
     {
         $this->broker = $broker;
     }
