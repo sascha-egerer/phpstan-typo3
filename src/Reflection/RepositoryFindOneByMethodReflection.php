@@ -5,6 +5,8 @@ namespace SaschaEgerer\PhpstanTypo3\Reflection;
 
 use PHPStan\Broker\Broker;
 use PHPStan\Reflection\ClassReflection;
+use PHPStan\Reflection\ClassMemberReflection;
+use PHPStan\Reflection\FunctionVariant;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
@@ -55,7 +57,7 @@ class RepositoryFindOneByMethodReflection implements MethodReflection
         return true;
     }
 
-    public function getPrototype(): MethodReflection
+    public function getPrototype(): ClassMemberReflection
     {
         return $this;
     }
@@ -96,5 +98,19 @@ class RepositoryFindOneByMethodReflection implements MethodReflection
     public function getReturnType(): Type
     {
         return TypeCombinator::addNull(new ObjectType($this->getModelName()));
+    }
+
+    /**
+     * @return \PHPStan\Reflection\ParametersAcceptor[]
+     */
+    public function getVariants(): array
+    {
+        return [
+            new FunctionVariant(
+                $this->getParameters(),
+                $this->isVariadic(),
+                $this->getReturnType()
+            ),
+        ];
     }
 }
