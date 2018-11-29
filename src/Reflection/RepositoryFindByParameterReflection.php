@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace SaschaEgerer\PhpstanTypo3\Reflection;
 
 use PHPStan\Reflection\ParameterReflection;
+use PHPStan\Reflection\PassedByReference;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
@@ -46,13 +47,13 @@ class RepositoryFindByParameterReflection implements ParameterReflection
         );
     }
 
-    public function isPassedByReference(): bool
+    public function isVariadic(): bool
     {
         return false;
     }
 
-    public function isVariadic(): bool
+    public function passedByReference(): PassedByReference
     {
-        return false;
+        return PassedByReference::createNo();
     }
 }

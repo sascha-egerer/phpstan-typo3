@@ -5,6 +5,7 @@ namespace SaschaEgerer\PhpstanTypo3\Type;
 
 use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
+use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicStaticMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
