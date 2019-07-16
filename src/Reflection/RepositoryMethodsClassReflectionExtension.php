@@ -24,7 +24,7 @@ class RepositoryMethodsClassReflectionExtension implements MethodsClassReflectio
     public function hasMethod(ClassReflection $classReflection, string $methodName): bool
     {
         if (
-            !$classReflection->getNativeReflection()->hasMethod($methodName)
+            !$classReflection->getNativeReflection()->hasMethod($methodName)->yes()
             && $classReflection->isSubclassOf(\TYPO3\CMS\Extbase\Persistence\Repository::class)
         ) {
             return 0 === strpos($methodName, 'findBy') || 0 === strpos($methodName, 'findOneBy');

@@ -41,7 +41,7 @@ class ObjectStorageDynamicReturnTypeExtension implements DynamicMethodReturnType
             $propertyName = lcfirst(substr($methodCall->var->name, 3));
 
             $class = $scope->getClassReflection();
-            if ($class->hasProperty($propertyName)) {
+            if ($class->hasProperty($propertyName)->yes()) {
                 preg_match(
                     '/@var\\ \\\\TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\ObjectStorage<(.*)>/',
                     $class->getNativeReflection()->getProperty($propertyName)->getDocComment(),
