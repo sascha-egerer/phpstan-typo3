@@ -1,3 +1,6 @@
+parameters:
+    bootstrap: ./src/PhpStanTypo3Bootstrap.php
+
 services:
     -
         class: SaschaEgerer\PhpstanTypo3\Reflection\RepositoryMethodsClassReflectionExtension

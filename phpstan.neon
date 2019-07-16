@@ -1,2 +1,5 @@
+includes:
+	- vendor/phpstan/phpstan-strict-rules/rules.neon
 parameters:
-	bootstrap: src/PhpStanTypo3Bootstrap.php
+	excludes_analyse:
+		- src/PhpstanTypo3Bootstrap.php

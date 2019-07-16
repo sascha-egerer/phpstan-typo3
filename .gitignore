@@ -1,2 +1,5 @@
-/vendor
 /composer.lock
+/vendor
+/typo3
+/.idea
+/index.php

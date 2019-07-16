@@ -1,11 +1,10 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace SaschaEgerer\PhpstanTypo3\Reflection;
 
 use PHPStan\Broker\Broker;
-use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\ClassMemberReflection;
+use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\FunctionVariant;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\ObjectType;
@@ -15,102 +14,101 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 class RepositoryFindByMethodReflection implements MethodReflection
 {
-    /**
-     * @var \PHPStan\Reflection\ClassReflection
-     */
-    private $classReflection;
 
-    /**
-     * @var string
-     */
-    private $name;
+	/** @var \PHPStan\Reflection\ClassReflection */
+	private $classReflection;
 
-    /**
-     * @var \PHPStan\Broker\Broker
-     */
-    private $broker;
+	/** @var string */
+	private $name;
 
-    public function __construct(ClassReflection $classReflection, string $name, Broker $broker)
-    {
-        $this->classReflection = $classReflection;
-        $this->name = $name;
-        $this->broker = $broker;
-    }
+	/** @var \PHPStan\Broker\Broker */
+	private $broker;
 
-    public function getDeclaringClass(): ClassReflection
-    {
-        return $this->classReflection;
-    }
+	public function __construct(ClassReflection $classReflection, string $name, Broker $broker)
+	{
+		$this->classReflection = $classReflection;
+		$this->name = $name;
+		$this->broker = $broker;
+	}
 
-    public function isStatic(): bool
-    {
-        return false;
-    }
+	public function getDeclaringClass(): ClassReflection
+	{
+		return $this->classReflection;
+	}
 
-    public function isPrivate(): bool
-    {
-        return false;
-    }
+	public function isStatic(): bool
+	{
+		return false;
+	}
 
-    public function isPublic(): bool
-    {
-        return true;
-    }
+	public function isPrivate(): bool
+	{
+		return false;
+	}
 
-    public function getPrototype(): ClassMemberReflection
-    {
-        return $this;
-    }
+	public function isPublic(): bool
+	{
+		return true;
+	}
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
+	public function getPrototype(): ClassMemberReflection
+	{
+		return $this;
+	}
 
-    private function getPropertyName(): string
-    {
-        return lcfirst(substr($this->getName(), 6));
-    }
+	public function getName(): string
+	{
+		return $this->name;
+	}
 
-    private function getModelName(): string
-    {
-        $className = $this->classReflection->getName();
+	private function getPropertyName(): string
+	{
+		return lcfirst(substr($this->getName(), 6));
+	}
 
-        return ClassNamingUtility::translateRepositoryNameToModelName($className);
-    }
+	private function getModelName(): string
+	{
+		$className = $this->classReflection->getName();
 
-    public function getParameters(): array
-    {
-        $modelReflection = $this->broker->getClass($this->getModelName());
+		return ClassNamingUtility::translateRepositoryNameToModelName($className);
+	}
 
-        $type = $modelReflection->getNativeProperty($this->getPropertyName())->getType();
+	/**
+	 * @return RepositoryFindByParameterReflection[]
+	 */
+	public function getParameters(): array
+	{
+		$modelReflection = $this->broker->getClass($this->getModelName());
 
-        return [
-            new RepositoryFindByParameterReflection('arg', $type)
-        ];
-    }
+		$type = $modelReflection->getNativeProperty($this->getPropertyName())->getType();
 
-    public function isVariadic(): bool
-    {
-        return false;
-    }
+		return [
+			new RepositoryFindByParameterReflection('arg', $type),
+		];
+	}
 
-    public function getReturnType(): Type
-    {
-        return new ObjectType(QueryResultInterface::class);
-    }
+	public function isVariadic(): bool
+	{
+		return false;
+	}
 
-    /**
-     * @return \PHPStan\Reflection\ParametersAcceptor[]
-     */
-    public function getVariants(): array
-    {
-        return [
-            new FunctionVariant(
-                $this->getParameters(),
-                $this->isVariadic(),
-                $this->getReturnType()
-            ),
-        ];
-    }
+	public function getReturnType(): Type
+	{
+		return new ObjectType(QueryResultInterface::class);
+	}
+
+	/**
+	 * @return \PHPStan\Reflection\ParametersAcceptor[]
+	 */
+	public function getVariants(): array
+	{
+		return [
+			new FunctionVariant(
+				$this->getParameters(),
+				$this->isVariadic(),
+				$this->getReturnType()
+			),
+		];
+	}
+
 }

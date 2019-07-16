@@ -1,15 +1,16 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace SaschaEgerer\PhpstanTypo3\Type;
 
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\Variable;
 use PHPStan\Analyser\Scope;
+use PHPStan\Reflection\ClassReflection;
+use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
-use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\TypeCombinator;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -21,38 +22,42 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class ObjectStorageDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
-    public function getClass(): string
-    {
-        return ObjectStorage::class;
-    }
 
-    public function isMethodSupported(
-        MethodReflection $methodReflection
-    ): bool {
-        return in_array($methodReflection->getName(), ['current', 'next']);
-    }
+	public function getClass(): string
+	{
+		return ObjectStorage::class;
+	}
 
-    public function getTypeFromMethodCall(
-        MethodReflection $methodReflection,
-        MethodCall $methodCall,
-        Scope $scope
-    ): Type {
-        if (strpos($methodCall->var->name, 'get') === 0) {
-            $propertyName = lcfirst(substr($methodCall->var->name, 3));
+	public function isMethodSupported(
+		MethodReflection $methodReflection
+	): bool
+	{
+		return in_array($methodReflection->getName(), ['current', 'next'], true);
+	}
 
-            $class = $scope->getClassReflection();
-            if ($class->hasProperty($propertyName)) {
-                preg_match(
-                    '/@var\\ \\\\TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\ObjectStorage<(.*)>/',
-                    $class->getNativeReflection()->getProperty($propertyName)->getDocComment(),
-                    $phpDocVarAnnotations
-                );
-                if (!empty($phpDocVarAnnotations[1])) {
-                    return TypeCombinator::addNull(new ObjectType($phpDocVarAnnotations[1]));
-                }
-            }
-        }
+	public function getTypeFromMethodCall(
+		MethodReflection $methodReflection,
+		MethodCall $methodCall,
+		Scope $scope
+	): Type
+	{
+		if ($methodCall->var instanceof Variable && is_string($methodCall->var->name) && strpos($methodCall->var->name, 'get') === 0) {
+			$propertyName = lcfirst(substr($methodCall->var->name, 3));
 
-        return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
-    }
+			$class = $scope->getClassReflection();
+			if ($class instanceof ClassReflection && $class->hasProperty($propertyName)) {
+				preg_match(
+					'/@var\\ \\\\TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\ObjectStorage<(.*)>/',
+					(string) $class->getNativeReflection()->getProperty($propertyName)->getDocComment(),
+					$phpDocVarAnnotations
+				);
+				if (isset($phpDocVarAnnotations[1])) {
+					return TypeCombinator::addNull(new ObjectType($phpDocVarAnnotations[1]));
+				}
+			}
+		}
+
+		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+	}
+
 }
