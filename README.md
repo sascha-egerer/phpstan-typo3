@@ -8,6 +8,4 @@ Put this into your phpstan.neon config:
 ```
 includes:
     - vendor/saschaegerer/phpstan-typo3/extension.neon
-parameters:
-    bootstrap: %rootDir%/../../saschaegerer/phpstan-typo3/src/PhpstanTypo3Bootstrap.php
 ```

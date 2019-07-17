@@ -1,5 +1,5 @@
 parameters:
-    bootstrap: ./src/PhpStanTypo3Bootstrap.php
+    bootstrap: %rootDir%/../../saschaegerer/phpstan-typo3/src/PhpstanTypo3Bootstrap.php
 
 services:
     -
