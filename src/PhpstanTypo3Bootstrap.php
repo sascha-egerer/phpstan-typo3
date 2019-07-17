@@ -39,9 +39,12 @@ call_user_func(function (): void {
 		->disableCoreCache()
 		->initializeCachingFramework()
 		// Set all packages to active
-		->initializePackageManagement(\TYPO3\CMS\Core\Package\UnitTestPackageManager::class);
+		->createPackageManager(
+			\TYPO3\CMS\Core\Package\UnitTestPackageManager::class,
+			\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core')
+		);
 
-	if (\TYPO3\CMS\Core\Core\Bootstrap::usesComposerClassLoading()) {
+	if (\TYPO3\CMS\Core\Core\Environment::isComposerMode()) {
 		return;
 	}
 
