@@ -1,6 +1,3 @@
-parameters:
-    bootstrap: %rootDir%/../../saschaegerer/phpstan-typo3/src/PhpstanTypo3Bootstrap.php
-
 services:
     -
         class: SaschaEgerer\PhpstanTypo3\Reflection\RepositoryMethodsClassReflectionExtension
