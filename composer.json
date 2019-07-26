@@ -7,9 +7,9 @@
     "prefer-stable": true,
     "require": {
         "php": "~7.1",
-        "phpstan/phpstan": "^0.11",
-        "typo3/cms-core": "^8.7 || ^9.5",
-        "typo3/cms-extbase": "^8.7 || ^9.5"
+        "phpstan/phpstan": "^0.10",
+        "typo3/cms-core": "^8.7 || ^9.5 || ^10.0",
+        "typo3/cms-extbase": "^8.7 || ^9.5 || ^10.0"
     },
     "require-dev": {
         "consistence/coding-standard": "^3.8",
