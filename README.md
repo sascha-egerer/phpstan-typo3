@@ -2,6 +2,8 @@
 
 TYPO3 CMS class reflection extension for PHPStan &amp; framework-specific rules
 
+[![Build Status](https://travis-ci.org/sascha-egerer/phpstan-typo3.svg?branch=master)](https://travis-ci.org/sascha-egerer/phpstan-typo3)
+
 ## Configuration
 Put this into your phpstan.neon config:
 
