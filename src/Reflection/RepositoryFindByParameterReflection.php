@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace SaschaEgerer\PhpstanTypo3\Reflection;
 
@@ -11,49 +10,47 @@ use PHPStan\Type\TypeCombinator;
 
 class RepositoryFindByParameterReflection implements ParameterReflection
 {
-    /**
-     * @var string
-     */
-    private $name;
 
-    /**
-     * @var \PHPStan\Type\Type
-     */
-    private $type;
+	/** @var string */
+	private $name;
 
-    public function __construct(string $name, Type $type)
-    {
-        $this->name = $name;
-        $this->type = $type;
-    }
+	/** @var \PHPStan\Type\Type */
+	private $type;
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
+	public function __construct(string $name, Type $type)
+	{
+		$this->name = $name;
+		$this->type = $type;
+	}
 
-    public function isOptional(): bool
-    {
-        return false;
-    }
+	public function getName(): string
+	{
+		return $this->name;
+	}
 
-    public function getType(): Type
-    {
-        return TypeCombinator::union(
-            $this->type,
-            // it is possible to pass an integer that is used as uid instead of
-            // the object where the uid is fetched from
-            new IntegerType()
-        );
-    }
+	public function isOptional(): bool
+	{
+		return false;
+	}
 
-    public function isVariadic(): bool
-    {
-        return false;
-    }
+	public function getType(): Type
+	{
+		return TypeCombinator::union(
+			$this->type,
+			// it is possible to pass an integer that is used as uid instead of
+			// the object where the uid is fetched from
+			new IntegerType()
+		);
+	}
 
-    public function passedByReference(): PassedByReference
-    {
-        return PassedByReference::createNo();
-    }
+	public function isVariadic(): bool
+	{
+		return false;
+	}
+
+	public function passedByReference(): PassedByReference
+	{
+		return PassedByReference::createNo();
+	}
+
 }

@@ -7,9 +7,16 @@
     "prefer-stable": true,
     "require": {
         "php": "~7.1",
-        "phpstan/phpstan": "^0.10",
-        "typo3/cms-core": "^8.7 || ^9.5",
-        "typo3/cms-extbase": "^8.7 || ^9.5"
+        "phpstan/phpstan": "^0.10 || ^0.11",
+        "typo3/cms-core": "^8.7 || ^9.5 || ^10.0",
+        "typo3/cms-extbase": "^8.7 || ^9.5 || ^10.0"
+    },
+    "require-dev": {
+        "consistence/coding-standard": "^3.8",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+        "jakub-onderka/php-parallel-lint": "^1.0",
+        "phing/phing": "^2.16.0",
+        "phpstan/phpstan-strict-rules": "^0.11"
     },
     "suggest": {
         "typo3/testing-framework": "Testing framework is used in the bootstrap (src/PhpStanTypo3Bootstrap.php). In most cases you need this package but you may also use your custom bootstrap (e.g. if you use nimut/testing-framework)"

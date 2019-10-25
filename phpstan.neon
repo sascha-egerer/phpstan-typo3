@@ -1,2 +1,2 @@
-parameters:
-	bootstrap: src/PhpStanTypo3Bootstrap.php
+includes:
+	- vendor/phpstan/phpstan-strict-rules/rules.neon
