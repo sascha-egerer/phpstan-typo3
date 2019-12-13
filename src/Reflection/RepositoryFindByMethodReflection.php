@@ -7,6 +7,8 @@ use PHPStan\Reflection\ClassMemberReflection;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\FunctionVariant;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\TrinaryLogic;
+use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
@@ -80,7 +82,7 @@ class RepositoryFindByMethodReflection implements MethodReflection
 	{
 		$modelReflection = $this->broker->getClass($this->getModelName());
 
-		$type = $modelReflection->getNativeProperty($this->getPropertyName())->getType();
+		$type = $modelReflection->getNativeProperty($this->getPropertyName())->getReadableType();
 
 		return [
 			new RepositoryFindByParameterReflection('arg', $type),
@@ -104,11 +106,48 @@ class RepositoryFindByMethodReflection implements MethodReflection
 	{
 		return [
 			new FunctionVariant(
+				TemplateTypeMap::createEmpty(),
+				null,
 				$this->getParameters(),
 				$this->isVariadic(),
 				$this->getReturnType()
 			),
 		];
+	}
+
+	public function getDocComment(): ?string
+	{
+		return null;
+	}
+
+	public function isDeprecated(): TrinaryLogic
+	{
+		return TrinaryLogic::createNo();
+	}
+
+	public function getDeprecatedDescription(): ?string
+	{
+		return null;
+	}
+
+	public function isFinal(): TrinaryLogic
+	{
+		return TrinaryLogic::createNo();
+	}
+
+	public function isInternal(): TrinaryLogic
+	{
+		return TrinaryLogic::createNo();
+	}
+
+	public function getThrowType(): ?\PHPStan\Type\Type
+	{
+		return null;
+	}
+
+	public function hasSideEffects(): TrinaryLogic
+	{
+		return TrinaryLogic::createNo();
 	}
 
 }

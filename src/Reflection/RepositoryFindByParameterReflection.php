@@ -14,7 +14,7 @@ class RepositoryFindByParameterReflection implements ParameterReflection
 	/** @var string */
 	private $name;
 
-	/** @var \PHPStan\Type\Type */
+	/** @var Type */
 	private $type;
 
 	public function __construct(string $name, Type $type)
@@ -51,6 +51,11 @@ class RepositoryFindByParameterReflection implements ParameterReflection
 	public function passedByReference(): PassedByReference
 	{
 		return PassedByReference::createNo();
+	}
+
+	public function getDefaultValue(): ?Type
+	{
+		return null;
 	}
 
 }
