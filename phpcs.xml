@@ -25,18 +25,18 @@
 		</properties>
 		<exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification"/>
 	</rule -->
-	<rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+	<!--  rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
 		<properties>
 			<property name="enableNativeTypeHint" value="false"/>
 		</properties>
 		<exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification"/>
-	</rule>
-	<rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">
+	</rule -->
+	<!-- rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">
 		<properties>
 			<property name="enableObjectTypeHint" value="false"/>
 		</properties>
 		<exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification"/>
-	</rule>
+	</rule -->
 	<rule ref="SlevomatCodingStandard.Functions.UnusedInheritedVariablePassedToClosure.UnusedInheritedVariable"/>
 	<rule ref="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException"/>
 	<rule ref="SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable"/>
