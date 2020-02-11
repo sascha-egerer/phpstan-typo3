@@ -23,3 +23,17 @@ services:
         class: SaschaEgerer\PhpstanTypo3\Type\RepositoryDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
+parameters:
+    dynamicConstantNames:
+        - TYPO3_MODE
+        - TYPO3_REQUESTTYPE
+        - TYPO3_COMPOSER_MODE
+        - TYPO3_branch
+        - TYPO3_version
+        - TYPO3_OS
+        - TYPO3_copyright_year
+        - PATH_thisScript
+        - PATH_site
+        - PATH_typo3conf
+        - PATH_typo3
+        - TYPO3_mainDir
