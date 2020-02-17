@@ -23,6 +23,10 @@ services:
         class: SaschaEgerer\PhpstanTypo3\Type\RepositoryDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
+        class: SaschaEgerer\PhpstanTypo3\Type\ValidatorResolverDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
 parameters:
     dynamicConstantNames:
         - TYPO3_MODE
