@@ -32,7 +32,7 @@ class ObjectStorageDynamicReturnTypeExtension implements DynamicMethodReturnType
 		MethodReflection $methodReflection
 	): bool
 	{
-		return in_array($methodReflection->getName(), ['current', 'next'], true);
+		return in_array($methodReflection->getName(), ['current', 'offsetGet'], true);
 	}
 
 	public function getTypeFromMethodCall(
