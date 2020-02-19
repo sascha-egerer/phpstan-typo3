@@ -9,6 +9,7 @@ use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 
 class RepositoryDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -40,7 +41,7 @@ class RepositoryDynamicReturnTypeExtension implements DynamicMethodReturnTypeExt
 
 		$modelName = ClassNamingUtility::translateRepositoryNameToModelName($variableType->getClassName());
 
-		return new ObjectType($modelName);
+		return TypeCombinator::addNull(new ObjectType($modelName));
 	}
 
 }
