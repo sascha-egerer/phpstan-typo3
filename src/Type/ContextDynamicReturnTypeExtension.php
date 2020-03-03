@@ -2,16 +2,13 @@
 
 namespace SaschaEgerer\PhpstanTypo3\Type;
 
-use _HumbugBox069fea7e7fc7\phpDocumentor\Reflection\Types\String_;
 use PhpParser\Node\Expr\MethodCall;
-use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
-use PHPStan\Type\TypeCombinator;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -19,7 +16,6 @@ use TYPO3\CMS\Core\Context\TypoScriptAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
-use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 
 class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
