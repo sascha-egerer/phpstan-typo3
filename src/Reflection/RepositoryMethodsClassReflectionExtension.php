@@ -7,6 +7,7 @@ use PHPStan\Reflection\BrokerAwareExtension;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class RepositoryMethodsClassReflectionExtension implements MethodsClassReflectionExtension, BrokerAwareExtension
 {
@@ -22,8 +23,8 @@ class RepositoryMethodsClassReflectionExtension implements MethodsClassReflectio
 	public function hasMethod(ClassReflection $classReflection, string $methodName): bool
 	{
 		if (
-			!$classReflection->getNativeReflection()->hasMethod($methodName)
-			&& $classReflection->isSubclassOf(\TYPO3\CMS\Extbase\Persistence\Repository::class)
+			!$classReflection->hasNativeMethod($methodName)
+			&& in_array(Repository::class, $classReflection->getParentClassesNames(), true)
 		) {
 			return strpos($methodName, 'findBy') === 0 || strpos($methodName, 'findOneBy') === 0;
 		}

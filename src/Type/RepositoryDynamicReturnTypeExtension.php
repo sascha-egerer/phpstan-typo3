@@ -24,7 +24,7 @@ class RepositoryDynamicReturnTypeExtension implements DynamicMethodReturnTypeExt
 		MethodReflection $methodReflection
 	): bool
 	{
-		return $methodReflection->getName() === 'findByUid';
+		return in_array($methodReflection->getName(), ['findByUid', 'findByIdentifier'], true);
 	}
 
 	public function getTypeFromMethodCall(
