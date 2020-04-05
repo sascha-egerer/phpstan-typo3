@@ -22,7 +22,8 @@ class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 		MethodReflection $methodReflection
 	): bool
 	{
-		return $methodReflection->getName() === 'getAspect';
+		return interface_exists(\TYPO3\CMS\Core\Context\AspectInterface::class)
+			&& $methodReflection->getName() === 'getAspect';
 	}
 
 	public function getTypeFromMethodCall(
