@@ -16,7 +16,7 @@ class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 	public function getClass(): string
 	{
 		// ToDo(cms-9): move to ::class constants once support for cms-8 has been removed.
-		return '\\TYPO3\\CMS\\Core\\Context\\Context';
+		return 'TYPO3\\CMS\\Core\\Context\\Context';
 	}
 
 	public function isMethodSupported(
