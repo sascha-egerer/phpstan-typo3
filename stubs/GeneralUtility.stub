@@ -1,0 +1,13 @@
+<?php
+namespace TYPO3\CMS\Core\Utility;
+
+class GeneralUtility
+{
+    /**
+     * @template T
+     * @phpstan-param class-string<T> $className
+     * @phpstan-param array<int, mixed> $constructorArguments
+     * @phpstan-return T
+     */
+    public static function makeInstance($className, ...$constructorArguments);
+}

@@ -28,6 +28,8 @@ services:
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
 parameters:
+    stubFiles:
+        - stubs/GeneralUtility.stub
     dynamicConstantNames:
         - TYPO3_MODE
         - TYPO3_REQUESTTYPE
