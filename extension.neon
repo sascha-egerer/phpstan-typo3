@@ -4,10 +4,6 @@ services:
         tags:
             - phpstan.broker.methodsClassReflectionExtension
     -
-        class: SaschaEgerer\PhpstanTypo3\Type\GeneralUtilityDynamicReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicStaticMethodReturnTypeExtension
-    -
         class: SaschaEgerer\PhpstanTypo3\Type\ObjectManagerDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
