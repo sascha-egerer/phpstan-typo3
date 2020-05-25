@@ -1,0 +1,11 @@
+<?php
+namespace TYPO3\CMS\Extbase\Persistence;
+
+/**
+ * @template T
+ * @implements \ArrayAccess<string, T>
+ * @implements \Iterator<string, T>
+ */
+class ObjectStorage implements \ArrayAccess, \Iterator
+{
+}

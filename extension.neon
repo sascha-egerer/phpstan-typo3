@@ -26,6 +26,7 @@ services:
 parameters:
     stubFiles:
         - stubs/GeneralUtility.stub
+        - stubs/ObjectStorage.stub
     dynamicConstantNames:
         - TYPO3_MODE
         - TYPO3_REQUESTTYPE
