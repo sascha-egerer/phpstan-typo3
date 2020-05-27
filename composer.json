@@ -8,8 +8,8 @@
     "require": {
         "php": "~7.1",
         "phpstan/phpstan": "^0.12",
-        "typo3/cms-core": "^8.7 || ^9.5 || ^10.2",
-        "typo3/cms-extbase": "^8.7 || ^9.5 || ^10.2"
+        "typo3/cms-core": "^8.7 || ^9.5 || ^10.2 || ^11.0@dev",
+        "typo3/cms-extbase": "^8.7 || ^9.5 || ^10.2 || ^11.0@dev"
     },
     "require-dev": {
         "consistence/coding-standard": "^3.8",
