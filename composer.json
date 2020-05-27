@@ -18,9 +18,6 @@
         "phing/phing": "^2.16.0",
         "phpstan/phpstan-strict-rules": "^0.12"
     },
-    "suggest": {
-        "typo3/testing-framework": "Testing framework is used in the bootstrap (src/PhpStanTypo3Bootstrap.php). In most cases you need this package but you may also use your custom bootstrap (e.g. if you use nimut/testing-framework)"
-    },
     "autoload": {
         "psr-4": {
             "SaschaEgerer\\PhpstanTypo3\\": "src/"
