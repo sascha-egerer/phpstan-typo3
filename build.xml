@@ -67,11 +67,6 @@
 				checkreturn="true"
 		>
 			<arg value="analyse"/>
-			<arg value="-l"/>
-			<arg value="7"/>
-			<arg value="-c"/>
-			<arg path="phpstan.neon"/>
-			<arg path="src"/>
 		</exec>
 	</target>
 </project>
