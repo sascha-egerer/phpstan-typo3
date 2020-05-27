@@ -15,17 +15,14 @@ class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 
 	public function getClass(): string
 	{
-		// ToDo(cms-9): move to ::class constants once support for cms-8 has been removed.
-		return 'TYPO3\\CMS\\Core\\Context\\Context';
+		return \TYPO3\CMS\Core\Context\Context::class;
 	}
 
 	public function isMethodSupported(
 		MethodReflection $methodReflection
 	): bool
 	{
-		// ToDo(cms-9): move to ::class constants once support for cms-8 has been removed.
-		return interface_exists('\\TYPO3\\CMS\\Core\\Context\\AspectInterface')
-			&& $methodReflection->getName() === 'getAspect';
+		return $methodReflection->getName() === 'getAspect';
 	}
 
 	public function getTypeFromMethodCall(
@@ -41,24 +38,18 @@ class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 
 		switch ($arg->value) {
 			case 'date':
-				// ToDo(cms-9): move to ::class constants once support for cms-8 has been removed.
-				return new ObjectType('\\TYPO3\\CMS\\Core\\Context\\DateTimeAspect');
+				return new ObjectType(\TYPO3\CMS\Core\Context\DateTimeAspect::class);
 			case 'visibility':
-				// ToDo(cms-9): move to ::class constants once support for cms-8 has been removed.
-				return new ObjectType('\\TYPO3\\CMS\\Core\\Context\\VisibilityAspect');
+				return new ObjectType(\TYPO3\CMS\Core\Context\VisibilityAspect::class);
 			case 'backend.user':
 			case 'frontend.user':
-				// ToDo(cms-9): move to ::class constants once support for cms-8 has been removed.
-				return new ObjectType('\\TYPO3\\CMS\\Core\\Context\\UserAspect');
+				return new ObjectType(\TYPO3\CMS\Core\Context\UserAspect::class);
 			case 'workspace':
-				// ToDo(cms-9): move to ::class constants once support for cms-8 has been removed.
-				return new ObjectType('\\TYPO3\\CMS\\Core\\Context\\WorkspaceAspect');
+				return new ObjectType(\TYPO3\CMS\Core\Context\WorkspaceAspect::class);
 			case 'language':
-				// ToDo(cms-9): move to ::class constants once support for cms-8 has been removed.
-				return new ObjectType('\\TYPO3\\CMS\\Core\\Context\\LanguageAspect');
+				return new ObjectType(\TYPO3\CMS\Core\Context\LanguageAspect::class);
 			case 'typoscript':
-				// ToDo(cms-9): move to ::class constants once support for cms-8 has been removed.
-				return new ObjectType('\\TYPO3\\CMS\\Core\\Context\\TypoScriptAspect');
+				return new ObjectType(\TYPO3\CMS\Core\Context\TypoScriptAspect::class);
 			default:
 				return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 		}
