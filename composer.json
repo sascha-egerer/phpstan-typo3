@@ -8,13 +8,13 @@
     "require": {
         "php": "~7.1",
         "phpstan/phpstan": "^0.12",
-        "typo3/cms-core": "^8.7 || ^9.5 || ^10.2 || ^11.0@dev",
-        "typo3/cms-extbase": "^8.7 || ^9.5 || ^10.2 || ^11.0@dev"
+        "typo3/cms-core": "^8.7 || ^9.5 || ^10.4 || 11.*.*@dev",
+        "typo3/cms-extbase": "^8.7 || ^9.5 || ^10.4 || 11.*.*@dev"
     },
     "require-dev": {
         "consistence/coding-standard": "^3.8",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
-        "jakub-onderka/php-parallel-lint": "^1.0",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
+        "php-parallel-lint/php-parallel-lint": "^1.2",
         "phing/phing": "^2.16.0",
         "phpstan/phpstan-strict-rules": "^0.12"
     },
