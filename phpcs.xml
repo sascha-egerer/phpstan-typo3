@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="PHPStan TYPO3">
+	<config name="php_version" value="70200" />
 	<rule ref="vendor/consistence/coding-standard/Consistence/ruleset.xml">
 		<exclude name="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.InvalidFormat"/>
 		<exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameAfterKeyword"/>
