@@ -46,6 +46,7 @@ parameters:
             - redirect
             - forward
             - forwardToReferringRequest
+            - throwStatus
         TYPO3\CMS\Core\Utility\HttpUtility:
             - redirect
             - setResponseCodeAndExit
