@@ -31,6 +31,14 @@ services:
             contextApiGetAspectMapping: %typo3.contextApiGetAspectMapping%
         tags:
             - phpstan.rules.rule
+    -
+        class: SaschaEgerer\PhpstanTypo3\Type\RepositoryQueryDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
+        class: SaschaEgerer\PhpstanTypo3\Type\RepositoryFindAllDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
 parameters:
     bootstrapFiles:
         - phpstan.bootstrap.php
@@ -46,6 +54,9 @@ parameters:
     stubFiles:
         - stubs/GeneralUtility.stub
         - stubs/ObjectStorage.stub
+        - stubs/QueryInterface.stub
+        - stubs/QueryResultInterface.stub
+        - stubs/QueryResult.stub
     dynamicConstantNames:
         - TYPO3_MODE
         - TYPO3_REQUESTTYPE

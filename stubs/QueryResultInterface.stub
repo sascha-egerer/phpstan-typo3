@@ -1,0 +1,13 @@
+<?php
+namespace TYPO3\CMS\Extbase\Persistence;
+
+/**
+ * @template ModelType
+ */
+interface QueryResultInterface
+{
+    /**
+     * @return ModelType
+     */
+    public function getFirst();
+}
