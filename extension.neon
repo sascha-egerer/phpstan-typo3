@@ -41,6 +41,12 @@ parameters:
         - PATH_typo3
         - TYPO3_mainDir
     earlyTerminatingMethodCalls:
+        TYPO3\CMS\Extbase\Mvc\Controller\ActionController:
+            - redirectToUri
+            - redirect
+            - forward
+            - forwardToReferringRequest
+            - throwStatus
         TYPO3\CMS\Extbase\Mvc\Controller\AbstractController:
             - redirectToUri
             - redirect
