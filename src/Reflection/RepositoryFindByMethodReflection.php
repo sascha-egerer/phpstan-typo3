@@ -82,7 +82,11 @@ class RepositoryFindByMethodReflection implements MethodReflection
 	{
 		$modelReflection = $this->broker->getClass($this->getModelName());
 
-		$type = $modelReflection->getNativeProperty($this->getPropertyName())->getReadableType();
+		if ($modelReflection->hasNativeProperty($this->getPropertyName())) {
+			$type = $modelReflection->getNativeProperty($this->getPropertyName())->getReadableType();
+		} else {
+			$type = new \PHPStan\Type\MixedType(\false);
+		}
 
 		return [
 			new RepositoryFindByParameterReflection('arg', $type),
