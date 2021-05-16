@@ -1,0 +1,20 @@
+<?php
+namespace TYPO3\CMS\Extbase\Persistence;
+
+/**
+ * @template ModelType
+ */
+interface QueryInterface
+{
+    /**
+     * @param bool $returnRawQueryResult
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface<ModelType>|array<string, mixed>
+     */
+    public function execute($returnRawQueryResult = false);
+
+    /**
+     * @param mixed $constraint
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface<ModelType>
+     */
+    public function matching($constraint);
+}

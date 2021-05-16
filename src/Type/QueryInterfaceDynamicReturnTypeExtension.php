@@ -8,6 +8,7 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
+use PHPStan\Type\Generic\GenericObjectType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
@@ -36,20 +37,21 @@ class QueryInterfaceDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 		Scope $scope
 	): Type
 	{
+		$classReflection = $scope->getClassReflection();
+		$modelName = ClassNamingUtility::translateRepositoryNameToModelName(
+			$classReflection->getName()
+		);
+		
 		if (isset($methodCall->args[0])) {
 			$argType = $scope->getType($methodCall->args[0]->value);
-			$classReflection = $scope->getClassReflection();
 
 			if ($classReflection !== null && $argType instanceof ConstantBooleanType && $argType->getValue() === true) {
-				$modelName = ClassNamingUtility::translateRepositoryNameToModelName(
-					$classReflection->getName()
-				);
 
 				return new ArrayType(new IntegerType(), new ObjectType($modelName));
 			}
 		}
 
-		return new ObjectType(QueryResult::class);
+		return new GenericObjectType(QueryResult::class, [new ObjectType($modelName)]);
 	}
 
 }

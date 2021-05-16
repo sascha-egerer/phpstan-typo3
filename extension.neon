@@ -23,10 +23,21 @@ services:
         class: SaschaEgerer\PhpstanTypo3\Type\ContextDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
+        class: SaschaEgerer\PhpstanTypo3\Type\RepositoryQueryDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
+        class: SaschaEgerer\PhpstanTypo3\Type\RepositoryFindAllDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
 parameters:
     stubFiles:
         - stubs/GeneralUtility.stub
         - stubs/ObjectStorage.stub
+        - stubs/QueryInterface.stub
+        - stubs/QueryResultInterface.stub
+        - stubs/QueryResult.stub
     dynamicConstantNames:
         - TYPO3_MODE
         - TYPO3_REQUESTTYPE
