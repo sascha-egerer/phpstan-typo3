@@ -24,6 +24,8 @@ services:
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
 parameters:
+    bootstrapFiles:
+        - phpstan.bootstrap.php
     stubFiles:
         - stubs/GeneralUtility.stub
         - stubs/ObjectStorage.stub
