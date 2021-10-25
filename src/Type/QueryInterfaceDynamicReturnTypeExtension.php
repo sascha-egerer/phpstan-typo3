@@ -36,8 +36,10 @@ class QueryInterfaceDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 		Scope $scope
 	): Type
 	{
-		if (isset($methodCall->args[0])) {
-			$argType = $scope->getType($methodCall->args[0]->value);
+		$argument = $methodCall->getArgs()[0] ?? null;
+
+		if ($argument !== null) {
+			$argType = $scope->getType($argument->value);
 			$classReflection = $scope->getClassReflection();
 
 			if ($classReflection !== null && $argType instanceof ConstantBooleanType && $argType->getValue() === true) {

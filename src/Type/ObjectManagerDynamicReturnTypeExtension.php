@@ -32,12 +32,19 @@ class ObjectManagerDynamicReturnTypeExtension implements DynamicMethodReturnType
 		Scope $scope
 	): Type
 	{
-		$arg = $methodCall->args[0]->value;
-		if (!($arg instanceof \PhpParser\Node\Expr\ClassConstFetch)) {
+		$argument = $methodCall->getArgs()[0] ?? null;
+
+		if ($argument === null) {
+			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+		}
+
+		$argumentValue = $argument->value;
+
+		if (!($argumentValue instanceof \PhpParser\Node\Expr\ClassConstFetch)) {
 			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 		}
 		/** @var Name $class */
-		$class = $arg->class;
+		$class = $argumentValue->class;
 
 		return new ObjectType((string) $class);
 	}
