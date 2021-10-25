@@ -36,11 +36,6 @@
 				passthru="true"
 				checkreturn="true"
 		>
-			<arg value="--extensions=php"/>
-			<arg value="--encoding=utf-8"/>
-			<arg value="--tab-width=4"/>
-			<arg value="-sp"/>
-			<arg path="src"/>
 		</exec>
 	</target>
 
@@ -51,11 +46,6 @@
 				passthru="true"
 				checkreturn="true"
 		>
-			<arg value="--extensions=php"/>
-			<arg value="--encoding=utf-8"/>
-			<arg value="--tab-width=4"/>
-			<arg value="-sp"/>
-			<arg path="src"/>
 		</exec>
 	</target>
 

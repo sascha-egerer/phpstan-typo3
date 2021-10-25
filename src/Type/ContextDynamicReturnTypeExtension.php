@@ -31,12 +31,19 @@ class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 		Scope $scope
 	): Type
 	{
-		$arg = $methodCall->args[0]->value;
-		if (!($arg instanceof \PhpParser\Node\Scalar\String_)) {
+		$argument = $methodCall->getArgs()[0] ?? null;
+
+		if ($argument === null) {
 			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 		}
 
-		switch ($arg->value) {
+		$argumentValue = $argument->value;
+
+		if (!($argumentValue instanceof \PhpParser\Node\Scalar\String_)) {
+			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+		}
+
+		switch ($argumentValue->value) {
 			case 'date':
 				return new ObjectType(\TYPO3\CMS\Core\Context\DateTimeAspect::class);
 			case 'visibility':
