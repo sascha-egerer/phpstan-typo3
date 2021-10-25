@@ -25,3 +25,14 @@ includes:
 ```
 </details>
 
+### Custom Context API Aspects
+
+If you use custom aspects for the TYPO3 Context API you can now add a mapping so PHPStan knows
+what type of aspect class is returned by the context API
+
+```
+parameters:
+    typo3:
+        contextApiGetAspectMapping:
+            myCustomAspect: \FlowdGmbh\MyProject\Context\MyCustomAspect
+```
