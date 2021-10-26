@@ -3,11 +3,18 @@ namespace TYPO3\CMS\Extbase\Persistence;
 
 /**
  * @template ModelType
+ * @extends \ArrayAccess<string, ModelType>
+ * @extends \Iterator<string, ModelType>
  */
-interface QueryResultInterface
+interface QueryResultInterface extends \Countable, \Iterator, \ArrayAccess
 {
     /**
-     * @return ModelType
+     * @return null|ModelType
      */
     public function getFirst();
+
+    /**
+     * @return ModelType[]
+     */
+    public function toArray();
 }
