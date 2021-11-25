@@ -40,19 +40,27 @@ class QueryInterfaceDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 		$argument = $methodCall->getArgs()[0] ?? null;
 
 		$classReflection = $scope->getClassReflection();
-		$modelName = ClassNamingUtility::translateRepositoryNameToModelName(
-			$classReflection->getName()
-		);
+
+		$queryType = $scope->getType($methodCall->var);
+		if ($queryType instanceof GenericObjectType) {
+			$modelType = $queryType->getTypes();
+		} else {
+			$modelName = ClassNamingUtility::translateRepositoryNameToModelName(
+				$classReflection->getName()
+			);
+
+			$modelType = [new ObjectType($modelName)];
+		}
 
 		if ($argument !== null) {
 			$argType = $scope->getType($argument->value);
 
 			if ($classReflection !== null && $argType instanceof ConstantBooleanType && $argType->getValue() === true) {
-				return new ArrayType(new IntegerType(), new ObjectType($modelName));
+				return new ArrayType(new IntegerType(), $modelType[0]);
 			}
 		}
 
-		return new GenericObjectType(QueryResult::class, [new ObjectType($modelName)]);
+		return new GenericObjectType(QueryResult::class, $modelType);
 	}
 
 }

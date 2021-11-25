@@ -37,9 +37,16 @@ class RepositoryQueryDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	{
 		$variableType = $scope->getType($methodCall->var);
 
-		$modelName = ClassNamingUtility::translateRepositoryNameToModelName($variableType->getClassName());
+		$queryType = $scope->getType($methodCall->var);
+		if ($queryType instanceof GenericObjectType) {
+			$modelType = $queryType->getTypes();
+		} else {
+			$modelName = ClassNamingUtility::translateRepositoryNameToModelName($variableType->getClassName());
 
-		return new GenericObjectType(QueryInterface::class, [new ObjectType($modelName)]);
+			$modelType = [new ObjectType($modelName)];
+		}
+
+		return new GenericObjectType(QueryInterface::class, $modelType);
 	}
 
 }
