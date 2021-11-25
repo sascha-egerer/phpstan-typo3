@@ -26,6 +26,9 @@ namespace My\Test\Extension\Domain\Repository {
 
 			$rawResult = $query->execute(true);
 			assertType('array<int, My\Test\Extension\Domain\Model\SomeOtherModel>', $rawResult);
+
+			$array = $result->toArray();
+			assertType('array<int, My\Test\Extension\Domain\Model\SomeOtherModel>', $array);
 		}
 	}
 }
