@@ -8,6 +8,7 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
+use PHPStan\Type\ErrorType;
 use PHPStan\Type\Generic\GenericObjectType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
@@ -45,6 +46,10 @@ class QueryInterfaceDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 		if ($queryType instanceof GenericObjectType) {
 			$modelType = $queryType->getTypes();
 		} else {
+			if ($classReflection === null) {
+				return new ErrorType();
+			}
+
 			$modelName = ClassNamingUtility::translateRepositoryNameToModelName(
 				$classReflection->getName()
 			);

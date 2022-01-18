@@ -6,13 +6,13 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^7.1 || ^8.0",
+        "php": "^7.2 || ^8.0",
         "phpstan/phpstan": "^1.0",
         "typo3/cms-core": "^8.7 || ^9.5 || ^10.4 || ^11.2",
         "typo3/cms-extbase": "^8.7 || ^9.5 || ^10.4 || ^11.2"
     },
     "require-dev": {
-        "consistence-community/coding-standard": "^3.11",
+        "consistence-community/coding-standard": "^3.10",
         "slevomat/coding-standard": "^6.3",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
         "php-parallel-lint/php-parallel-lint": "^1.3",
