@@ -4,7 +4,8 @@
 		composer,
 		lint,
 		cs,
-		phpstan
+		phpstan,
+		phpunit
 	"/>
 
 	<target name="composer">
@@ -57,6 +58,17 @@
 				checkreturn="true"
 		>
 			<arg value="analyse"/>
+		</exec>
+	</target>
+
+	<target name="phpunit">
+		<exec
+				executable="vendor/bin/phpunit"
+				logoutput="true"
+				passthru="true"
+				checkreturn="true"
+		>
+			<arg value="tests/"/>
 		</exec>
 	</target>
 </project>

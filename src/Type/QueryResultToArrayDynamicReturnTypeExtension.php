@@ -6,19 +6,18 @@ use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\ArrayType;
-use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
+use PHPStan\Type\ErrorType;
 use PHPStan\Type\Generic\GenericObjectType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
-use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 class QueryResultToArrayDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
+
 	public function getClass(): string
 	{
 		return QueryResultInterface::class;
@@ -37,14 +36,16 @@ class QueryResultToArrayDynamicReturnTypeExtension implements DynamicMethodRetur
 		Scope $scope
 	): Type
 	{
-		$argument = $methodCall->getArgs()[0] ?? null;
-
 		$classReflection = $scope->getClassReflection();
 
 		$resultType = $scope->getType($methodCall->var);
 		if ($resultType instanceof GenericObjectType) {
 			$modelType = $resultType->getTypes();
 		} else {
+			if ($classReflection === null) {
+				return new ErrorType();
+			}
+
 			$modelName = ClassNamingUtility::translateRepositoryNameToModelName(
 				$classReflection->getName()
 			);
@@ -54,4 +55,5 @@ class QueryResultToArrayDynamicReturnTypeExtension implements DynamicMethodRetur
 
 		return new ArrayType(new IntegerType(), $modelType[0]);
 	}
+
 }

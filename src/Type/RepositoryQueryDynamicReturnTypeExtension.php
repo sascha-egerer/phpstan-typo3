@@ -5,12 +5,12 @@ namespace SaschaEgerer\PhpstanTypo3\Type;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
+use PHPStan\Type\ErrorType;
 use PHPStan\Type\Generic\GenericObjectType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
-use PHPStan\Type\TypeCombinator;
+use PHPStan\Type\TypeWithClassName;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
@@ -35,12 +35,16 @@ class RepositoryQueryDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		Scope $scope
 	): Type
 	{
-		$variableType = $scope->getType($methodCall->var);
-
 		$queryType = $scope->getType($methodCall->var);
 		if ($queryType instanceof GenericObjectType) {
 			$modelType = $queryType->getTypes();
 		} else {
+			$variableType = $scope->getType($methodCall->var);
+
+			if (!$variableType instanceof TypeWithClassName) {
+				return new ErrorType();
+			}
+
 			$modelName = ClassNamingUtility::translateRepositoryNameToModelName($variableType->getClassName());
 
 			$modelType = [new ObjectType($modelName)];
