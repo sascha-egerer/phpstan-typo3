@@ -17,4 +17,9 @@ interface QueryInterface
      * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface<ModelType>
      */
     public function matching($constraint);
+
+    /**
+     * @return ModelType
+     */
+    public function getType();
 }

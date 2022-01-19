@@ -9,6 +9,11 @@ namespace TYPO3\CMS\Extbase\Persistence;
 interface QueryResultInterface extends \Countable, \Iterator, \ArrayAccess
 {
     /**
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface<ModelType>
+     */
+    public function getQuery();
+
+    /**
      * @return null|ModelType
      */
     public function getFirst();
