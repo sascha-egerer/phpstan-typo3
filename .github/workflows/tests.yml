@@ -16,6 +16,9 @@ jobs:
           - "7.4"
           - "8.0"
           - "8.1"
+        composer-flags:
+          - ""
+          - " --prefer-lowest"
 
     steps:
       - name: "Checkout"
@@ -28,7 +31,7 @@ jobs:
           php-version: "${{ matrix.php-version }}"
 
       - name: "Install dependencies"
-        run: "composer update --no-interaction --no-progress"
+        run: "composer update --no-interaction --no-progress ${{ matrix.composer-flags }}"
 
       - name: "Tests"
         run: |
