@@ -1,0 +1,64 @@
+<?php
+namespace TYPO3\CMS\Extbase\Persistence;
+
+/**
+ * @template TEntityClass of \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface
+ */
+class Repository
+{
+    /**
+     * @var class-string<TEntityClass>
+     */
+    protected $objectType;
+
+    /**
+     * @phpstan-param TEntityClass $object
+     * @phpstan-return void
+     */
+    public function add($object);
+
+    /**
+     * @phpstan-param TEntityClass $object
+     * @phpstan-return void
+     */
+    public function remove($object);
+
+    /**
+     * @phpstan-param TEntityClass $modifiedObject
+     * @phpstan-return void
+     */
+    public function update($modifiedObject);
+
+    /**
+     * @phpstan-return QueryResultInterface<TEntityClass>
+     */
+    public function findAll();
+
+    /**
+     * @phpstan-param int $uid
+     * @phpstan-return TEntityClass|null
+     */
+    public function findByUid($uid);
+
+    /**
+     * @phpstan-param int $identifier
+     * @phpstan-return TEntityClass|null
+     */
+    public function findByIdentifier($identifier);
+
+    /**
+     * @phpstan-param array<string,string> $defaultOrderings
+     * @phpstan-return void
+     */
+    public function setDefaultOrderings($defaultOrderings);
+
+    /**
+     * @phpstan-return QueryInterface<TEntityClass>
+     */
+    public function createQuery();
+
+    /**
+     * @phpstan-return class-string<static>
+     */
+    protected function getRepositoryClassName();
+}

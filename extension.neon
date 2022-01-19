@@ -1,6 +1,6 @@
 services:
     -
-        class: SaschaEgerer\PhpstanTypo3\Reflection\RepositoryMethodsClassReflectionExtension
+        class: SaschaEgerer\PhpstanTypo3\Reflection\RepositoryFindMethodsClassReflectionExtension
         tags:
             - phpstan.broker.methodsClassReflectionExtension
     -
@@ -56,11 +56,14 @@ parameters:
             language: \TYPO3\CMS\Core\Context\LanguageAspect
             typoscript: \TYPO3\CMS\Core\Context\TypoScriptAspect
     stubFiles:
+        - stubs/DomainObjectInterface.stub
         - stubs/GeneralUtility.stub
         - stubs/ObjectStorage.stub
+        - stubs/QueryFactory.stub
         - stubs/QueryInterface.stub
         - stubs/QueryResultInterface.stub
         - stubs/QueryResult.stub
+        - stubs/Repository.stub
     dynamicConstantNames:
         - TYPO3_MODE
         - TYPO3_REQUESTTYPE

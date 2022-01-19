@@ -1,0 +1,6 @@
+<?php
+namespace TYPO3\CMS\Extbase\DomainObject;
+
+interface DomainObjectInterface
+{
+}
