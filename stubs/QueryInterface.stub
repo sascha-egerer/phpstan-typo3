@@ -19,7 +19,7 @@ interface QueryInterface
     public function matching($constraint);
 
     /**
-     * @return ModelType
+     * @return class-string<ModelType>
      */
     public function getType();
 }

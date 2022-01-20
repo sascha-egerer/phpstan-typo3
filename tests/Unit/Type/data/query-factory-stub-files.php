@@ -23,5 +23,5 @@ function (): void {
 	$createResult = $queryFactory->create(Model::class);
 
 	assertType('TYPO3\CMS\Extbase\Persistence\QueryInterface<QueryFactoryStubFile\Model>', $createResult);
-	assertType(Model::class, $createResult->getType());
+	assertType('class-string<' . Model::class . '>', $createResult->getType());
 };
