@@ -9,15 +9,13 @@ use PHPStan\Reflection\ReflectionProvider;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
-class RepositoryFindMethodsClassReflectionExtension implements MethodsClassReflectionExtension
+class RepositoryCountByMethodsClassReflectionExtension implements MethodsClassReflectionExtension
 {
 
-	/** @var ReflectionProvider $reflectionProvider */
+	/** @var ReflectionProvider */
 	private $reflectionProvider;
 
-	public function __construct(
-		ReflectionProvider $reflectionProvider
-	)
+	public function __construct(ReflectionProvider $reflectionProvider)
 	{
 		$this->reflectionProvider = $reflectionProvider;
 	}
@@ -32,13 +30,11 @@ class RepositoryFindMethodsClassReflectionExtension implements MethodsClassRefle
 			return false;
 		}
 
-		if (strpos($methodName, 'findOneBy') === 0) {
-			$propertyName = lcfirst(substr($methodName, 9));
-		} elseif (strpos($methodName, 'findBy') === 0) {
-			$propertyName = lcfirst(substr($methodName, 6));
-		} else {
+		if (strpos($methodName, 'countBy') !== 0) {
 			return false;
 		}
+
+		$propertyName = lcfirst(substr($methodName, strlen('countBy')));
 
 		// ensure that a property with that name exists on the model, as there might
 		// be methods starting with find[One]By... with custom implementations on
@@ -56,13 +52,7 @@ class RepositoryFindMethodsClassReflectionExtension implements MethodsClassRefle
 
 	public function getMethod(ClassReflection $classReflection, string $methodName): MethodReflection
 	{
-		if (strpos($methodName, 'findOneBy') === 0) {
-			$methodReflection = new RepositoryFindOneByMethodReflection($classReflection, $methodName, $this->reflectionProvider);
-		} else {
-			$methodReflection = new RepositoryFindByMethodReflection($classReflection, $methodName, $this->reflectionProvider);
-		}
-
-		return $methodReflection;
+		return new RepositoryCountByMethodReflection($classReflection, $methodName);
 	}
 
 }

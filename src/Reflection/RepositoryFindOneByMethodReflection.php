@@ -2,11 +2,11 @@
 
 namespace SaschaEgerer\PhpstanTypo3\Reflection;
 
-use PHPStan\Broker\Broker;
 use PHPStan\Reflection\ClassMemberReflection;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\FunctionVariant;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\TrinaryLogic;
 use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPStan\Type\ObjectType;
@@ -23,14 +23,14 @@ class RepositoryFindOneByMethodReflection implements MethodReflection
 	/** @var string */
 	private $name;
 
-	/** @var Broker */
-	private $broker;
+	/** @var ReflectionProvider */
+	private $reflectionProvider;
 
-	public function __construct(ClassReflection $classReflection, string $name, Broker $broker)
+	public function __construct(ClassReflection $classReflection, string $name, ReflectionProvider $reflectionProvider)
 	{
 		$this->classReflection = $classReflection;
 		$this->name = $name;
-		$this->broker = $broker;
+		$this->reflectionProvider = $reflectionProvider;
 	}
 
 	public function getDeclaringClass(): ClassReflection
@@ -80,7 +80,7 @@ class RepositoryFindOneByMethodReflection implements MethodReflection
 	 */
 	public function getParameters(): array
 	{
-		$modelReflection = $this->broker->getClass($this->getModelName());
+		$modelReflection = $this->reflectionProvider->getClass($this->getModelName());
 
 		$type = $modelReflection->getNativeProperty($this->getPropertyName())->getReadableType();
 
