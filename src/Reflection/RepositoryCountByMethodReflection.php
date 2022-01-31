@@ -9,6 +9,7 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\TrinaryLogic;
 use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPStan\Type\IntegerType;
+use PHPStan\Type\MixedType;
 use PHPStan\Type\Type;
 
 class RepositoryCountByMethodReflection implements MethodReflection
@@ -57,11 +58,11 @@ class RepositoryCountByMethodReflection implements MethodReflection
 	}
 
 	/**
-	 * @return RepositoryFindByParameterReflection[]
+	 * @return array{0: RepositoryCountByParameterReflection}
 	 */
 	public function getParameters(): array
 	{
-		return [];
+		return [new RepositoryCountByParameterReflection('arg', new MixedType(\false))];
 	}
 
 	public function isVariadic(): bool
