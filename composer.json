@@ -29,7 +29,10 @@
     "autoload-dev": {
         "psr-4": {
             "SaschaEgerer\\PhpstanTypo3\\Tests\\": "tests/"
-        }
+        },
+        "files": [
+            "tests/Unit/Type/data/repository-stub-files.php"
+        ]
     },
     "extra": {
         "branch-alias": {
@@ -37,6 +40,13 @@
         },
         "phpstan": {
             "includes": ["extension.neon"]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true
         }
     }
 }

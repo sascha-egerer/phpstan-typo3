@@ -8,9 +8,9 @@ use PHPStan\Reflection\FunctionVariant;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\TrinaryLogic;
+use PHPStan\Type\Generic\GenericObjectType;
 use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPStan\Type\ObjectType;
-use PHPStan\Type\Type;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
@@ -98,9 +98,9 @@ class RepositoryFindByMethodReflection implements MethodReflection
 		return false;
 	}
 
-	public function getReturnType(): Type
+	public function getReturnType(): GenericObjectType
 	{
-		return new ObjectType(QueryResultInterface::class);
+		return new GenericObjectType(QueryResultInterface::class, [new ObjectType($this->getModelName())]);
 	}
 
 	/**
