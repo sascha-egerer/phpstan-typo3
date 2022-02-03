@@ -23,6 +23,47 @@ namespace RepositoryStubFiles\My\Test\Extension\Domain\Repository {
 				'class-string<static(RepositoryStubFiles\My\Test\Extension\Domain\Repository\MyModelRepository)>',
 				$this->getRepositoryClassName()
 			);
+
+			assertType(
+				'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
+				$this->findAll()
+			);
+
+			assertType(
+				'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
+				$this->findByFoo()
+			);
+
+			assertType(
+				'RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel|null',
+				$this->findOneByFoo()
+			);
+
+			assertType(
+				'array<int, RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
+				$this->findByFoo()->toArray()
+			);
+
+			assertType(
+				'int',
+				$this->countByFoo()
+			);
+
+			assertType(
+				'int',
+				$this->countByFoo('a')
+			);
 		}
 	}
+
+    class MyModelWithoutExtendsRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+    {
+        public function __construct()
+        {
+            assertType(
+                'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface>',
+                $this->findAll()
+            );
+        }
+    }
 }
