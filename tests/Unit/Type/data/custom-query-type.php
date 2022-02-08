@@ -1,15 +1,17 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
-namespace CustomQueryType\My\Test\Extension\Domain\Model {
-	use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+namespace CustomQueryType\My\Test\Extension\Domain\Model;
+
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 	// Extbase naming convention says this model should be called MyModel, but we want to test that it also works if we
 	// have a different model name
-	class SomeOtherModel extends AbstractEntity {}
+class SomeOtherModel extends AbstractEntity
+{
+
 }
 
-namespace CustomQueryType\My\Test\Extension\Domain\Repository {
+namespace CustomQueryType\My\Test\Extension\Domain\Repository;
 
 	use CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel;
 	use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -19,20 +21,22 @@ namespace CustomQueryType\My\Test\Extension\Domain\Repository {
 	/**
 	 * @extends Repository<SomeOtherModel>
 	 */
-	class MyModelRepository extends Repository {
-		public function findBySomething(): void
-		{
-			/** @var QueryInterface<SomeOtherModel> $query */
-			$query = $this->persistenceManager->createQueryForType(SomeOtherModel::class);
+class MyModelRepository extends Repository
+{
 
-			$result = $query->execute();
-			assertType('TYPO3\CMS\Extbase\Persistence\QueryInterface<CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>', $query);
+	public function findBySomething(): void
+	{
+		/** @var QueryInterface<SomeOtherModel> $query */
+		$query = $this->persistenceManager->createQueryForType(SomeOtherModel::class);
 
-			$rawResult = $query->execute(true);
-			assertType('array<int, CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>', $rawResult);
+		$result = $query->execute();
+		assertType('TYPO3\CMS\Extbase\Persistence\QueryInterface<CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>', $query);
 
-			$array = $result->toArray();
-			assertType('array<int, CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>', $array);
-		}
+		$rawResult = $query->execute(true);
+		assertType('array<int, CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>', $rawResult);
+
+		$array = $result->toArray();
+		assertType('array<int, CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>', $array);
 	}
+
 }

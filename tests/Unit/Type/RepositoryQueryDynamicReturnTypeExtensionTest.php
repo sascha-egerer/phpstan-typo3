@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Type;
 
@@ -7,6 +6,7 @@ use PHPStan\Testing\TypeInferenceTestCase;
 
 class RepositoryQueryDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
 {
+
 	/**
 	 * @return iterable<mixed>
 	 */
@@ -17,6 +17,7 @@ class RepositoryQueryDynamicReturnTypeExtensionTest extends TypeInferenceTestCas
 
 	/**
 	 * @dataProvider dataFileAsserts
+	 * @param mixed $args
 	 */
 	public function testFileAsserts(
 		string $assertType,
@@ -31,4 +32,5 @@ class RepositoryQueryDynamicReturnTypeExtensionTest extends TypeInferenceTestCas
 	{
 		return [__DIR__ . '/../../../extension.neon'];
 	}
+
 }

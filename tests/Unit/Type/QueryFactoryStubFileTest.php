@@ -7,6 +7,9 @@ use PHPStan\Testing\TypeInferenceTestCase;
 class QueryFactoryStubFileTest extends TypeInferenceTestCase
 {
 
+	/**
+	 * @return iterable<mixed>
+	 */
 	public function dataFileAsserts(): iterable
 	{
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/query-factory-stub-files.php');
@@ -19,7 +22,7 @@ class QueryFactoryStubFileTest extends TypeInferenceTestCase
 	public function testFileAsserts(
 		string $assertType,
 		string $file,
-			   ...$args
+		...$args
 	): void
 	{
 		$this->assertFileAsserts($assertType, $file, ...$args);

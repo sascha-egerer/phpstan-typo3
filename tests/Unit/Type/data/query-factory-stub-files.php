@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace QueryFactoryStubFile;
 
@@ -7,11 +7,14 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory;
 
-class Model extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity { }
+class Model extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
+
+}
 
 use function PHPStan\Testing\assertType;
 
-function (): void {
+static function (): void {
 	/** @var ConfigurationManager $configurationManager */
 	$configurationManager = null;
 	/** @var DataMapFactory $dataMapFactory */
