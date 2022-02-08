@@ -7,6 +7,9 @@ use PHPStan\Testing\TypeInferenceTestCase;
 class RepositoryStubFileTest extends TypeInferenceTestCase
 {
 
+	/**
+	 * @return iterable<mixed>
+	 */
 	public function dataFileAsserts(): iterable
 	{
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/repository-stub-files.php');
@@ -19,7 +22,7 @@ class RepositoryStubFileTest extends TypeInferenceTestCase
 	public function testFileAsserts(
 		string $assertType,
 		string $file,
-			   ...$args
+		...$args
 	): void
 	{
 		$this->assertFileAsserts($assertType, $file, ...$args);

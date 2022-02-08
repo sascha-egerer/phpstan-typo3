@@ -1,69 +1,70 @@
-<?php
+<?php declare(strict_types = 1);
 
-namespace RepositoryStubFiles\My\Test\Extension\Domain\Model {
-	class MyModel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
-		/**
-		 * @var string
-		 */
-		protected $foo;
-	}
+namespace RepositoryStubFiles\My\Test\Extension\Domain\Model;
+
+class MyModel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
+
+	/** @var string */
+	protected $foo;
+
 }
 
-namespace RepositoryStubFiles\My\Test\Extension\Domain\Repository {
-	use function PHPStan\Testing\assertType;
+namespace RepositoryStubFiles\My\Test\Extension\Domain\Repository;
+
+use function PHPStan\Testing\assertType;
 
 	/** @extends \TYPO3\CMS\Extbase\Persistence\Repository<\RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel> */
-	class MyModelRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class MyModelRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
+
+	public function myTests(): void
 	{
-		public function __construct()
-		{
-			$model = new \RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel();
-			$this->add($model);
-			assertType(
-				'class-string<static(RepositoryStubFiles\My\Test\Extension\Domain\Repository\MyModelRepository)>',
-				$this->getRepositoryClassName()
-			);
+		$model = new \RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel();
+		$this->add($model);
+		assertType(
+			'class-string<static(RepositoryStubFiles\My\Test\Extension\Domain\Repository\MyModelRepository)>',
+			$this->getRepositoryClassName()
+		);
 
-			assertType(
-				'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
-				$this->findAll()
-			);
+		assertType(
+			'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
+			$this->findAll()
+		);
 
-			assertType(
-				'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
-				$this->findByFoo()
-			);
+		assertType(
+			'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
+			$this->findByFoo('a')
+		);
 
-			assertType(
-				'RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel|null',
-				$this->findOneByFoo()
-			);
+		assertType(
+			'RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel|null',
+			$this->findOneByFoo('a')
+		);
 
-			assertType(
-				'array<int, RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
-				$this->findByFoo()->toArray()
-			);
+		assertType(
+			'array<int, RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
+			$this->findByFoo('a')->toArray()
+		);
 
-			assertType(
-				'int',
-				$this->countByFoo()
-			);
-
-			assertType(
-				'int',
-				$this->countByFoo('a')
-			);
-		}
+		assertType(
+			'int',
+			$this->countByFoo('a')
+		);
 	}
 
-    class MyModelWithoutExtendsRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
-    {
-        public function __construct()
-        {
-            assertType(
-                'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface>',
-                $this->findAll()
-            );
-        }
-    }
+}
+
+	/** @phpstan-ignore-next-line */
+class MyModelWithoutExtendsRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
+
+	public function myTests(): void
+	{
+		assertType(
+			'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface>',
+			$this->findAll()
+		);
+	}
+
 }
