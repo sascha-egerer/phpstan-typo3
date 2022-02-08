@@ -59,16 +59,43 @@ class MyModelRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
 }
 
-	/** @phpstan-ignore-next-line */
+class MyModelWithoutExtends extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
+
+}
+
+/** @phpstan-ignore-next-line */
 class MyModelWithoutExtendsRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
 
 	public function myTests(): void
 	{
 		assertType(
-			'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface>',
+			'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModelWithoutExtends>',
 			$this->findAll()
 		);
+	}
+
+}
+
+/** @extends \TYPO3\CMS\Extbase\Persistence\Repository<\RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel> */
+class FindAllTestRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
+
+	public function myTests(): void
+	{
+		assertType(
+			'array<int, RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
+			$this->findAll()
+		);
+	}
+
+	/**
+	 * @return list<\RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>
+	 */
+	public function findAll(): array
+	{
+		return [];
 	}
 
 }
