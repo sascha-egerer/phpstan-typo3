@@ -2,29 +2,26 @@
 
 namespace QueryFactoryStubFile;
 
-use Psr\Container\ContainerInterface;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory;
+use function PHPStan\Testing\assertType;
 
+// phpcs:ignore Squiz.Classes.ClassFileName.NoMatch
 class Model extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
 
+	public function foo(): void
+	{
+		$createResult = $this->getQueryFactory()->create(self::class);
+
+		assertType('TYPO3\CMS\Extbase\Persistence\QueryInterface<QueryFactoryStubFile\Model>', $createResult);
+		assertType('class-string<' . self::class . '>', $createResult->getType());
+	}
+
+	private function getQueryFactory(): QueryFactory
+	{
+		/** @var QueryFactory $queryFactory */
+		$queryFactory = null;
+		return $queryFactory;
+	}
+
 }
-
-use function PHPStan\Testing\assertType;
-
-static function (): void {
-	/** @var ConfigurationManager $configurationManager */
-	$configurationManager = null;
-	/** @var DataMapFactory $dataMapFactory */
-	$dataMapFactory = null;
-	/** @var ContainerInterface $containerInterface */
-	$containerInterface = null;
-
-	$queryFactory = new QueryFactory($configurationManager, $dataMapFactory, $containerInterface);
-	$createResult = $queryFactory->create(Model::class);
-
-	assertType('TYPO3\CMS\Extbase\Persistence\QueryInterface<QueryFactoryStubFile\Model>', $createResult);
-	assertType('class-string<' . Model::class . '>', $createResult->getType());
-};

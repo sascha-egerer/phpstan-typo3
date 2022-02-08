@@ -17,7 +17,9 @@ class RepositoryQueryDynamicReturnTypeExtensionTest extends TypeInferenceTestCas
 
 	/**
 	 * @dataProvider dataFileAsserts
-	 * @param mixed $args
+	 * @param string $assertType
+	 * @param string $file
+	 * @param mixed ...$args
 	 */
 	public function testFileAsserts(
 		string $assertType,
