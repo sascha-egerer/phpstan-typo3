@@ -25,7 +25,7 @@ namespace RepositoryStubFiles\My\Test\Extension\Domain\Repository {
 			);
 
 			assertType(
-				'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
+				'array<int, RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>|TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
 				$this->findAll()
 			);
 
@@ -61,7 +61,7 @@ namespace RepositoryStubFiles\My\Test\Extension\Domain\Repository {
         public function __construct()
         {
             assertType(
-                'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface>',
+                'array<int, TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface>|TYPO3\CMS\Extbase\Persistence\QueryResultInterface<TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface>',
                 $this->findAll()
             );
         }
