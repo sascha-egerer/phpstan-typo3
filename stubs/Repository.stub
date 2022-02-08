@@ -30,7 +30,7 @@ class Repository
     public function update($modifiedObject);
 
     /**
-     * @phpstan-return QueryResultInterface<TEntityClass>
+     * @phpstan-return QueryResultInterface<TEntityClass>|list<TEntityClass>
      */
     public function findAll();
 
