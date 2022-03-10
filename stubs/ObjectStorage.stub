@@ -3,8 +3,8 @@ namespace TYPO3\CMS\Extbase\Persistence;
 
 /**
  * @template T
- * @implements \ArrayAccess<string, T>
- * @implements \Iterator<string, T>
+ * @implements \ArrayAccess<int|string, T>
+ * @implements \Iterator<int|string, T>
  */
 class ObjectStorage implements \ArrayAccess, \Iterator
 {
