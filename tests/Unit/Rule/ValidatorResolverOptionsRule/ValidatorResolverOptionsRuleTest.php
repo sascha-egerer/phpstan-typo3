@@ -25,6 +25,15 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 	public function provideDataWithErrors(): \Iterator
 	{
 		yield [
+			__DIR__ . '/Fixture/CreateValidatorWithUnresolvableType.php',
+			[
+				[
+					'Validator class TYPO3\CMS\Extbase\Validation\Validator\FooValidator does not exist', 15
+				],
+			],
+		];
+
+		yield [
 			__DIR__ . '/Fixture/CreateValidatorWithMissingRequiredOption.php',
 			[
 				[
@@ -40,10 +49,16 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 			__DIR__ . '/Fixture/CreateValidatorWithNonExistingOption.php',
 			[
 				[
-					'Unsupported validation option(s) found: non-existing-option', 16
+					'Unsupported validation option(s) found: non-existing-option', 18
 				],
 				[
-					'Unsupported validation option(s) found: foo', 24
+					'Unsupported validation option(s) found: foo', 26
+				],
+				[
+					'Required validation option not set: minimum', 32
+				],
+				[
+					'Unsupported validation option(s) found: minmum', 32
 				]
 			],
 		];

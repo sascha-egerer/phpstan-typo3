@@ -10,6 +10,8 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 
 final class CreateValidatorWithNonExistingOption
 {
+	private const OPTION_MINIMUM = 'minmum';
+
 	public function __construct()
 	{
 		$validatorResolver = new ValidatorResolver();
@@ -25,5 +27,10 @@ final class CreateValidatorWithNonExistingOption
 				'foo' => 'bar',
 			]
 		);
+
+		$validatorName = 'NumberRange';
+		$validatorResolver->createValidator($validatorName, [
+			self::OPTION_MINIMUM => 1
+		]);
 	}
 }
