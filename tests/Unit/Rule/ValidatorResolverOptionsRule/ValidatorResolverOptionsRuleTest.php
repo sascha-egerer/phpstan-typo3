@@ -62,9 +62,6 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 					'Unsupported validation option(s) found: foo', 24,
 				],
 				[
-					'Required validation option not set: minimum', 29,
-				],
-				[
 					'Unsupported validation option(s) found: minmum', 29,
 				],
 			],

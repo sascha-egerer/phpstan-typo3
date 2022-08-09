@@ -53,7 +53,6 @@ services:
             - phpstan.rules.rule
     -
         class: SaschaEgerer\PhpstanTypo3\Rule\ValidatorResolverOptionsRule
-        arguments:
         tags:
             - phpstan.rules.rule
     -
