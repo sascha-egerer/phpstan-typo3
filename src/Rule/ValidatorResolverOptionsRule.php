@@ -4,9 +4,13 @@ namespace SaschaEgerer\PhpstanTypo3\Rule;
 
 use PhpParser\Node;
 use PhpParser\Node\Arg;
+use PhpParser\Node\Expr\Array_;
+use PhpParser\Node\Expr\ArrayItem;
+use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ClassReflection;
+use PHPStan\Reflection\InitializerExprTypeResolver;
 use PHPStan\Reflection\Php\PhpPropertyReflection;
 use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Rules\Rule;
@@ -17,6 +21,7 @@ use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use SaschaEgerer\PhpstanTypo3\Rule\ValueObject\ValidatorOptionsConfiguration;
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 use TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 
@@ -25,6 +30,14 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
  */
 final class ValidatorResolverOptionsRule implements Rule
 {
+
+	/** @var InitializerExprTypeResolver */
+	private $initializerExprTypeResolver;
+
+	public function __construct(InitializerExprTypeResolver $initializerExprTypeResolver)
+	{
+		$this->initializerExprTypeResolver = $initializerExprTypeResolver;
+	}
 
 	public function getNodeType(): string
 	{
@@ -62,14 +75,18 @@ final class ValidatorResolverOptionsRule implements Rule
 		}
 
 		$validatorObjectType = new ObjectType($validatorClassName);
-		$classReflection = $validatorObjectType->getClassReflection();
+		$validatorClassReflection = $validatorObjectType->getClassReflection();
 
-		if ( ! $classReflection instanceof ClassReflection) {
+		if ( ! $validatorClassReflection instanceof ClassReflection) {
+			return [];
+		}
+
+		if (!$validatorClassReflection->isSubclassOf(AbstractValidator::class)) {
 			return [];
 		}
 
 		try {
-			$supportedOptions = $classReflection->getProperty('supportedOptions', $scope);
+			$supportedOptions = $validatorClassReflection->getProperty('supportedOptions', $scope);
 		} catch (\PHPStan\Reflection\MissingPropertyFromReflectionException $e) {
 			return [];
 		}
@@ -142,7 +159,7 @@ final class ValidatorResolverOptionsRule implements Rule
 		$keysArray = $validatorOptionsArgumentType->getKeysArray();
 
 		foreach ($keysArray->getValueTypes() as $valueType) {
-			if (!($valueType instanceof ConstantStringType)) {
+			if ( ! ($valueType instanceof ConstantStringType)) {
 				continue;
 			}
 
@@ -157,46 +174,46 @@ final class ValidatorResolverOptionsRule implements Rule
 		$collectedSupportedOptions = [];
 		$collectedRequiredOptions = [];
 
-		if (!$supportedOptions instanceof PhpPropertyReflection) {
+		if ( ! $supportedOptions instanceof PhpPropertyReflection) {
 			return ValidatorOptionsConfiguration::empty();
 		}
 
 		$defaultValues = $supportedOptions->getNativeReflection()->getDefaultValueExpr();
 
-		$supportedOptionsType = $scope->getType($defaultValues);
-
-		if ( ! $supportedOptionsType instanceof ConstantArrayType) {
+		if ( ! $defaultValues instanceof Array_) {
 			return ValidatorOptionsConfiguration::empty();
 		}
 
-		$keysArray = $supportedOptionsType->getKeysArray();
+		foreach ($defaultValues->items as $defaultValue) {
 
-		foreach ($keysArray->getValueTypes() as $valueType) {
-			if (!($valueType instanceof ConstantStringType)) {
+			if ( ! $defaultValue instanceof ArrayItem) {
 				continue;
 			}
 
-			$collectedSupportedOptions[] = $valueType->getValue();
-		}
-
-		$valuesArray = $supportedOptionsType->getValuesArray();
-		foreach ($valuesArray->getValueTypes() as $index => $valueType) {
-			if ( ! $valueType instanceof ConstantArrayType) {
+			if ($defaultValue->key === null) {
 				continue;
 			}
 
-			if ( ! isset($valueType->getValueTypes()[3])) {
+			$supportedOptionKey = $this->resolveOptionKeyValue($defaultValue, $supportedOptions, $scope);
+
+			if ($supportedOptionKey === null) {
 				continue;
 			}
 
-			$requiredValueType = $valueType->getValueTypes()[3];
+			$collectedSupportedOptions[] = $supportedOptionKey;
 
-			if ( ! $requiredValueType instanceof ConstantBooleanType) {
+			$optionDefinition = $defaultValue->value;
+			if ( ! $optionDefinition instanceof Array_) {
 				continue;
 			}
 
-			$keyType = $keysArray->getValueTypes()[$index];
-			if ( ! $keyType instanceof ConstantStringType) {
+			if ( ! isset($optionDefinition->items[3])) {
+				continue;
+			}
+
+			$requiredValueType = $scope->getType($optionDefinition->items[3]->value);
+
+			if (!$requiredValueType instanceof ConstantBooleanType) {
 				continue;
 			}
 
@@ -204,10 +221,42 @@ final class ValidatorResolverOptionsRule implements Rule
 				continue;
 			}
 
-			$collectedRequiredOptions[] = $keyType->getValue();
+			$collectedRequiredOptions[] = $supportedOptionKey;
 		}
 
 		return new ValidatorOptionsConfiguration($collectedSupportedOptions, $collectedRequiredOptions);
+	}
+
+	private function resolveOptionKeyValue(ArrayItem $defaultValue, PhpPropertyReflection $supportedOptions, Scope $scope): ?string
+	{
+		if ($defaultValue->key === null) {
+			return null;
+		}
+
+		if ($defaultValue->key instanceof ClassConstFetch && $defaultValue->key->name instanceof Node\Identifier) {
+			$keyType = $this->initializerExprTypeResolver->getClassConstFetchType(
+				$defaultValue->key->class,
+				$defaultValue->key->name->toString(),
+				$supportedOptions->getDeclaringClass()->getName(),
+				static function (\PhpParser\Node\Expr $expr) use ($scope): Type {
+					return $scope->getType($expr);
+				}
+			);
+
+			if ($keyType instanceof ConstantStringType) {
+				return $keyType->getValue();
+			}
+
+			return null;
+		}
+
+		$keyType = $scope->getType($defaultValue->key);
+
+		if ($keyType instanceof ConstantStringType) {
+			return $keyType->getValue();
+		}
+
+		return null;
 	}
 
 }

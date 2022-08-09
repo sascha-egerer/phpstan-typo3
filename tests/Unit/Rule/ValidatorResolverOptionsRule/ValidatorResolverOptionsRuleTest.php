@@ -32,7 +32,7 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 			__DIR__ . '/Fixture/CreateValidatorWithUnresolvableType.php',
 			[
 				[
-					'Validator class TYPO3\CMS\Extbase\Validation\Validator\FooValidator does not exist', 15,
+					'Validator class TYPO3\CMS\Extbase\Validation\Validator\FooValidator does not exist', 13,
 				],
 			],
 		];
@@ -44,7 +44,10 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 					'Required validation option not set: regularExpression', 15,
 				],
 				[
-					'Required validation option not set: regularExpression', 19,
+					'Required validation option not set: regularExpression', 20,
+				],
+				[
+					'Required validation option not set: my-option', 25,
 				],
 			],
 		];
@@ -53,16 +56,16 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 			__DIR__ . '/Fixture/CreateValidatorWithNonExistingOption.php',
 			[
 				[
-					'Unsupported validation option(s) found: non-existing-option', 18,
+					'Unsupported validation option(s) found: non-existing-option', 16,
 				],
 				[
-					'Unsupported validation option(s) found: foo', 26,
+					'Unsupported validation option(s) found: foo', 24,
 				],
 				[
-					'Required validation option not set: minimum', 32,
+					'Required validation option not set: minimum', 29,
 				],
 				[
-					'Unsupported validation option(s) found: minmum', 32,
+					'Unsupported validation option(s) found: minmum', 29,
 				],
 			],
 		];

@@ -13,6 +13,7 @@ use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPStan\Type\ObjectType;
 use SaschaEgerer\PhpstanTypo3\Helpers\Typo3ClassNamingUtilityTrait;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
 
 class RepositoryFindByMethodReflection implements MethodReflection
 {
