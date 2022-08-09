@@ -22,6 +22,11 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 		$this->analyse([$filePath], $expectedErrorMessagesWithLines);
 	}
 
+	public function testRuleWithoutErrors(): void
+	{
+		$this->analyse([__DIR__ .'/Fixture/CreateValidatorWithCorrectOptions.php'], []);
+	}
+
 	public function provideDataWithErrors(): \Iterator
 	{
 		yield [
