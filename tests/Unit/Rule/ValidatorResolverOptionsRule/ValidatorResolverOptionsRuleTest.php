@@ -1,10 +1,8 @@
-<?php
-declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Rule\ValidatorResolverOptionsRule;
 
-
+use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use SaschaEgerer\PhpstanTypo3\Rule\ValidatorResolverOptionsRule;
 
@@ -13,6 +11,7 @@ use SaschaEgerer\PhpstanTypo3\Rule\ValidatorResolverOptionsRule;
  */
 final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 {
+
 	/**
 	 * @dataProvider provideDataWithErrors()
 	 * @param list<array{0: string, 1: int, 2?: string}> $expectedErrorMessagesWithLines
@@ -24,7 +23,7 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 
 	public function testRuleWithoutErrors(): void
 	{
-		$this->analyse([__DIR__ .'/Fixture/CreateValidatorWithCorrectOptions.php'], []);
+		$this->analyse([__DIR__ . '/Fixture/CreateValidatorWithCorrectOptions.php'], []);
 	}
 
 	public function provideDataWithErrors(): \Iterator
@@ -33,7 +32,7 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 			__DIR__ . '/Fixture/CreateValidatorWithUnresolvableType.php',
 			[
 				[
-					'Validator class TYPO3\CMS\Extbase\Validation\Validator\FooValidator does not exist', 15
+					'Validator class TYPO3\CMS\Extbase\Validation\Validator\FooValidator does not exist', 15,
 				],
 			],
 		];
@@ -42,11 +41,11 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 			__DIR__ . '/Fixture/CreateValidatorWithMissingRequiredOption.php',
 			[
 				[
-					'Required validation option not set: regularExpression', 15
+					'Required validation option not set: regularExpression', 15,
 				],
 				[
-					'Required validation option not set: regularExpression', 19
-				]
+					'Required validation option not set: regularExpression', 19,
+				],
 			],
 		];
 
@@ -54,17 +53,17 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 			__DIR__ . '/Fixture/CreateValidatorWithNonExistingOption.php',
 			[
 				[
-					'Unsupported validation option(s) found: non-existing-option', 18
+					'Unsupported validation option(s) found: non-existing-option', 18,
 				],
 				[
-					'Unsupported validation option(s) found: foo', 26
+					'Unsupported validation option(s) found: foo', 26,
 				],
 				[
-					'Required validation option not set: minimum', 32
+					'Required validation option not set: minimum', 32,
 				],
 				[
-					'Unsupported validation option(s) found: minmum', 32
-				]
+					'Unsupported validation option(s) found: minmum', 32,
+				],
 			],
 		];
 	}
@@ -74,8 +73,9 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 		return [__DIR__ . '/../../../../extension.neon'];
 	}
 
-	protected function getRule(): \PHPStan\Rules\Rule
+	protected function getRule(): Rule
 	{
 		return self::getContainer()->getByType(ValidatorResolverOptionsRule::class);
 	}
+
 }

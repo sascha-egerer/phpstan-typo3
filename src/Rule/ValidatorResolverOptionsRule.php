@@ -1,38 +1,22 @@
-<?php
-declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace SaschaEgerer\PhpstanTypo3\Rule;
 
-
 use PhpParser\Node;
 use PhpParser\Node\Arg;
-use PhpParser\Node\Expr;
-use PhpParser\Node\Expr\Array_;
-use PhpParser\Node\Expr\ArrayItem;
-use PhpParser\Node\Expr\ClassConstFetch;
-use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\MethodCall;
-use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ClassReflection;
-use PHPStan\Reflection\MissingPropertyFromReflectionException;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Reflection\Php\PhpPropertyReflection;
 use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
-use PHPStan\Type\ClassStringType;
 use PHPStan\Type\Constant\ConstantArrayType;
-use PHPStan\Type\Constant\ConstantArrayTypeBuilder;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\Constant\ConstantStringType;
-use PHPStan\Type\IntersectionType;
 use PHPStan\Type\ObjectType;
-use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
 use SaschaEgerer\PhpstanTypo3\Rule\ValueObject\ValidatorOptionsConfiguration;
-use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 use TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 
@@ -41,6 +25,7 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
  */
 final class ValidatorResolverOptionsRule implements Rule
 {
+
 	public function getNodeType(): string
 	{
 		return MethodCall::class;
@@ -66,9 +51,9 @@ final class ValidatorResolverOptionsRule implements Rule
 
 		try {
 			$validatorClassName = $this->extractValidatorClassName($validatorType);
-		} catch (NoSuchValidatorException $e) {
+		} catch (\TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException $e) {
 			return [
-				RuleErrorBuilder::message($e->getMessage())->build()
+				RuleErrorBuilder::message($e->getMessage())->build(),
 			];
 		}
 
@@ -85,7 +70,7 @@ final class ValidatorResolverOptionsRule implements Rule
 
 		try {
 			$supportedOptions = $classReflection->getProperty('supportedOptions', $scope);
-		} catch (MissingPropertyFromReflectionException $e) {
+		} catch (\PHPStan\Reflection\MissingPropertyFromReflectionException $e) {
 			return [];
 		}
 
@@ -105,7 +90,7 @@ final class ValidatorResolverOptionsRule implements Rule
 		}
 
 		if ($unsupportedOptions !== []) {
-			$errorMessage = 'Unsupported validation option(s) found: '.implode(', ', $unsupportedOptions);
+			$errorMessage = 'Unsupported validation option(s) found: ' . implode(', ', $unsupportedOptions);
 			$errors[] = RuleErrorBuilder::message($errorMessage)->build();
 		}
 
@@ -157,13 +142,14 @@ final class ValidatorResolverOptionsRule implements Rule
 		$keysArray = $validatorOptionsArgumentType->getKeysArray();
 
 		foreach ($keysArray->getValueTypes() as $valueType) {
-			if ($valueType instanceof ConstantStringType) {
-				$providedOptionsArray[] = $valueType->getValue();
+			if (!($valueType instanceof ConstantStringType)) {
+				continue;
 			}
+
+			$providedOptionsArray[] = $valueType->getValue();
 		}
 
 		return $providedOptionsArray;
-
 	}
 
 	private function extractValidatorOptionsConfiguration(PropertyReflection $supportedOptions, Scope $scope): ValidatorOptionsConfiguration
@@ -186,9 +172,11 @@ final class ValidatorResolverOptionsRule implements Rule
 		$keysArray = $supportedOptionsType->getKeysArray();
 
 		foreach ($keysArray->getValueTypes() as $valueType) {
-			if ($valueType instanceof ConstantStringType) {
-				$collectedSupportedOptions[] = $valueType->getValue();
+			if (!($valueType instanceof ConstantStringType)) {
+				continue;
 			}
+
+			$collectedSupportedOptions[] = $valueType->getValue();
 		}
 
 		$valuesArray = $supportedOptionsType->getValuesArray();
@@ -212,11 +200,14 @@ final class ValidatorResolverOptionsRule implements Rule
 				continue;
 			}
 
-			if ($requiredValueType->getValue()) {
-				$collectedRequiredOptions[] = $keyType->getValue();
+			if (!$requiredValueType->getValue()) {
+				continue;
 			}
+
+			$collectedRequiredOptions[] = $keyType->getValue();
 		}
 
 		return new ValidatorOptionsConfiguration($collectedSupportedOptions, $collectedRequiredOptions);
 	}
+
 }

@@ -1,20 +1,14 @@
-<?php
-declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace SaschaEgerer\PhpstanTypo3\Rule\ValueObject;
 
-
 final class ValidatorOptionsConfiguration
 {
-	/**
-	 * @var string[]
-	 */
+
+	/** @var string[] */
 	private $supportedOptions;
 
-	/**
-	 * @var string[]
-	 */
+	/** @var string[] */
 	private $requriedOptions;
 
 	/**
@@ -47,4 +41,5 @@ final class ValidatorOptionsConfiguration
 	{
 		return $this->requriedOptions;
 	}
+
 }
