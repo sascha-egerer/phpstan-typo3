@@ -41,13 +41,10 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 			__DIR__ . '/Fixture/CreateValidatorWithMissingRequiredOption.php',
 			[
 				[
-					'Required validation option not set: regularExpression', 15,
+					'Required validation option not set: regularExpression', 14,
 				],
 				[
-					'Required validation option not set: regularExpression', 20,
-				],
-				[
-					'Required validation option not set: my-option', 25,
+					'Required validation option not set: regularExpression', 19,
 				],
 			],
 		];
