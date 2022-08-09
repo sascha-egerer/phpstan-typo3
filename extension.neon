@@ -52,6 +52,11 @@ services:
         tags:
             - phpstan.rules.rule
     -
+        class: SaschaEgerer\PhpstanTypo3\Rule\ValidatorResolverOptionsRule
+        arguments:
+        tags:
+            - phpstan.rules.rule
+    -
         class: SaschaEgerer\PhpstanTypo3\Type\RepositoryQueryDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
