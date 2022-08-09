@@ -24,8 +24,10 @@ use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Type\ClassStringType;
 use PHPStan\Type\Constant\ConstantArrayType;
+use PHPStan\Type\Constant\ConstantArrayTypeBuilder;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\Constant\ConstantStringType;
+use PHPStan\Type\IntersectionType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
@@ -91,7 +93,7 @@ final class ValidatorResolverOptionsRule implements Rule
 		$providedOptionsArray = $this->extractProvidedOptions($validatorOptionsArgument, $scope);
 
 		$unsupportedOptions = array_diff($providedOptionsArray, $validatorOptionsConfiguration->getSupportedOptions());
-		$neededRequiredOptions = array_diff($validatorOptionsConfiguration->getRequriedOptions(), $providedOptionsArray);
+		$neededRequiredOptions = array_diff($validatorOptionsConfiguration->getRequiredOptions(), $providedOptionsArray);
 
 		$errors = [];
 

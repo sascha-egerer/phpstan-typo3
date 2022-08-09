@@ -11,6 +11,8 @@ parameters:
          - src
          - tests
     reportUnmatchedIgnoredErrors: false
+    excludePaths:
+         - '*tests/*/Fixture/*'
     ignoreErrors:
         -
             message: '#^Class TYPO3\\CMS\\Core\\Context\\[a-zA-Z]* not found\.#'

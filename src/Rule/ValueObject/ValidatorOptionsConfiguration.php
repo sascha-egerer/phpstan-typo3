@@ -7,9 +7,20 @@ namespace SaschaEgerer\PhpstanTypo3\Rule\ValueObject;
 
 final class ValidatorOptionsConfiguration
 {
-	private array $supportedOptions;
-	private array $requriedOptions;
+	/**
+	 * @var string[]
+	 */
+	private $supportedOptions;
 
+	/**
+	 * @var string[]
+	 */
+	private $requriedOptions;
+
+	/**
+	 * @param string[] $supportedOptions
+	 * @param string[] $requriedOptions
+	 */
 	public function __construct(array $supportedOptions, array $requriedOptions)
 	{
 		$this->supportedOptions = $supportedOptions;
@@ -21,12 +32,18 @@ final class ValidatorOptionsConfiguration
 		return new self([], []);
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public function getSupportedOptions(): array
 	{
 		return $this->supportedOptions;
 	}
 
-	public function getRequriedOptions(): array
+	/**
+	 * @return string[]
+	 */
+	public function getRequiredOptions(): array
 	{
 		return $this->requriedOptions;
 	}
