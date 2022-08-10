@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace SaschaEgerer\PhpstanTypo3\Type;
 
@@ -12,42 +10,49 @@ use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 
-class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension {
-  /** @var array<string, string> */
-  private $requestApiGetAttributeMapping;
+class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
+{
 
-  /**
-   * @param array<string, string> $requestApiGetAttributeMapping
-   */
-  public function __construct(array $requestApiGetAttributeMapping) {
-    $this->requestApiGetAttributeMapping = $requestApiGetAttributeMapping;
-  }
+	/** @var array<string, string> */
+	private $requestApiGetAttributeMapping;
 
-  public function getClass(): string {
-    return \TYPO3\CMS\Extbase\Mvc\Request::class;
-  }
+	/**
+	 * @param array<string, string> $requestApiGetAttributeMapping
+	 */
+	public function __construct(array $requestApiGetAttributeMapping)
+	{
+		$this->requestApiGetAttributeMapping = $requestApiGetAttributeMapping;
+	}
 
-  public function getTypeFromMethodCall(
-    MethodReflection $methodReflection,
-    MethodCall $methodCall,
-    Scope $scope
-  ): Type {
-    $argument = $methodCall->getArgs()[0] ?? null;
+	public function getClass(): string
+	{
+		return \TYPO3\CMS\Extbase\Mvc\Request::class;
+	}
 
-    if (null === $argument || !($argument->value instanceof \PhpParser\Node\Scalar\String_)) {
-      return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
-    }
+	public function getTypeFromMethodCall(
+		MethodReflection $methodReflection,
+		MethodCall $methodCall,
+		Scope $scope
+	): Type
+	{
+		$argument = $methodCall->getArgs()[0] ?? null;
 
-    if (isset($this->requestApiGetAttributeMapping[$argument->value->value])) {
-      return new ObjectType($this->requestApiGetAttributeMapping[$argument->value->value]);
-    }
+		if ($argument === null || !($argument->value instanceof \PhpParser\Node\Scalar\String_)) {
+			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+		}
 
-    return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
-  }
+		if (isset($this->requestApiGetAttributeMapping[$argument->value->value])) {
+			return new ObjectType($this->requestApiGetAttributeMapping[$argument->value->value]);
+		}
 
-  public function isMethodSupported(
-    MethodReflection $methodReflection
-  ): bool {
-    return 'getAttribute' === $methodReflection->getName();
-  }
+		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+	}
+
+	public function isMethodSupported(
+		MethodReflection $methodReflection
+	): bool
+	{
+		return $methodReflection->getName() === 'getAttribute';
+	}
+
 }
