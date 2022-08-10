@@ -59,6 +59,12 @@ services:
             requestGetAttributeMapping: %typo3.requestGetAttributeMapping%
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
+        class: SaschaEgerer\PhpstanTypo3\Type\SiteDynamicReturnTypeExtension
+        arguments:
+            siteApiGetAttributeMapping: %typo3.siteApiGetAttributeMapping%
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
 parameters:
     bootstrapFiles:
         - phpstan.bootstrap.php
@@ -135,4 +141,5 @@ parametersSchema:
     typo3: structure([
         contextApiGetAspectMapping: arrayOf(string())
         requestGetAttributeMapping: arrayOf(string())
+        siteApiGetAttributeMapping: arrayOf(string())
     ])
