@@ -69,8 +69,15 @@ final class ValidatorResolverOptionsRule implements Rule
 		try {
 			$validatorClassName = $this->validatorClassNameResolver->resolve($validatorType);
 		} catch (\TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException $e) {
+			if ($validatorType instanceof ConstantStringType) {
+				$validatorClassName = $validatorType->getValue();
+				$message = sprintf('Could not create validator for "%s"', $validatorClassName);
+			} else {
+				$message = 'Could not create validator';
+			}
+
 			return [
-				RuleErrorBuilder::message($e->getMessage())->build(),
+				RuleErrorBuilder::message($message)->build(),
 			];
 		}
 

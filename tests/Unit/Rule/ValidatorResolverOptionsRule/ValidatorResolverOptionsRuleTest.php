@@ -32,7 +32,7 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 			__DIR__ . '/Fixture/CreateValidatorWithUnresolvableType.php',
 			[
 				[
-					'Validator class TYPO3\CMS\Extbase\Validation\Validator\FooValidator does not exist', 13,
+					'Could not create validator for "Foo"', 13,
 				],
 			],
 		];
