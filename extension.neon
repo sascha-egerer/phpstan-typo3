@@ -47,6 +47,12 @@ services:
         class: SaschaEgerer\PhpstanTypo3\Type\RepositoryFindAllDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
+        class: SaschaEgerer\PhpstanTypo3\Type\RequestDynamicReturnTypeExtension
+        arguments:
+            requestApiGetAttributeMapping: %typo3.requestApiGetAttributeMapping%
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
 parameters:
     bootstrapFiles:
         - phpstan.bootstrap.php
@@ -59,6 +65,9 @@ parameters:
             workspace: TYPO3\CMS\Core\Context\WorkspaceAspect
             language: TYPO3\CMS\Core\Context\LanguageAspect
             typoscript: TYPO3\CMS\Core\Context\TypoScriptAspect
+        requestApiGetAttributeMapping:
+            language: \TYPO3\CMS\Core\Site\Entity\SiteLanguage
+            site: \TYPO3\CMS\Core\Site\Entity\Site
     stubFiles:
         - stubs/DomainObjectInterface.stub
         - stubs/GeneralUtility.stub
@@ -112,4 +121,5 @@ parameters:
 parametersSchema:
     typo3: structure([
         contextApiGetAspectMapping: arrayOf(string())
+        requestApiGetAttributeMapping: arrayOf(string())
     ])
