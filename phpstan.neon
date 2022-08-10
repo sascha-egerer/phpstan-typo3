@@ -15,6 +15,9 @@ parameters:
          - '*tests/*/Fixture/*'
          - '*tests/*/Source/*'
     ignoreErrors:
+        - "#^Parameter \\#1 \\$repositoryName of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\ClassNamingUtility\\:\\:translateRepositoryNameToModelName\\(\\) expects class\\-string\\<TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\RepositoryInterface\\>, class\\-string given\\.$#"
+        - "#^Parameter \\#1 \\$repositoryName of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\ClassNamingUtility\\:\\:translateRepositoryNameToModelName\\(\\) expects class\\-string\\<TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\RepositoryInterface\\>, string given\\.$#"
+        - "#^Call to static method resolve\\(\\) on an unknown class TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\ValidatorClassNameResolver\\.$#"
         -
             message: '#^Class TYPO3\\CMS\\Core\\Context\\[a-zA-Z]* not found\.#'
             path: %currentWorkingDirectory%/src/Type/ContextDynamicReturnTypeExtension.php
