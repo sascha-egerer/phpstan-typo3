@@ -75,6 +75,9 @@ services:
             siteGetAttributeMapping: %typo3.siteGetAttributeMapping%
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
+        class: SaschaEgerer\PhpstanTypo3\Service\ValidatorClassNameResolver
+
 parameters:
     bootstrapFiles:
         - phpstan.bootstrap.php

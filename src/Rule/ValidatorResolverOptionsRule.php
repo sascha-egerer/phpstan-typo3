@@ -21,8 +21,8 @@ use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use SaschaEgerer\PhpstanTypo3\Rule\ValueObject\ValidatorOptionsConfiguration;
+use SaschaEgerer\PhpstanTypo3\Service\ValidatorClassNameResolver;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
-use TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 
 /**
@@ -34,9 +34,13 @@ final class ValidatorResolverOptionsRule implements Rule
 	/** @var InitializerExprTypeResolver */
 	private $initializerExprTypeResolver;
 
-	public function __construct(InitializerExprTypeResolver $initializerExprTypeResolver)
+	/** @var ValidatorClassNameResolver */
+	private $validatorClassNameResolver;
+
+	public function __construct(InitializerExprTypeResolver $initializerExprTypeResolver, ValidatorClassNameResolver $validatorClassNameResolver)
 	{
 		$this->initializerExprTypeResolver = $initializerExprTypeResolver;
+		$this->validatorClassNameResolver = $validatorClassNameResolver;
 	}
 
 	public function getNodeType(): string
@@ -63,7 +67,7 @@ final class ValidatorResolverOptionsRule implements Rule
 		$validatorType = $scope->getType($validatorTypeArgument->value);
 
 		try {
-			$validatorClassName = $this->extractValidatorClassName($validatorType);
+			$validatorClassName = $this->validatorClassNameResolver->resolve($validatorType);
 		} catch (\TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException $e) {
 			return [
 				RuleErrorBuilder::message($e->getMessage())->build(),
@@ -128,15 +132,6 @@ final class ValidatorResolverOptionsRule implements Rule
 		}
 
 		return $methodCall->name->toString() !== 'createValidator';
-	}
-
-	private function extractValidatorClassName(Type $type): ?string
-	{
-		if ($type instanceof ConstantStringType) {
-			return ValidatorClassNameResolver::resolve($type->getValue());
-		}
-
-		return null;
 	}
 
 	/**
