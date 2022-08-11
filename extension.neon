@@ -87,6 +87,14 @@ parameters:
             site: TYPO3\CMS\Core\Site\Entity\Site
             applicationType: TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_*
             routing: TYPO3\CMS\Core\Routing\SiteRouteResult|TYPO3\CMS\Core\Routing\PageArguments
+        siteApiGetAttributeMapping:
+            base: string
+            baseVariants: list
+            errorHandling: list
+            languages: list
+            rootPageId: int
+            routeEnhancers: array
+            websiteTitle: string
     stubFiles:
         - stubs/DomainObjectInterface.stub
         - stubs/GeneralUtility.stub
