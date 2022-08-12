@@ -52,13 +52,13 @@ parameters:
         - phpstan.bootstrap.php
     typo3:
         contextApiGetAspectMapping:
-            date: \TYPO3\CMS\Core\Context\DateTimeAspect
-            visibility: \TYPO3\CMS\Core\Context\VisibilityAspect
-            backend.user: \TYPO3\CMS\Core\Context\UserAspect
-            frontend.user: \TYPO3\CMS\Core\Context\UserAspect
-            workspace: \TYPO3\CMS\Core\Context\WorkspaceAspect
-            language: \TYPO3\CMS\Core\Context\LanguageAspect
-            typoscript: \TYPO3\CMS\Core\Context\TypoScriptAspect
+            date: TYPO3\CMS\Core\Context\DateTimeAspect
+            visibility: TYPO3\CMS\Core\Context\VisibilityAspect
+            backend.user: TYPO3\CMS\Core\Context\UserAspect
+            frontend.user: TYPO3\CMS\Core\Context\UserAspect
+            workspace: TYPO3\CMS\Core\Context\WorkspaceAspect
+            language: TYPO3\CMS\Core\Context\LanguageAspect
+            typoscript: TYPO3\CMS\Core\Context\TypoScriptAspect
     stubFiles:
         - stubs/DomainObjectInterface.stub
         - stubs/GeneralUtility.stub
