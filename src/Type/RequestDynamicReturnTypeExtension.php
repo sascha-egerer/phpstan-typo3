@@ -26,7 +26,7 @@ class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 
 	public function getClass(): string
 	{
-		return \TYPO3\CMS\Extbase\Mvc\Request::class;
+		return \Psr\Http\Message\ServerRequestInterface::class;
 	}
 
 	public function getTypeFromMethodCall(
