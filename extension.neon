@@ -66,8 +66,13 @@ parameters:
             language: TYPO3\CMS\Core\Context\LanguageAspect
             typoscript: TYPO3\CMS\Core\Context\TypoScriptAspect
         requestApiGetAttributeMapping:
-            language: \TYPO3\CMS\Core\Site\Entity\SiteLanguage
-            site: \TYPO3\CMS\Core\Site\Entity\Site
+            backend.user: TYPO3\CMS\Backend\FrontendBackendUserAuthentication
+            frontend.user: TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
+            language: TYPO3\CMS\Core\Site\Entity\SiteLanguage
+            module: TYPO3\CMS\Backend\Module\ModuleInterface
+            moduleData: TYPO3\CMS\Backend\Module\ModuleData
+            normalizedParams: TYPO3\CMS\Core\Http\NormalizedParams
+            site: TYPO3\CMS\Core\Site\Entity\Site
     stubFiles:
         - stubs/DomainObjectInterface.stub
         - stubs/GeneralUtility.stub
