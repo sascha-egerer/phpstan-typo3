@@ -10,10 +10,12 @@ use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
-use TYPO3\CMS\Core\Utility\ClassNamingUtility;
+use SaschaEgerer\PhpstanTypo3\Helpers\Typo3ClassNamingUtilityTrait;
 
 class RepositoryDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
+
+	use Typo3ClassNamingUtilityTrait;
 
 	public function getClass(): string
 	{
@@ -39,7 +41,7 @@ class RepositoryDynamicReturnTypeExtension implements DynamicMethodReturnTypeExt
 			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 		}
 
-		$modelName = ClassNamingUtility::translateRepositoryNameToModelName($variableType->getClassName());
+		$modelName = $this->translateRepositoryNameToModelName($variableType->getClassName());
 
 		return TypeCombinator::addNull(new ObjectType($modelName));
 	}

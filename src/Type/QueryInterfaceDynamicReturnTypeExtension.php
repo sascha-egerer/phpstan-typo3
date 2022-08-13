@@ -13,12 +13,14 @@ use PHPStan\Type\Generic\GenericObjectType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
-use TYPO3\CMS\Core\Utility\ClassNamingUtility;
+use SaschaEgerer\PhpstanTypo3\Helpers\Typo3ClassNamingUtilityTrait;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 class QueryInterfaceDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
+
+	use Typo3ClassNamingUtilityTrait;
 
 	public function getClass(): string
 	{
@@ -50,7 +52,7 @@ class QueryInterfaceDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 				return new ErrorType();
 			}
 
-			$modelName = ClassNamingUtility::translateRepositoryNameToModelName(
+			$modelName = $this->translateRepositoryNameToModelName(
 				$classReflection->getName()
 			);
 

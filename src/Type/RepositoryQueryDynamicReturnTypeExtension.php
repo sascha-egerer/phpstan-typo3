@@ -11,11 +11,13 @@ use PHPStan\Type\Generic\GenericObjectType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeWithClassName;
-use TYPO3\CMS\Core\Utility\ClassNamingUtility;
+use SaschaEgerer\PhpstanTypo3\Helpers\Typo3ClassNamingUtilityTrait;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 class RepositoryQueryDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
+
+	use Typo3ClassNamingUtilityTrait;
 
 	public function getClass(): string
 	{
@@ -45,7 +47,10 @@ class RepositoryQueryDynamicReturnTypeExtension implements DynamicMethodReturnTy
 				return new ErrorType();
 			}
 
-			$modelName = ClassNamingUtility::translateRepositoryNameToModelName($variableType->getClassName());
+			/** @var class-string $className */
+			$className = $variableType->getClassName();
+
+			$modelName = $this->translateRepositoryNameToModelName($className);
 
 			$modelType = [new ObjectType($modelName)];
 		}

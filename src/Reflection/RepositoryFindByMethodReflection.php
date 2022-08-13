@@ -11,11 +11,13 @@ use PHPStan\TrinaryLogic;
 use PHPStan\Type\Generic\GenericObjectType;
 use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPStan\Type\ObjectType;
-use TYPO3\CMS\Core\Utility\ClassNamingUtility;
+use SaschaEgerer\PhpstanTypo3\Helpers\Typo3ClassNamingUtilityTrait;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 class RepositoryFindByMethodReflection implements MethodReflection
 {
+
+	use Typo3ClassNamingUtilityTrait;
 
 	/** @var \PHPStan\Reflection\ClassReflection */
 	private $classReflection;
@@ -68,11 +70,13 @@ class RepositoryFindByMethodReflection implements MethodReflection
 		return lcfirst(substr($this->getName(), 6));
 	}
 
+	/**
+	 * @return class-string
+	 */
 	private function getModelName(): string
 	{
 		$className = $this->classReflection->getName();
-
-		return ClassNamingUtility::translateRepositoryNameToModelName($className);
+		return $this->translateRepositoryNameToModelName($className);
 	}
 
 	/**
