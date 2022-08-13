@@ -6,11 +6,13 @@ use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
 use PHPStan\Reflection\ReflectionProvider;
-use TYPO3\CMS\Core\Utility\ClassNamingUtility;
+use SaschaEgerer\PhpstanTypo3\Helpers\Typo3ClassNamingUtilityTrait;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class RepositoryFindMethodsClassReflectionExtension implements MethodsClassReflectionExtension
 {
+
+	use Typo3ClassNamingUtilityTrait;
 
 	/** @var ReflectionProvider $reflectionProvider */
 	private $reflectionProvider;
@@ -44,7 +46,7 @@ class RepositoryFindMethodsClassReflectionExtension implements MethodsClassRefle
 		// be methods starting with find[One]By... with custom implementations on
 		// inherited repositories
 		$className = $classReflection->getName();
-		$modelName = ClassNamingUtility::translateRepositoryNameToModelName($className);
+		$modelName = $this->translateRepositoryNameToModelName($className);
 
 		$modelReflection = $this->reflectionProvider->getClass($modelName);
 		if (!$modelReflection->hasProperty($propertyName)) {
