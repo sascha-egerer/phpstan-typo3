@@ -34,5 +34,5 @@ what type of aspect class is returned by the context API
 parameters:
     typo3:
         contextApiGetAspectMapping:
-            myCustomAspect: \FlowdGmbh\MyProject\Context\MyCustomAspect
+            myCustomAspect: FlowdGmbh\MyProject\Context\MyCustomAspect
 ```
