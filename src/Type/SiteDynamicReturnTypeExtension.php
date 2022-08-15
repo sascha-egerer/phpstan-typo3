@@ -4,11 +4,11 @@ namespace SaschaEgerer\PhpstanTypo3\Type;
 
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
+use PHPStan\PhpDoc\TypeStringResolver;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
-use SaschaEgerer\PhpstanTypo3\Helpers\TypeNamingUtility;
 
 class SiteDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -16,12 +16,16 @@ class SiteDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 	/** @var array<string, string> */
 	private $siteApiGetAttributeMapping;
 
+	/** @var TypeStringResolver */
+	private $typeStringResolver;
+
 	/**
 	 * @param array<string, string> $siteApiGetAttributeMapping
 	 */
-	public function __construct(array $siteApiGetAttributeMapping)
+	public function __construct(array $siteApiGetAttributeMapping, TypeStringResolver $typeStringResolver)
 	{
 		$this->siteApiGetAttributeMapping = $siteApiGetAttributeMapping;
+		$this->typeStringResolver = $typeStringResolver;
 	}
 
 	public function getClass(): string
@@ -42,11 +46,7 @@ class SiteDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 		}
 
 		if (isset($this->siteApiGetAttributeMapping[$argument->value->value])) {
-
-			$phpType = TypeNamingUtility::translateTypeNameToType($this->siteApiGetAttributeMapping[$argument->value->value]);
-			if ($phpType !== null) {
-				return $phpType;
-			}
+			return $this->typeStringResolver->resolve($this->siteApiGetAttributeMapping[$argument->value->value]);
 		}
 
 		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
