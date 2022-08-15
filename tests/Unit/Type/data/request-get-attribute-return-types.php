@@ -17,6 +17,7 @@ class MyRequest
 		assertType(SiteLanguage::class, $request->getAttribute('language'));
 		assertType(Site::class, $request->getAttribute('site'));
 		assertType(NormalizedParams::class, $request->getAttribute('normalizedParams'));
+		assertType('1|2|4|8|16', $request->getAttribute('applicationType'));
 		assertType('FlowdGmbh\\MyProject\\Http\\MyAttribute', $request->getAttribute('myCustomAttribute'));
 		assertType('FlowdGmbh\\MyProject\\Http\\MyAttribute|null', $request->getAttribute('myCustomNullableAttribute'));
 	}

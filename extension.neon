@@ -79,6 +79,7 @@ parameters:
             moduleData: TYPO3\CMS\Backend\Module\ModuleData
             normalizedParams: TYPO3\CMS\Core\Http\NormalizedParams
             site: TYPO3\CMS\Core\Site\Entity\Site
+            applicationType: TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_*
     stubFiles:
         - stubs/DomainObjectInterface.stub
         - stubs/GeneralUtility.stub
