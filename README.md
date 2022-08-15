@@ -8,7 +8,7 @@ TYPO3 CMS class reflection extension for PHPStan &amp; framework-specific rules
 
 To use this extension, require it in [Composer](https://getcomposer.org/):
 
-```
+```Shell
 composer require --dev saschaegerer/phpstan-typo3
 ```
 
@@ -19,10 +19,11 @@ If you also install [phpstan/extension-installer](https://github.com/phpstan/ext
 
 If you don't want to use `phpstan/extension-installer`, put this into your phpstan.neon config:
 
-```
+```NEON
 includes:
     - vendor/saschaegerer/phpstan-typo3/extension.neon
 ```
+
 </details>
 
 ### Custom Context API Aspects
@@ -30,14 +31,14 @@ includes:
 If you use custom aspects for the TYPO3 Context API you can add a mapping so PHPStan knows
 what type of aspect class is returned by the context API
 
-```
+```NEON
 parameters:
     typo3:
         contextApiGetAspectMapping:
             myCustomAspect: FlowdGmbh\MyProject\Context\MyCustomAspect
 ```
 
-```
+```PHP
 // PHPStan will now know that $myCustomAspect is of type FlowdGmbh\MyProject\Context\MyCustomAspect
 $myCustomAspect = GeneralUtility::makeInstance(Context::class)->getAspect('myCustomAspect');
 ```
@@ -47,7 +48,7 @@ $myCustomAspect = GeneralUtility::makeInstance(Context::class)->getAspect('myCus
 If you use custom PSR-7 request attribute you can add a mapping so PHPStan knows
 what type of class is returned by Request::getAttribute()
 
-```
+```NEON
 parameters:
     typo3:
         requestGetAttributeMapping:
@@ -55,7 +56,7 @@ parameters:
             myNullableAttribute: FlowdGmbh\MyProject\Http\MyAttribute|null
 ```
 
-```
+```PHP
 // PHPStan will now know that $myAttribute is of type FlowdGmbh\MyProject\Http\MyAttribute
 $myAttribute = $request->getAttribute('myAttribute');
 ```
@@ -65,7 +66,7 @@ $myAttribute = $request->getAttribute('myAttribute');
 If you use custom attributes for the TYPO3 Site API you can add a mapping so PHPStan knows
 what type is returned by the site API
 
-```
+```NEON
 parameters:
     typo3:
         siteGetAttributeMapping:
@@ -74,7 +75,7 @@ parameters:
             myStringAttribute: string
 ```
 
-```
+```PHP
 $site = $this->request->getAttribute('site');
 
 // PHPStan will now know that $myArrayAttribute is of type array<mixed, mixed>
