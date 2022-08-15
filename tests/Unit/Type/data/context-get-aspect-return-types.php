@@ -18,15 +18,15 @@ class MyContext
 
 	public function getAspectTests(Context $context): void
 	{
+		if (class_exists(TypoScriptAspect::class)) {
+			assertType(TypoScriptAspect::class, $context->getAspect('typoscript'));
+		}
 		assertType(DateTimeAspect::class, $context->getAspect('date'));
 		assertType(VisibilityAspect::class, $context->getAspect('visibility'));
 		assertType(UserAspect::class, $context->getAspect('backend.user'));
 		assertType(UserAspect::class, $context->getAspect('frontend.user'));
 		assertType(WorkspaceAspect::class, $context->getAspect('workspace'));
 		assertType(LanguageAspect::class, $context->getAspect('language'));
-		if (class_exists(TypoScriptAspect::class)) {
-			assertType(TypoScriptAspect::class, $context->getAspect('typoscript'));
-		}
 	}
 
 }
