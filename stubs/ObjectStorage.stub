@@ -2,10 +2,61 @@
 namespace TYPO3\CMS\Extbase\Persistence;
 
 /**
- * @template T
- * @implements \ArrayAccess<string, T>
- * @implements \Iterator<string, T>
+ * @template TEntity
+ * @implements \ArrayAccess<int, TEntity>
+ * @implements \Iterator<int, TEntity>
+ * @phpstan-type ObjectStorageInternal array{obj: TEntity, inf: mixed}
  */
-class ObjectStorage implements \ArrayAccess, \Iterator
+class ObjectStorage implements \Iterator, \ArrayAccess
 {
+    /**
+     * @var array<string, ObjectStorageInternal>
+     */
+    protected $storage;
+
+    /**
+     * @param TEntity $value
+     * @param mixed $information
+     */
+    public function offsetSet($value, $information);
+
+    /**
+     * @param TEntity|int $value
+     * @return bool
+     */
+    public function offsetExists($value);
+
+    /**
+     * @param TEntity|int $value
+     */
+    public function offsetUnset($value);
+
+    /**
+     * @param TEntity|int $value
+     * @return ($value is int ? TEntity|null : mixed)
+     */
+    public function offsetGet($value);
+
+    /**
+     * This is different from the SplObjectStorage as the key in this implementation is the object hash (string).
+     * @phpstan-ignore-next-line See https://forge.typo3.org/issues/98146
+     * @return string|null
+     */
+    public function key();
+
+    /**
+     * @return array<TEntity>
+     */
+    public function toArray();
+
+    /**
+     * @return array<TEntity>
+     */
+    public function getArray();
+
+    /**
+     * @param TEntity $object
+     * @return bool
+     */
+    public function isRelationDirty($object);
 }
