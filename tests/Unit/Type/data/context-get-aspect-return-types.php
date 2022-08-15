@@ -12,6 +12,7 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 
 use function PHPStan\Testing\assertType;
 
+// phpcs:ignore Squiz.Classes.ClassFileName.NoMatch
 class MyContext
 {
 
