@@ -27,7 +27,7 @@ includes:
 
 ### Custom Context API Aspects
 
-If you use custom aspects for the TYPO3 Context API you can now add a mapping so PHPStan knows
+If you use custom aspects for the TYPO3 Context API you can add a mapping so PHPStan knows
 what type of aspect class is returned by the context API
 
 ```
@@ -35,4 +35,26 @@ parameters:
     typo3:
         contextApiGetAspectMapping:
             myCustomAspect: FlowdGmbh\MyProject\Context\MyCustomAspect
+```
+
+```
+// PHPStan will now know that $myCustomAspect is of type FlowdGmbh\MyProject\Context\MyCustomAspect
+$myCustomAspect = GeneralUtility::makeInstance(Context::class)->getAspect('myCustomAspect');
+```
+
+### Custom Request Attribute
+
+If you use custom PSR-7 request attribute you can add a mapping so PHPStan knows
+what type of class is returned by Request::getAttribute()
+
+```
+parameters:
+    typo3:
+        requestApiGetAttributeMapping:
+            myAttribute: FlowdGmbh\MyProject\Http\MyAttribute
+```
+
+```
+// PHPStan will now know that $myAttribute is of type FlowdGmbh\MyProject\Http\MyAttribute
+$myAttribute = $request->getAttribute('myAttribute');
 ```
