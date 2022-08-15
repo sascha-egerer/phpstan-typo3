@@ -4,7 +4,7 @@ namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Type;
 
 use PHPStan\Testing\TypeInferenceTestCase;
 
-class ContextDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
+class RequestGetAttributeDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
 {
 
 	/**
@@ -13,7 +13,7 @@ class ContextDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
 	public function dataFileAsserts(): iterable
 	{
 		// path to a file with actual asserts of expected types:
-		yield from $this->gatherAssertTypes(__DIR__ . '/data/context-get-aspect-return-types.php');
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/request-get-attribute-return-types.php');
 	}
 
 	/**
@@ -35,7 +35,7 @@ class ContextDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
 	{
 		return [
 			__DIR__ . '/../../../extension.neon',
-			__DIR__ . '/data/context-get-aspect-return-types.neon',
+			__DIR__ . '/data/request-get-attribute-return-types.neon',
 		];
 	}
 

@@ -1,0 +1,5 @@
+parameters:
+    typo3:
+        requestGetAttributeMapping:
+            myCustomAttribute: FlowdGmbh\MyProject\Http\MyAttribute
+            myCustomNullableAttribute: FlowdGmbh\MyProject\Http\MyAttribute|null

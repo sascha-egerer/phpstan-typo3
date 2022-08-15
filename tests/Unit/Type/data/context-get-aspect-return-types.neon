@@ -1,0 +1,4 @@
+parameters:
+    typo3:
+        contextApiGetAspectMapping:
+            myCustomAspect: Foo\Bar|TYPO3\CMS\Core\Context\DateTimeAspect
