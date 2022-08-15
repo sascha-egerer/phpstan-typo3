@@ -59,3 +59,30 @@ parameters:
 // PHPStan will now know that $myAttribute is of type FlowdGmbh\MyProject\Http\MyAttribute
 $myAttribute = $request->getAttribute('myAttribute');
 ```
+
+### Custom Site Attribute
+
+If you use custom attributes for the TYPO3 Site API you can add a mapping so PHPStan knows
+what type is returned by the site API
+
+```
+parameters:
+    typo3:
+        siteApiGetAttributeMapping:
+            myArrayAttribute: array
+            myIntAttribute: int
+            myStringAttribute: string
+```
+
+```
+$site = $this->request->getAttribute('site');
+
+// PHPStan will now know that $myArrayAttribute is of type array<mixed, mixed>
+$myArrayAttribute = $site->getAttribute('myArrayAttribute');
+
+// PHPStan will now know that $myIntAttribute is of type int
+$myIntAttribute = $site->getAttribute('myIntAttribute');
+
+// PHPStan will now know that $myStringAttribute is of type string
+$myStringAttribute = $site->getAttribute('myStringAttribute');
+```
