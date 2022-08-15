@@ -12,6 +12,3 @@ parameters:
         -
             message: '#^Class TYPO3\\CMS\\Core\\Context\\[a-zA-Z]* not found\.#'
             path: %currentWorkingDirectory%/src/Type/ContextDynamicReturnTypeExtension.php
-        -
-            message: '#^Return type \(string\|null\) of method TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage\:\:key\(\) should be compatible with return type \(int\) of method Iterator\<int,TEntity\>\:\:key\(\)$#'
-            path: stubs/ObjectStorage.stub

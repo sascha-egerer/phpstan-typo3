@@ -39,7 +39,7 @@ class ObjectStorage implements \Iterator, \ArrayAccess
 
     /**
      * This is different from the SplObjectStorage as the key in this implementation is the object hash (string).
-     *
+     * @phpstan-ignore-next-line See https://forge.typo3.org/issues/98146
      * @return string|null
      */
     public function key();
