@@ -9,6 +9,7 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
 
 class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -46,7 +47,7 @@ class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 		}
 
 		if (isset($this->requestGetAttributeMapping[$argument->value->value])) {
-			return $this->typeStringResolver->resolve($this->requestGetAttributeMapping[$argument->value->value]);
+			return TypeCombinator::addNull($this->typeStringResolver->resolve($this->requestGetAttributeMapping[$argument->value->value]));
 		}
 
 		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();

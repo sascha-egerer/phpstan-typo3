@@ -14,12 +14,12 @@ class MyRequest
 
 	public function getAttributeTests(ServerRequestInterface $request): void
 	{
-		assertType(SiteLanguage::class, $request->getAttribute('language'));
-		assertType(Site::class, $request->getAttribute('site'));
-		assertType(NormalizedParams::class, $request->getAttribute('normalizedParams'));
-		assertType('1|2|4|8|16', $request->getAttribute('applicationType'));
-		assertType('FlowdGmbh\\MyProject\\Http\\MyAttribute', $request->getAttribute('myCustomAttribute'));
-		assertType('FlowdGmbh\\MyProject\\Http\\MyAttribute|null', $request->getAttribute('myCustomNullableAttribute'));
+		assertType(SiteLanguage::class . '|null', $request->getAttribute('language'));
+		assertType(Site::class . '|null', $request->getAttribute('site'));
+		assertType(NormalizedParams::class . '|null', $request->getAttribute('normalizedParams'));
+		assertType('1|2|4|8|16|null', $request->getAttribute('applicationType'));
+		assertType('FlowdGmbh\\MyProject\\Http\\MyAttribute|null', $request->getAttribute('myCustomAttribute'));
+		assertType('FlowdGmbh\\MyProject\\Http\\MyAttribute|int|null', $request->getAttribute('myCustomThatCanBeIntAttribute'));
 	}
 
 }
