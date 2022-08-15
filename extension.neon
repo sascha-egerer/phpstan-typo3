@@ -80,6 +80,7 @@ parameters:
             normalizedParams: TYPO3\CMS\Core\Http\NormalizedParams
             site: TYPO3\CMS\Core\Site\Entity\Site
             applicationType: TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_*
+            routing: TYPO3\CMS\Core\Routing\SiteRouteResult|TYPO3\CMS\Core\Routing\PageArguments
     stubFiles:
         - stubs/DomainObjectInterface.stub
         - stubs/GeneralUtility.stub

@@ -14,6 +14,9 @@ class MyRequest
 
 	public function getAttributeTests(ServerRequestInterface $request): void
 	{
+		if (class_exists(\TYPO3\CMS\Core\Routing\SiteRouteResult::class) && class_exists(\TYPO3\CMS\Core\Routing\PageArguments::class)) {
+			assertType(\TYPO3\CMS\Core\Routing\PageArguments::class . '|' . \TYPO3\CMS\Core\Routing\SiteRouteResult::class . '|null', $request->getAttribute('routing'));
+		}
 		assertType(SiteLanguage::class . '|null', $request->getAttribute('language'));
 		assertType(Site::class . '|null', $request->getAttribute('site'));
 		assertType(NormalizedParams::class . '|null', $request->getAttribute('normalizedParams'));
