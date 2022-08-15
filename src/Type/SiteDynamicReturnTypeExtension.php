@@ -14,17 +14,17 @@ class SiteDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
 	/** @var array<string, string> */
-	private $siteApiGetAttributeMapping;
+	private $siteGetAttributeMapping;
 
 	/** @var TypeStringResolver */
 	private $typeStringResolver;
 
 	/**
-	 * @param array<string, string> $siteApiGetAttributeMapping
+	 * @param array<string, string> $siteGetAttributeMapping
 	 */
-	public function __construct(array $siteApiGetAttributeMapping, TypeStringResolver $typeStringResolver)
+	public function __construct(array $siteGetAttributeMapping, TypeStringResolver $typeStringResolver)
 	{
-		$this->siteApiGetAttributeMapping = $siteApiGetAttributeMapping;
+		$this->siteGetAttributeMapping = $siteGetAttributeMapping;
 		$this->typeStringResolver = $typeStringResolver;
 	}
 
@@ -45,8 +45,8 @@ class SiteDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 		}
 
-		if (isset($this->siteApiGetAttributeMapping[$argument->value->value])) {
-			return $this->typeStringResolver->resolve($this->siteApiGetAttributeMapping[$argument->value->value]);
+		if (isset($this->siteGetAttributeMapping[$argument->value->value])) {
+			return $this->typeStringResolver->resolve($this->siteGetAttributeMapping[$argument->value->value]);
 		}
 
 		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();

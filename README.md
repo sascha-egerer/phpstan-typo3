@@ -68,7 +68,7 @@ what type is returned by the site API
 ```
 parameters:
     typo3:
-        siteApiGetAttributeMapping:
+        siteGetAttributeMapping:
             myArrayAttribute: array
             myIntAttribute: int
             myStringAttribute: string

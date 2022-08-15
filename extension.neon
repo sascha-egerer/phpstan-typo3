@@ -62,7 +62,7 @@ services:
     -
         class: SaschaEgerer\PhpstanTypo3\Type\SiteDynamicReturnTypeExtension
         arguments:
-            siteApiGetAttributeMapping: %typo3.siteApiGetAttributeMapping%
+            siteGetAttributeMapping: %typo3.siteGetAttributeMapping%
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
 parameters:
@@ -87,7 +87,7 @@ parameters:
             site: TYPO3\CMS\Core\Site\Entity\Site
             applicationType: TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_*
             routing: TYPO3\CMS\Core\Routing\SiteRouteResult|TYPO3\CMS\Core\Routing\PageArguments
-        siteApiGetAttributeMapping:
+        siteGetAttributeMapping:
             base: string
             baseVariants: list
             errorHandling: list
@@ -149,5 +149,5 @@ parametersSchema:
     typo3: structure([
         contextApiGetAspectMapping: arrayOf(string())
         requestGetAttributeMapping: arrayOf(string())
-        siteApiGetAttributeMapping: arrayOf(string())
+        siteGetAttributeMapping: arrayOf(string())
     ])
