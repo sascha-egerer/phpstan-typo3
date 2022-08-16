@@ -3,6 +3,7 @@ includes:
     - extension.neon
     - tests/Unit/Type/data/context-get-aspect-return-types.neon
     - tests/Unit/Type/data/request-get-attribute-return-types.neon
+    - tests/Unit/Type/data/site-get-attribute-return-types.neon
 
 parameters:
     level: 8
