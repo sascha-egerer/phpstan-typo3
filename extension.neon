@@ -46,6 +46,12 @@ services:
         tags:
             - phpstan.rules.rule
     -
+        class: SaschaEgerer\PhpstanTypo3\Rule\SiteAttributeValidationRule
+        arguments:
+            siteGetAttributeMapping: %typo3.siteGetAttributeMapping%
+        tags:
+            - phpstan.rules.rule
+    -
         class: SaschaEgerer\PhpstanTypo3\Type\RepositoryQueryDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
