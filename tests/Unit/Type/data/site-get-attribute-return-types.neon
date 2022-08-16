@@ -1,0 +1,5 @@
+parameters:
+    typo3:
+        siteGetAttributeMapping:
+            myCustomIntAttribute: int
+            myCustomStringAttribute: string
