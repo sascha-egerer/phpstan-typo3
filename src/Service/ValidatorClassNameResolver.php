@@ -25,11 +25,11 @@ final class ValidatorClassNameResolver
 			return null;
 		}
 
-		if ($this->reflectionProvider->hasClass('TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver')) {
+		if ($this->reflectionProvider->hasClass(\TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver::class)) {
 			return \TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver::resolve($type->getValue());
 		}
 
-		if ( ! $this->reflectionProvider->hasClass('TYPO3\CMS\Extbase\Validation\ValidatorResolver')) {
+		if ( ! $this->reflectionProvider->hasClass(ValidatorResolver::class)) {
 			return null;
 		}
 
