@@ -40,6 +40,12 @@ services:
         tags:
             - phpstan.rules.rule
     -
+        class: SaschaEgerer\PhpstanTypo3\Rule\RequestAttributeValidationRule
+        arguments:
+            requestGetAttributeMapping: %typo3.requestGetAttributeMapping%
+        tags:
+            - phpstan.rules.rule
+    -
         class: SaschaEgerer\PhpstanTypo3\Type\RepositoryQueryDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
@@ -50,7 +56,7 @@ services:
     -
         class: SaschaEgerer\PhpstanTypo3\Type\RequestDynamicReturnTypeExtension
         arguments:
-            requestApiGetAttributeMapping: %typo3.requestApiGetAttributeMapping%
+            requestGetAttributeMapping: %typo3.requestGetAttributeMapping%
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
 parameters:
@@ -65,7 +71,7 @@ parameters:
             workspace: TYPO3\CMS\Core\Context\WorkspaceAspect
             language: TYPO3\CMS\Core\Context\LanguageAspect
             typoscript: TYPO3\CMS\Core\Context\TypoScriptAspect
-        requestApiGetAttributeMapping:
+        requestGetAttributeMapping:
             backend.user: TYPO3\CMS\Backend\FrontendBackendUserAuthentication
             frontend.user: TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
             language: TYPO3\CMS\Core\Site\Entity\SiteLanguage
@@ -73,6 +79,8 @@ parameters:
             moduleData: TYPO3\CMS\Backend\Module\ModuleData
             normalizedParams: TYPO3\CMS\Core\Http\NormalizedParams
             site: TYPO3\CMS\Core\Site\Entity\Site
+            applicationType: TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_*
+            routing: TYPO3\CMS\Core\Routing\SiteRouteResult|TYPO3\CMS\Core\Routing\PageArguments
     stubFiles:
         - stubs/DomainObjectInterface.stub
         - stubs/GeneralUtility.stub
@@ -126,5 +134,5 @@ parameters:
 parametersSchema:
     typo3: structure([
         contextApiGetAspectMapping: arrayOf(string())
-        requestApiGetAttributeMapping: arrayOf(string())
+        requestGetAttributeMapping: arrayOf(string())
     ])

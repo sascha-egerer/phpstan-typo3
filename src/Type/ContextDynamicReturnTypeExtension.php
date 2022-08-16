@@ -4,10 +4,10 @@ namespace SaschaEgerer\PhpstanTypo3\Type;
 
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
+use PHPStan\PhpDoc\TypeStringResolver;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
-use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 
 class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -16,12 +16,16 @@ class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 	/** @var array<string, string> */
 	private $contextApiGetAspectMapping;
 
+	/** @var TypeStringResolver */
+	private $typeStringResolver;
+
 	/**
 	 * @param array<string, string> $contextApiGetAspectMapping
 	 */
-	public function __construct(array $contextApiGetAspectMapping)
+	public function __construct(array $contextApiGetAspectMapping, TypeStringResolver $typeStringResolver)
 	{
 		$this->contextApiGetAspectMapping = $contextApiGetAspectMapping;
+		$this->typeStringResolver = $typeStringResolver;
 	}
 
 	public function getClass(): string
@@ -49,7 +53,7 @@ class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 		}
 
 		if (isset($this->contextApiGetAspectMapping[$argument->value->value])) {
-			return new ObjectType($this->contextApiGetAspectMapping[$argument->value->value]);
+			return $this->typeStringResolver->resolve($this->contextApiGetAspectMapping[$argument->value->value]);
 		}
 
 		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();

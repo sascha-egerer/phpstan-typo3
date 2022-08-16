@@ -27,6 +27,7 @@ class MyContext
 		assertType(UserAspect::class, $context->getAspect('frontend.user'));
 		assertType(WorkspaceAspect::class, $context->getAspect('workspace'));
 		assertType(LanguageAspect::class, $context->getAspect('language'));
+		assertType('Foo\Bar|TYPO3\CMS\Core\Context\DateTimeAspect', $context->getAspect('myCustomAspect'));
 	}
 
 }

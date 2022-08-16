@@ -4,24 +4,29 @@ namespace SaschaEgerer\PhpstanTypo3\Type;
 
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
+use PHPStan\PhpDoc\TypeStringResolver;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
-use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
 
 class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
 	/** @var array<string, string> */
-	private $requestApiGetAttributeMapping;
+	private $requestGetAttributeMapping;
+
+	/** @var TypeStringResolver */
+	private $typeStringResolver;
 
 	/**
-	 * @param array<string, string> $requestApiGetAttributeMapping
+	 * @param array<string, string> $requestGetAttributeMapping
 	 */
-	public function __construct(array $requestApiGetAttributeMapping)
+	public function __construct(array $requestGetAttributeMapping, TypeStringResolver $typeStringResolver)
 	{
-		$this->requestApiGetAttributeMapping = $requestApiGetAttributeMapping;
+		$this->requestGetAttributeMapping = $requestGetAttributeMapping;
+		$this->typeStringResolver = $typeStringResolver;
 	}
 
 	public function getClass(): string
@@ -41,8 +46,8 @@ class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 		}
 
-		if (isset($this->requestApiGetAttributeMapping[$argument->value->value])) {
-			return new ObjectType($this->requestApiGetAttributeMapping[$argument->value->value]);
+		if (isset($this->requestGetAttributeMapping[$argument->value->value])) {
+			return TypeCombinator::addNull($this->typeStringResolver->resolve($this->requestGetAttributeMapping[$argument->value->value]));
 		}
 
 		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();

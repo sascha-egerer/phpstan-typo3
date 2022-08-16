@@ -50,8 +50,9 @@ what type of class is returned by Request::getAttribute()
 ```
 parameters:
     typo3:
-        requestApiGetAttributeMapping:
+        requestGetAttributeMapping:
             myAttribute: FlowdGmbh\MyProject\Http\MyAttribute
+            myNullableAttribute: FlowdGmbh\MyProject\Http\MyAttribute|null
 ```
 
 ```
