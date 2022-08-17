@@ -46,6 +46,12 @@ services:
         tags:
             - phpstan.rules.rule
     -
+        class: SaschaEgerer\PhpstanTypo3\Rule\SiteAttributeValidationRule
+        arguments:
+            siteGetAttributeMapping: %typo3.siteGetAttributeMapping%
+        tags:
+            - phpstan.rules.rule
+    -
         class: SaschaEgerer\PhpstanTypo3\Type\RepositoryQueryDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
@@ -57,6 +63,12 @@ services:
         class: SaschaEgerer\PhpstanTypo3\Type\RequestDynamicReturnTypeExtension
         arguments:
             requestGetAttributeMapping: %typo3.requestGetAttributeMapping%
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
+        class: SaschaEgerer\PhpstanTypo3\Type\SiteDynamicReturnTypeExtension
+        arguments:
+            siteGetAttributeMapping: %typo3.siteGetAttributeMapping%
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
 parameters:
@@ -81,6 +93,14 @@ parameters:
             site: TYPO3\CMS\Core\Site\Entity\Site
             applicationType: TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_*
             routing: TYPO3\CMS\Core\Routing\SiteRouteResult|TYPO3\CMS\Core\Routing\PageArguments
+        siteGetAttributeMapping:
+            base: string
+            baseVariants: list
+            errorHandling: list
+            languages: list
+            rootPageId: int
+            routeEnhancers: array
+            websiteTitle: string
     stubFiles:
         - stubs/DomainObjectInterface.stub
         - stubs/GeneralUtility.stub
@@ -135,4 +155,5 @@ parametersSchema:
     typo3: structure([
         contextApiGetAspectMapping: arrayOf(string())
         requestGetAttributeMapping: arrayOf(string())
+        siteGetAttributeMapping: arrayOf(string())
     ])
