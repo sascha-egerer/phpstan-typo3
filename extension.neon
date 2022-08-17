@@ -8,6 +8,10 @@ services:
         tags:
             - phpstan.broker.methodsClassReflectionExtension
     -
+        class: SaschaEgerer\PhpstanTypo3\Type\FunctionalTestGetDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
         class: SaschaEgerer\PhpstanTypo3\Type\ObjectManagerDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
