@@ -2,7 +2,6 @@
 
 namespace SaschaEgerer\PhpstanTypo3\Service;
 
-use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\Type;
 use ReflectionMethod;
@@ -11,25 +10,17 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 final class ValidatorClassNameResolver
 {
 
-	/** @var ReflectionProvider */
-	private $reflectionProvider;
-
-	public function __construct(ReflectionProvider $reflectionProvider)
-	{
-		$this->reflectionProvider = $reflectionProvider;
-	}
-
 	public function resolve(Type $type): ?string
 	{
 		if ( ! $type instanceof ConstantStringType) {
 			return null;
 		}
 
-		if ($this->reflectionProvider->hasClass(\TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver::class)) {
+		if (class_exists(\TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver::class)) {
 			return \TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver::resolve($type->getValue());
 		}
 
-		if ( ! $this->reflectionProvider->hasClass(ValidatorResolver::class)) {
+		if (!class_exists(ValidatorResolver::class)) {
 			return null;
 		}
 
