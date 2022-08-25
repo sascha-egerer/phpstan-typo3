@@ -52,6 +52,10 @@ services:
         tags:
             - phpstan.rules.rule
     -
+        class: SaschaEgerer\PhpstanTypo3\Rule\ValidatorResolverOptionsRule
+        tags:
+            - phpstan.rules.rule
+    -
         class: SaschaEgerer\PhpstanTypo3\Type\RepositoryQueryDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
@@ -71,6 +75,9 @@ services:
             siteGetAttributeMapping: %typo3.siteGetAttributeMapping%
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
+        class: SaschaEgerer\PhpstanTypo3\Service\ValidatorClassNameResolver
+
 parameters:
     bootstrapFiles:
         - phpstan.bootstrap.php

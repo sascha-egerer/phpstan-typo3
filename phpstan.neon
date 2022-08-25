@@ -11,7 +11,14 @@ parameters:
          - src
          - tests
     reportUnmatchedIgnoredErrors: false
+    excludePaths:
+         - '*tests/*/Fixture/*'
+         - '*tests/*/Source/*'
     ignoreErrors:
         -
             message: '#^Class TYPO3\\CMS\\Core\\Context\\[a-zA-Z]* not found\.#'
-            path: %currentWorkingDirectory%/src/Type/ContextDynamicReturnTypeExtension.php
+            path: src/Type/ContextDynamicReturnTypeExtension.php
+        -
+            message: "#^Calling PHPStan\\\\Reflection\\\\InitializerExprTypeResolver\\:\\:getClassConstFetchType\\(\\) is not covered by backward compatibility promise\\. The method might change in a minor PHPStan version\\.$#"
+            count: 1
+            path: src/Rule/ValidatorResolverOptionsRule.php

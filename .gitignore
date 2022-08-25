@@ -5,3 +5,4 @@
 /index.php
 /public
 /var
+.phpunit.result.cache
