@@ -12,13 +12,30 @@ jobs:
       fail-fast: false
       matrix:
         php-version:
-          - "7.3"
           - "7.4"
           - "8.0"
           - "8.1"
+        typo3-version:
+          - "^9.5"
+          - "^10.4"
+          - "^11.5"
+          - "^12.0"
         composer-flags:
           - ""
           - " --prefer-lowest"
+        exclude:
+          - php-version: "8.0"
+            typo3-version: "^9.5"
+          - php-version: "8.1"
+            typo3-version: "^9.5"
+          - php-version: "8.0"
+            typo3-version: "^10.4"
+          - php-version: "8.1"
+            typo3-version: "^10.4"
+          - php-version: "7.4"
+            typo3-version: "^12.0"
+          - php-version: "8.0"
+            typo3-version: "^12.0"
 
     steps:
       - name: "Checkout"
@@ -32,6 +49,9 @@ jobs:
 
       - name: "Install dependencies"
         run: "composer update --no-interaction --no-progress ${{ matrix.composer-flags }}"
+
+      - name: "Install specific typo3 version"
+        run: "composer update --no-interaction --no-progress --with typo3/cms-core:${{ matrix.typo3-version }}"
 
       - name: "Tests"
         run: |
