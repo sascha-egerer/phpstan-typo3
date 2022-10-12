@@ -9,8 +9,8 @@
         "php": "^7.2 || ^8.0",
         "phpstan/phpstan": "^1.8",
         "nikic/php-parser": ">= 4.13",
-        "typo3/cms-core": "^9.5 || ^10.4 || ^11.2",
-        "typo3/cms-extbase": "^9.5 || ^10.4 || ^11.2"
+        "typo3/cms-core": "^9.5 || ^10.4 || ^11.5",
+        "typo3/cms-extbase": "^9.5 || ^10.4 || ^11.5"
     },
     "require-dev": {
         "consistence-community/coding-standard": "^3.10",
