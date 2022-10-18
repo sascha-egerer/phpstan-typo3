@@ -11,19 +11,24 @@ use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 
+/**
+ * @deprecated This class will be dropped once support for TYPO3 <= 10 is dropped.
+ */
 class ObjectManagerDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
 	public function getClass(): string
 	{
-		return \TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class;
+		return interface_exists(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class)
+			? \TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class : '';
 	}
 
 	public function isMethodSupported(
 		MethodReflection $methodReflection
 	): bool
 	{
-		return $methodReflection->getName() === 'get';
+		return interface_exists(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class)
+			&& $methodReflection->getName() === 'get';
 	}
 
 	public function getTypeFromMethodCall(
