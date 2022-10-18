@@ -77,6 +77,10 @@ services:
             - phpstan.broker.dynamicMethodReturnTypeExtension
     -
         class: SaschaEgerer\PhpstanTypo3\Service\ValidatorClassNameResolver
+    -
+        class: SaschaEgerer\PhpstanTypo3\Type\PropertyMapperReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
 
 parameters:
     bootstrapFiles:
