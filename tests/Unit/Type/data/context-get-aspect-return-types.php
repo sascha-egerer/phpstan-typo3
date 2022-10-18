@@ -18,9 +18,7 @@ class MyContext
 
 	public function getAspectTests(Context $context): void
 	{
-		if (class_exists(TypoScriptAspect::class)) {
-			assertType(TypoScriptAspect::class, $context->getAspect('typoscript'));
-		}
+		assertType(TypoScriptAspect::class, $context->getAspect('typoscript'));
 		assertType(DateTimeAspect::class, $context->getAspect('date'));
 		assertType(VisibilityAspect::class, $context->getAspect('visibility'));
 		assertType(UserAspect::class, $context->getAspect('backend.user'));
