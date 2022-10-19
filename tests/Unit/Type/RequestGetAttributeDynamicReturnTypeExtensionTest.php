@@ -18,6 +18,7 @@ class RequestGetAttributeDynamicReturnTypeExtensionTest extends TypeInferenceTes
 
 	/**
 	 * @dataProvider dataFileAsserts
+	 *
 	 * @param string $assertType
 	 * @param string $file
 	 * @param mixed ...$args

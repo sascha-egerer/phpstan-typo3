@@ -14,6 +14,7 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 
 	/**
 	 * @dataProvider provideDataWithErrors()
+	 *
 	 * @param list<array{0: string, 1: int, 2?: string}> $expectedErrorMessagesWithLines
 	 */
 	public function testRuleWithErrors(string $filePath, array $expectedErrorMessagesWithLines): void
@@ -32,7 +33,8 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 			__DIR__ . '/Fixture/CreateValidatorWithUnresolvableType.php',
 			[
 				[
-					'Could not create validator for "Foo"', 13,
+					'Could not create validator for "Foo"',
+					13,
 				],
 			],
 		];
@@ -41,10 +43,12 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 			__DIR__ . '/Fixture/CreateValidatorWithMissingRequiredOption.php',
 			[
 				[
-					'Required validation option not set: regularExpression', 14,
+					'Required validation option not set: regularExpression',
+					14,
 				],
 				[
-					'Required validation option not set: regularExpression', 19,
+					'Required validation option not set: regularExpression',
+					19,
 				],
 			],
 		];
@@ -53,13 +57,16 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 			__DIR__ . '/Fixture/CreateValidatorWithNonExistingOption.php',
 			[
 				[
-					'Unsupported validation option(s) found: non-existing-option', 16,
+					'Unsupported validation option(s) found: non-existing-option',
+					16,
 				],
 				[
-					'Unsupported validation option(s) found: foo', 24,
+					'Unsupported validation option(s) found: foo',
+					24,
 				],
 				[
-					'Unsupported validation option(s) found: minmum', 29,
+					'Unsupported validation option(s) found: minmum',
+					29,
 				],
 			],
 		];

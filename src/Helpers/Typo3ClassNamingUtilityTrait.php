@@ -15,6 +15,7 @@ trait Typo3ClassNamingUtilityTrait
 
 	/**
 	 * @param class-string $repositoryClassName
+	 *
 	 * @return class-string
 	 */
 	protected function translateRepositoryNameToModelName(string $repositoryClassName): string

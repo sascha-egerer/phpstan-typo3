@@ -37,7 +37,10 @@ final class ValidatorResolverOptionsRule implements Rule
 	/** @var ValidatorClassNameResolver */
 	private $validatorClassNameResolver;
 
-	public function __construct(InitializerExprTypeResolver $initializerExprTypeResolver, ValidatorClassNameResolver $validatorClassNameResolver)
+	public function __construct(
+		InitializerExprTypeResolver $initializerExprTypeResolver,
+		ValidatorClassNameResolver $validatorClassNameResolver
+	)
 	{
 		$this->initializerExprTypeResolver = $initializerExprTypeResolver;
 		$this->validatorClassNameResolver = $validatorClassNameResolver;
@@ -88,7 +91,7 @@ final class ValidatorResolverOptionsRule implements Rule
 		$validatorObjectType = new ObjectType($validatorClassName);
 		$validatorClassReflection = $validatorObjectType->getClassReflection();
 
-		if ( ! $validatorClassReflection instanceof ClassReflection) {
+		if (!$validatorClassReflection instanceof ClassReflection) {
 			return [];
 		}
 
@@ -106,7 +109,8 @@ final class ValidatorResolverOptionsRule implements Rule
 		$providedOptionsArray = $this->extractProvidedOptions($validatorOptionsArgument, $scope);
 
 		$unsupportedOptions = array_diff($providedOptionsArray, $validatorOptionsConfiguration->getSupportedOptions());
-		$neededRequiredOptions = array_diff($validatorOptionsConfiguration->getRequiredOptions(), $providedOptionsArray);
+		$neededRequiredOptions
+			= array_diff($validatorOptionsConfiguration->getRequiredOptions(), $providedOptionsArray);
 
 		$errors = [];
 
@@ -134,7 +138,7 @@ final class ValidatorResolverOptionsRule implements Rule
 			return true;
 		}
 
-		if ( ! $methodCall->name instanceof Node\Identifier) {
+		if (!$methodCall->name instanceof Node\Identifier) {
 			return true;
 		}
 
@@ -146,7 +150,7 @@ final class ValidatorResolverOptionsRule implements Rule
 	 */
 	private function extractProvidedOptions(?Arg $validatorOptionsArgument, Scope $scope): array
 	{
-		if ( ! $validatorOptionsArgument instanceof Arg) {
+		if (!$validatorOptionsArgument instanceof Arg) {
 			return [];
 		}
 
@@ -154,14 +158,14 @@ final class ValidatorResolverOptionsRule implements Rule
 
 		$validatorOptionsArgumentType = $scope->getType($validatorOptionsArgument->value);
 
-		if ( ! $validatorOptionsArgumentType instanceof ConstantArrayType) {
+		if (!$validatorOptionsArgumentType instanceof ConstantArrayType) {
 			return [];
 		}
 
 		$keysArray = $validatorOptionsArgumentType->getKeysArray();
 
 		foreach ($keysArray->getValueTypes() as $valueType) {
-			if ( ! ($valueType instanceof ConstantStringType)) {
+			if (!($valueType instanceof ConstantStringType)) {
 				continue;
 			}
 
@@ -171,24 +175,27 @@ final class ValidatorResolverOptionsRule implements Rule
 		return $providedOptionsArray;
 	}
 
-	private function extractValidatorOptionsConfiguration(PropertyReflection $supportedOptions, Scope $scope): ValidatorOptionsConfiguration
+	private function extractValidatorOptionsConfiguration(
+		PropertyReflection $supportedOptions,
+		Scope $scope
+	): ValidatorOptionsConfiguration
 	{
 		$collectedSupportedOptions = [];
 		$collectedRequiredOptions = [];
 
-		if ( ! $supportedOptions instanceof PhpPropertyReflection) {
+		if (!$supportedOptions instanceof PhpPropertyReflection) {
 			return ValidatorOptionsConfiguration::empty();
 		}
 
 		$defaultValues = $supportedOptions->getNativeReflection()->getDefaultValueExpr();
 
-		if ( ! $defaultValues instanceof Array_) {
+		if (!$defaultValues instanceof Array_) {
 			return ValidatorOptionsConfiguration::empty();
 		}
 
 		foreach ($defaultValues->items as $defaultValue) {
 
-			if ( ! $defaultValue instanceof ArrayItem) {
+			if (!$defaultValue instanceof ArrayItem) {
 				continue;
 			}
 
@@ -205,11 +212,11 @@ final class ValidatorResolverOptionsRule implements Rule
 			$collectedSupportedOptions[] = $supportedOptionKey;
 
 			$optionDefinition = $defaultValue->value;
-			if ( ! $optionDefinition instanceof Array_) {
+			if (!$optionDefinition instanceof Array_) {
 				continue;
 			}
 
-			if ( ! isset($optionDefinition->items[3])) {
+			if (!isset($optionDefinition->items[3])) {
 				continue;
 			}
 
@@ -229,7 +236,11 @@ final class ValidatorResolverOptionsRule implements Rule
 		return new ValidatorOptionsConfiguration($collectedSupportedOptions, $collectedRequiredOptions);
 	}
 
-	private function resolveOptionKeyValue(ArrayItem $defaultValue, PhpPropertyReflection $supportedOptions, Scope $scope): ?string
+	private function resolveOptionKeyValue(
+		ArrayItem $defaultValue,
+		PhpPropertyReflection $supportedOptions,
+		Scope $scope
+	): ?string
 	{
 		if ($defaultValue->key === null) {
 			return null;

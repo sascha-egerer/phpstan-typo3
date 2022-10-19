@@ -18,6 +18,7 @@ class SiteGetAttributeDynamicReturnTypeExtensionTest extends TypeInferenceTestCa
 
 	/**
 	 * @dataProvider dataFileAsserts
+	 *
 	 * @param string $assertType
 	 * @param string $file
 	 * @param mixed ...$args
