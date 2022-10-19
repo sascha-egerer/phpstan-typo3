@@ -1,54 +1,58 @@
 {
-    "name": "saschaegerer/phpstan-typo3",
-    "description": "TYPO3 CMS class reflection extension for PHPStan",
-    "license": ["MIT"],
-    "type": "phpstan-extension",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "require": {
-        "php": "^7.2 || ^8.0",
-        "phpstan/phpstan": "^1.8.9",
-        "nikic/php-parser": "^4.15.1",
-        "typo3/cms-core": "^10.4 || ^11.5 || ^12.0",
-        "typo3/cms-extbase": "^10.4 || ^11.5 || ^12.0",
-        "bnf/phpstan-psr-container": "^1.0"
-    },
-    "require-dev": {
-        "consistence-community/coding-standard": "^3.10.1",
-        "slevomat/coding-standard": "^6.4.1",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
-        "php-parallel-lint/php-parallel-lint": "^1.3.2",
-        "phing/phing": "^2.17.4",
-        "phpstan/phpstan-strict-rules": "^1.4.4",
-        "phpunit/phpunit": "^8.5.30",
-        "symfony/polyfill-php80": "^1.26.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "SaschaEgerer\\PhpstanTypo3\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "SaschaEgerer\\PhpstanTypo3\\Tests\\": "tests/"
-        },
-        "files": [
-            "tests/Unit/Type/data/repository-stub-files.php"
-        ]
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.1-dev"
-        },
-        "phpstan": {
-            "includes": ["extension.neon"]
-        }
-    },
-    "config": {
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "typo3/class-alias-loader": true,
-            "typo3/cms-composer-installers": true
-        }
-    }
+	"name": "saschaegerer/phpstan-typo3",
+	"description": "TYPO3 CMS class reflection extension for PHPStan",
+	"license": [
+		"MIT"
+	],
+	"type": "phpstan-extension",
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"require": {
+		"php": "^7.2 || ^8.0",
+		"phpstan/phpstan": "^1.8.9",
+		"nikic/php-parser": "^4.15.1",
+		"typo3/cms-core": "^10.4 || ^11.5 || ^12.0",
+		"typo3/cms-extbase": "^10.4 || ^11.5 || ^12.0",
+		"bnf/phpstan-psr-container": "^1.0"
+	},
+	"require-dev": {
+		"consistence-community/coding-standard": "^3.10.1",
+		"slevomat/coding-standard": "^6.4.1",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
+		"php-parallel-lint/php-parallel-lint": "^1.3.2",
+		"phing/phing": "^2.17.4",
+		"phpstan/phpstan-strict-rules": "^1.4.4",
+		"phpunit/phpunit": "^8.5.30",
+		"symfony/polyfill-php80": "^1.26.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"SaschaEgerer\\PhpstanTypo3\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"SaschaEgerer\\PhpstanTypo3\\Tests\\": "tests/"
+		},
+		"files": [
+			"tests/Unit/Type/data/repository-stub-files.php"
+		]
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "1.1-dev"
+		},
+		"phpstan": {
+			"includes": [
+				"extension.neon"
+			]
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"typo3/class-alias-loader": true,
+			"typo3/cms-composer-installers": true
+		}
+	}
 }
