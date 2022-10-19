@@ -81,6 +81,10 @@ services:
         class: SaschaEgerer\PhpstanTypo3\Type\PropertyMapperReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
+        class: Bnf\PhpstanPsrContainer\ContainerDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
 
 parameters:
     bootstrapFiles:
