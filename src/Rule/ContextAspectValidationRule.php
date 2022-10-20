@@ -38,7 +38,12 @@ class ContextAspectValidationRule implements \PHPStan\Rules\Rule
 		}
 
 		$methodReflection = $scope->getMethodReflection($scope->getType($node->var), $node->name->toString());
-		if ($methodReflection === null || $methodReflection->getName() !== 'getAspect') {
+
+		if ($methodReflection === null) {
+			return [];
+		}
+
+		if (!in_array($methodReflection->getName(), ['getAspect', 'getPropertyFromAspect'], true)) {
 			return [];
 		}
 

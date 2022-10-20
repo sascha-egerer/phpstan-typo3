@@ -1,9 +1,6 @@
-<?php
-declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Rule\ContextAspectValidationRule;
-
 
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
@@ -15,15 +12,21 @@ use TYPO3\CMS\Core\Context\DateTimeAspect;
  */
 final class ContextAspectValidationRuleTest extends RuleTestCase
 {
+
 	public function testRuleWithErrors(): void
 	{
 		$this->analyse(
-			[__DIR__.'/Fixture/UseContextApiWithUndefinedAspect.php'],
+			[__DIR__ . '/Fixture/UseContextApiWithUndefinedAspect.php'],
 			[
 				[
 					'There is no aspect "foo" configured so we can\'t figure out the exact type to return when calling TYPO3\CMS\Core\Context\Context::getAspect',
-					15,
-					'You should add custom aspects to the typo3.contextApiGetAspectMapping setting.'
+					13,
+					'You should add custom aspects to the typo3.contextApiGetAspectMapping setting.',
+				],
+				[
+					'There is no aspect "dates" configured so we can\'t figure out the exact type to return when calling TYPO3\CMS\Core\Context\Context::getPropertyFromAspect',
+					16,
+					'You should add custom aspects to the typo3.contextApiGetAspectMapping setting.',
 				],
 			]
 		);
@@ -31,7 +34,7 @@ final class ContextAspectValidationRuleTest extends RuleTestCase
 
 	public static function getAdditionalConfigFiles(): array
 	{
-		return [__DIR__.'/../../../../extension.neon'];
+		return [__DIR__ . '/../../../../extension.neon'];
 	}
 
 	public function testRuleWithoutErrors(): void
@@ -42,7 +45,8 @@ final class ContextAspectValidationRuleTest extends RuleTestCase
 	protected function getRule(): Rule
 	{
 		return new ContextAspectValidationRule([
-			'date' =>  DateTimeAspect::class
+			'date' => DateTimeAspect::class,
 		]);
 	}
+
 }
