@@ -29,6 +29,9 @@ class RequestAttributeValidationRule implements \PHPStan\Rules\Rule
 		return Node\Expr\MethodCall::class;
 	}
 
+	/**
+	 * @param Node\Expr\MethodCall $node
+	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
 		if (!$node->name instanceof Node\Identifier) {
