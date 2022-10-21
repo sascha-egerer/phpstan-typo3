@@ -28,6 +28,9 @@ class ContextAspectValidationRule implements \PHPStan\Rules\Rule
 		return Node\Expr\MethodCall::class;
 	}
 
+	/**
+	 * @param Node\Expr\MethodCall $node
+	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
 		if (!$node->name instanceof Node\Identifier) {
@@ -35,7 +38,12 @@ class ContextAspectValidationRule implements \PHPStan\Rules\Rule
 		}
 
 		$methodReflection = $scope->getMethodReflection($scope->getType($node->var), $node->name->toString());
-		if ($methodReflection === null || $methodReflection->getName() !== 'getAspect') {
+
+		if ($methodReflection === null) {
+			return [];
+		}
+
+		if (!in_array($methodReflection->getName(), ['getAspect', 'getPropertyFromAspect'], true)) {
 			return [];
 		}
 
