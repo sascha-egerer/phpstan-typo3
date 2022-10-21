@@ -34,7 +34,10 @@ class MyModelRepository extends Repository
 		$query = $this->persistenceManager->createQueryForType(SomeOtherModel::class);
 
 		$result = $query->execute();
-		assertType('TYPO3\CMS\Extbase\Persistence\QueryInterface<CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>', $query);
+		assertType(
+			'TYPO3\CMS\Extbase\Persistence\QueryInterface<CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>',
+			$query
+		);
 
 		$rawResult = $query->execute(true);
 		assertType('array<int, CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>', $rawResult);

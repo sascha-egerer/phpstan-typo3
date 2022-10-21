@@ -10,7 +10,7 @@ final class ValidatorClassNameResolver
 
 	public function resolve(Type $type): ?string
 	{
-		if ( ! $type instanceof ConstantStringType) {
+		if (!$type instanceof ConstantStringType) {
 			return null;
 		}
 

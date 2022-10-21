@@ -59,9 +59,11 @@ class RepositoryFindMethodsClassReflectionExtension implements MethodsClassRefle
 	public function getMethod(ClassReflection $classReflection, string $methodName): MethodReflection
 	{
 		if (strpos($methodName, 'findOneBy') === 0) {
-			$methodReflection = new RepositoryFindOneByMethodReflection($classReflection, $methodName, $this->reflectionProvider);
+			$methodReflection
+				= new RepositoryFindOneByMethodReflection($classReflection, $methodName, $this->reflectionProvider);
 		} else {
-			$methodReflection = new RepositoryFindByMethodReflection($classReflection, $methodName, $this->reflectionProvider);
+			$methodReflection
+				= new RepositoryFindByMethodReflection($classReflection, $methodName, $this->reflectionProvider);
 		}
 
 		return $methodReflection;

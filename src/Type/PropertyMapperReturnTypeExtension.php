@@ -41,7 +41,11 @@ final class PropertyMapperReturnTypeExtension implements DynamicMethodReturnType
 		return $methodReflection->getName() === 'convert';
 	}
 
-	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): ?Type
+	public function getTypeFromMethodCall(
+		MethodReflection $methodReflection,
+		MethodCall $methodCall,
+		Scope $scope
+	): ?Type
 	{
 		$targetTypeArgument = $methodCall->getArgs()[1] ?? null;
 
@@ -95,7 +99,7 @@ final class PropertyMapperReturnTypeExtension implements DynamicMethodReturnType
 			return null;
 		}
 
-		if (! $this->reflectionProvider->hasClass($classLikeName)) {
+		if (!$this->reflectionProvider->hasClass($classLikeName)) {
 			return null;
 		}
 

@@ -37,7 +37,8 @@ class RepositoryDynamicReturnTypeExtension implements DynamicMethodReturnTypeExt
 	{
 		$variableType = $scope->getType($methodCall->var);
 
-		if (!($variableType instanceof ObjectType) || !is_subclass_of($variableType->getClassName(), $this->getClass())) {
+		if (!($variableType instanceof ObjectType)
+			|| !is_subclass_of($variableType->getClassName(), $this->getClass())) {
 			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 		}
 

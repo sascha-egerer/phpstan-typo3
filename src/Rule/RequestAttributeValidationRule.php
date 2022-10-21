@@ -42,7 +42,8 @@ class RequestAttributeValidationRule implements \PHPStan\Rules\Rule
 
 		$declaringClass = $methodReflection->getDeclaringClass();
 
-		if (!$declaringClass->implementsInterface(ServerRequestInterface::class) && $declaringClass->getName() !== ServerRequestInterface::class) {
+		if (!$declaringClass->implementsInterface(ServerRequestInterface::class)
+			&& $declaringClass->getName() !== ServerRequestInterface::class) {
 			return [];
 		}
 
