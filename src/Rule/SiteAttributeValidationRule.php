@@ -29,6 +29,9 @@ class SiteAttributeValidationRule implements \PHPStan\Rules\Rule
 		return Node\Expr\MethodCall::class;
 	}
 
+	/**
+	 * @param Node\Expr\MethodCall $node
+	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
 		if (!$node->name instanceof Node\Identifier) {
@@ -42,7 +45,7 @@ class SiteAttributeValidationRule implements \PHPStan\Rules\Rule
 
 		$declaringClass = $methodReflection->getDeclaringClass();
 
-		if (!$declaringClass->implementsInterface(Site::class) && $declaringClass->getName() !== Site::class) {
+		if ($declaringClass->getName() !== Site::class) {
 			return [];
 		}
 
