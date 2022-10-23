@@ -29,7 +29,7 @@ class RepositoryFindAllDynamicReturnTypeExtension implements DynamicMethodReturn
 		MethodReflection $methodReflection
 	): bool
 	{
-		return in_array($methodReflection->getName(), ['findAll'], true);
+		return $methodReflection->getName() === 'findAll';
 	}
 
 	public function getTypeFromMethodCall(
