@@ -187,7 +187,7 @@ final class ValidatorResolverOptionsRule implements Rule
 			return ValidatorOptionsConfiguration::empty();
 		}
 
-		$defaultValues = $supportedOptions->getNativeReflection()->getDefaultValueExpr();
+		$defaultValues = $supportedOptions->getNativeReflection()->getDefaultValueExpression();
 
 		if (!$defaultValues instanceof Array_) {
 			return ValidatorOptionsConfiguration::empty();
