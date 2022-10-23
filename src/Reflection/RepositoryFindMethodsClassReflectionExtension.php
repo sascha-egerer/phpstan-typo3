@@ -49,11 +49,7 @@ class RepositoryFindMethodsClassReflectionExtension implements MethodsClassRefle
 		$modelName = $this->translateRepositoryNameToModelName($className);
 
 		$modelReflection = $this->reflectionProvider->getClass($modelName);
-		if (!$modelReflection->hasProperty($propertyName)) {
-			return false;
-		}
-
-		return true;
+		return $modelReflection->hasProperty($propertyName);
 	}
 
 	public function getMethod(ClassReflection $classReflection, string $methodName): MethodReflection
