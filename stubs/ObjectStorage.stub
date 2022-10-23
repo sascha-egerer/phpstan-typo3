@@ -18,23 +18,27 @@ class ObjectStorage implements \Iterator, \ArrayAccess
      * @param TEntity $value
      * @param mixed $information
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($value, $information);
 
     /**
      * @param TEntity|int $value
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($value);
 
     /**
      * @param TEntity|int $value
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($value);
 
     /**
      * @param TEntity|int $value
      * @return ($value is int ? TEntity|null : mixed)
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($value);
 
     /**
@@ -42,6 +46,7 @@ class ObjectStorage implements \Iterator, \ArrayAccess
      * @phpstan-ignore-next-line See https://forge.typo3.org/issues/98146
      * @return string|null
      */
+    #[\ReturnTypeWillChange]
     public function key();
 
     /**
