@@ -1,4 +1,7 @@
-<?php
+<?php declare(strict_types = 1);
+
+// phpcs:disable Squiz.Classes.ClassFileName.NoMatch
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
 
 namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\QueryResultToArrayDynamicReturnTypeExtension;
 
@@ -17,13 +20,13 @@ class FrontendUserGroupRepository extends Repository
 
 class FrontendUserGroup extends AbstractEntity
 {
+
 }
 
 class MyController extends ActionController
 {
-	/**
-	 * @var FrontendUserGroupRepository
-	 */
+
+	/** @var FrontendUserGroupRepository */
 	private $myRepository;
 
 	public function __construct(FrontendUserGroupRepository $myRepository)
@@ -45,4 +48,5 @@ class MyController extends ActionController
 			$myObjects
 		);
 	}
+
 }

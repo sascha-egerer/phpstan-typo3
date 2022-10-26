@@ -1,14 +1,12 @@
-<?php
-declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\QueryResultToArrayDynamicReturnTypeExtension;
-
 
 use PHPStan\Testing\TypeInferenceTestCase;
 
 final class QueryResultToArrayDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
 {
+
 	/**
 	 * @return iterable<mixed>
 	 */
@@ -37,4 +35,5 @@ final class QueryResultToArrayDynamicReturnTypeExtensionTest extends TypeInferen
 	{
 		return [__DIR__ . '/../../../../extension.neon'];
 	}
+
 }
