@@ -99,3 +99,26 @@ class FindAllTestRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 	}
 
 }
+
+/** @extends \TYPO3\CMS\Extbase\Persistence\Repository<\RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel> */
+class FindAllWithoutReturnTestRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
+
+	public function myTests(): void
+	{
+		assertType(
+			'array<int, RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>|TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
+			$this->findAll()
+		);
+	}
+
+	public function findAll() // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
+	{
+		$foo = null; // phpcs:ignore SlevomatCodingStandard.Variables.UselessVariable.UselessVariable
+		/**
+		 * @var array<int, \RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface<\RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel> $foo
+		 */
+		return $foo;
+	}
+
+}

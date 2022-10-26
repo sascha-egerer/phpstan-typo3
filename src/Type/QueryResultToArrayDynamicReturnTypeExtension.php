@@ -40,9 +40,13 @@ class QueryResultToArrayDynamicReturnTypeExtension implements DynamicMethodRetur
 		Scope $scope
 	): Type
 	{
-		$resultType = $this->getGenericTypes(
-			$scope->getType($methodCall->var)
-		)[0] ?? null;
+		$resultType = $scope->getType($methodCall->var);
+
+		if (!($resultType instanceof ObjectType)) {
+			$resultType = $this->getGenericTypes(
+				$scope->getType($methodCall->var)
+			)[0] ?? null;
+		}
 
 		if ($resultType instanceof GenericObjectType) {
 			$modelType = $resultType->getTypes();
