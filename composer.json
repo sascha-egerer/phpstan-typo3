@@ -35,7 +35,8 @@
 			"SaschaEgerer\\PhpstanTypo3\\Tests\\": "tests/"
 		},
 		"files": [
-			"tests/Unit/Type/data/repository-stub-files.php"
+			"tests/Unit/Type/data/repository-stub-files.php",
+			"tests/Unit/Type/QueryResultToArrayDynamicReturnTypeExtension/data/query-result-to-array.php"
 		]
 	},
 	"extra": {

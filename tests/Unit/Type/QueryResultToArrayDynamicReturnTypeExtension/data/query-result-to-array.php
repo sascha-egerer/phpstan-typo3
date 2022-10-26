@@ -4,15 +4,13 @@ namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\QueryResultToArrayDynamicRet
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
-use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
 use function PHPStan\Testing\assertType;
 
 /**
  * @extends Repository<FrontendUserGroup>
  */
-class FrontendUserGroupRepository extends Repository implements RepositoryInterface
+class FrontendUserGroupRepository extends Repository
 {
 
 }
@@ -33,10 +31,18 @@ class MyController extends ActionController
 		$this->myRepository = $myRepository;
 	}
 
-	public function showAction()
+	public function showAction(): void
 	{
+		assertType(
+			'array<int, SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\QueryResultToArrayDynamicReturnTypeExtension\FrontendUserGroup>',
+			$this->myRepository->findAll()->toArray()
+		);
+
 		$queryResult = $this->myRepository->findAll();
 		$myObjects = $queryResult->toArray();
-		assertType('array<int, FrontendUserGroup>', $myObjects);
+		assertType(
+			'array<int, SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\QueryResultToArrayDynamicReturnTypeExtension\FrontendUserGroup>',
+			$myObjects
+		);
 	}
 }
