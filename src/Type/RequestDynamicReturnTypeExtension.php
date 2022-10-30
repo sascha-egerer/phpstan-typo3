@@ -10,6 +10,7 @@ use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
+use Psr\Http\Message\ServerRequestInterface;
 
 class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -31,7 +32,13 @@ class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 
 	public function getClass(): string
 	{
-		return \Psr\Http\Message\ServerRequestInterface::class;
+		if (!interface_exists(ServerRequestInterface::class)) {
+			throw new \PHPStan\ShouldNotHappenException(
+				'The package "psr/http-message" is not installed, but should be.'
+			);
+		}
+
+		return ServerRequestInterface::class;
 	}
 
 	public function getTypeFromMethodCall(
