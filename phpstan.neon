@@ -22,3 +22,17 @@ parameters:
             message: "#^Calling PHPStan\\\\Reflection\\\\InitializerExprTypeResolver\\:\\:getClassConstFetchType\\(\\) is not covered by backward compatibility promise\\. The method might change in a minor PHPStan version\\.$#"
             count: 1
             path: src/Rule/ValidatorResolverOptionsRule.php
+        -
+            message: "#^Method SaschaEgerer\\\\PhpstanTypo3\\\\Tests\\\\Unit\\\\Type\\\\QueryResultToArrayDynamicReturnTypeExtension\\\\FrontendUserGroupCustomFindAllWithoutModelTypeRepository\\:\\:findAll\\(\\) return type with generic interface TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryResultInterface does not specify its types\\: ModelType$#"
+            count: 1
+            path: tests/Unit/Type/QueryResultToArrayDynamicReturnTypeExtension/data/query-result-to-array.php
+
+        -
+            message: "#^PHPDoc tag @var for variable \\$queryResult contains generic class TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\QueryResult but does not specify its types\\: ModelType$#"
+            count: 2
+            path: tests/Unit/Type/QueryResultToArrayDynamicReturnTypeExtension/data/query-result-to-array.php
+
+        -
+            message: "#^Return type \\(TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryResultInterface\\) of method SaschaEgerer\\\\PhpstanTypo3\\\\Tests\\\\Unit\\\\Type\\\\QueryResultToArrayDynamicReturnTypeExtension\\\\FrontendUserGroupCustomFindAllWithoutModelTypeRepository\\:\\:findAll\\(\\) should be covariant with return type \\(array\\<int, SaschaEgerer\\\\PhpstanTypo3\\\\Tests\\\\Unit\\\\Type\\\\QueryResultToArrayDynamicReturnTypeExtension\\\\FrontendUserGroup\\>\\|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryResultInterface\\<SaschaEgerer\\\\PhpstanTypo3\\\\Tests\\\\Unit\\\\Type\\\\QueryResultToArrayDynamicReturnTypeExtension\\\\FrontendUserGroup\\>\\) of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\<SaschaEgerer\\\\PhpstanTypo3\\\\Tests\\\\Unit\\\\Type\\\\QueryResultToArrayDynamicReturnTypeExtension\\\\FrontendUserGroup\\>\\:\\:findAll\\(\\)$#"
+            count: 1
+            path: tests/Unit/Type/QueryResultToArrayDynamicReturnTypeExtension/data/query-result-to-array.php
