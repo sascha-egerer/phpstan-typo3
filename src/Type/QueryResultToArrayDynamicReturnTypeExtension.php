@@ -49,21 +49,14 @@ class QueryResultToArrayDynamicReturnTypeExtension implements DynamicMethodRetur
 		}
 
 		if ($resultType instanceof GenericObjectType) {
-			$modelType = $resultType->getTypes();
+			$modelType = $resultType->getTypes()[0] ?? new ErrorType();
 		} else {
-			$classReflection = $scope->getClassReflection();
-			if ($classReflection === null) {
-				return new ErrorType();
-			}
-
-			$modelName = $this->translateRepositoryNameToModelName(
-				$classReflection->getName()
-			);
-
-			$modelType = [new ObjectType($modelName)];
+			$modelType = $methodReflection->getDeclaringClass()
+				->getPossiblyIncompleteActiveTemplateTypeMap()
+				->getType('ModelType') ?? new ErrorType();
 		}
 
-		return new ArrayType(new IntegerType(), $modelType[0]);
+		return new ArrayType(new IntegerType(), $modelType);
 	}
 
 	/**
