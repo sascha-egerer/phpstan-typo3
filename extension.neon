@@ -85,7 +85,10 @@ services:
         class: Bnf\PhpstanPsrContainer\ContainerDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
-
+    -
+        class: SaschaEgerer\PhpstanTypo3\Type\MathUtilityTypeSpecifyingExtension
+        tags:
+            - phpstan.typeSpecifier.staticMethodTypeSpecifyingExtension
 parameters:
     bootstrapFiles:
         - phpstan.bootstrap.php
