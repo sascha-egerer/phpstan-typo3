@@ -14,6 +14,7 @@ parameters:
     excludePaths:
          - '*tests/*/Fixture/*'
          - '*tests/*/Source/*'
+         - '*tests/*/data/*'
     ignoreErrors:
         -
             message: '#^Class TYPO3\\CMS\\Core\\Context\\[a-zA-Z]* not found\.#'
