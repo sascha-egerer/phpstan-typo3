@@ -38,7 +38,7 @@ class QueryInterfaceDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
 		Scope $scope
-	): Type
+	): ?Type
 	{
 		$argument = $methodCall->getArgs()[0] ?? null;
 
@@ -57,7 +57,7 @@ class QueryInterfaceDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 					$classReflection->getName()
 				);
 			} catch (\PHPStan\ShouldNotHappenException $e) {
-				return new ErrorType();
+				return null;
 			}
 
 			$modelType = [new ObjectType($modelName)];
