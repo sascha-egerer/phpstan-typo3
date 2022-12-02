@@ -5,7 +5,6 @@ namespace SaschaEgerer\PhpstanTypo3\Type;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
@@ -57,7 +56,7 @@ class QueryInterfaceDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 				$modelName = $this->translateRepositoryNameToModelName(
 					$classReflection->getName()
 				);
-			} catch (ShouldNotHappenException $e) {
+			} catch (\PHPStan\ShouldNotHappenException $e) {
 				return new ErrorType();
 			}
 
