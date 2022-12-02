@@ -52,9 +52,13 @@ class QueryInterfaceDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 				return new ErrorType();
 			}
 
-			$modelName = $this->translateRepositoryNameToModelName(
-				$classReflection->getName()
-			);
+			try {
+				$modelName = $this->translateRepositoryNameToModelName(
+					$classReflection->getName()
+				);
+			} catch (ShouldNotHappenException $e) {
+				return new ErrorType();
+			}
 
 			$modelType = [new ObjectType($modelName)];
 		}
