@@ -13,7 +13,8 @@
 		"nikic/php-parser": "^4.15.1",
 		"typo3/cms-core": "^10.4 || ^11.5 || ^12.2",
 		"typo3/cms-extbase": "^10.4 || ^11.5 || ^12.2",
-		"bnf/phpstan-psr-container": "^1.0"
+		"bnf/phpstan-psr-container": "^1.0",
+		"composer/semver": "^3.3"
 	},
 	"require-dev": {
 		"consistence-community/coding-standard": "^3.10.1",
