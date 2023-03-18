@@ -2,8 +2,8 @@
 
 namespace SaschaEgerer\PhpstanTypo3\Stubs;
 
-use Composer\InstalledVersions;
 use Composer\Semver\VersionParser;
+use TYPO3\CMS\Core\Information\Typo3Version;
 
 class StubFilesExtensionLoader implements \PHPStan\PhpDoc\StubFilesExtension
 {
@@ -12,10 +12,13 @@ class StubFilesExtensionLoader implements \PHPStan\PhpDoc\StubFilesExtension
 	{
 		$stubsDir = dirname(__DIR__, 2) . '/stubs';
 		$files = [];
-		if (InstalledVersions::satisfies(new VersionParser(), 'typo3/cms-core', '< 12')) {
+		$typo3Version = new Typo3Version();
+		$versionParser = new VersionParser();
+
+		if ($versionParser->parseConstraints($typo3Version->getVersion())->matches($versionParser->parseConstraints('< 12'))) {
 			$files[] = $stubsDir . '/GeneralUtility.stub';
 		}
-		if (InstalledVersions::satisfies(new VersionParser(), 'typo3/cms-core', '<= 12.2.0')) {
+		if ($versionParser->parseConstraints($typo3Version->getVersion())->matches($versionParser->parseConstraints('<= 12.2.0'))) {
 			$files[] = $stubsDir . '/QueryResult.stub';
 		}
 
