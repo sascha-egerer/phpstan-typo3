@@ -89,6 +89,10 @@ services:
         class: SaschaEgerer\PhpstanTypo3\Type\MathUtilityTypeSpecifyingExtension
         tags:
             - phpstan.typeSpecifier.staticMethodTypeSpecifyingExtension
+    -
+        class: SaschaEgerer\PhpstanTypo3\Stubs\StubFilesExtensionLoader
+        tags:
+            - phpstan.stubFilesExtension
 parameters:
     bootstrapFiles:
         - phpstan.bootstrap.php
@@ -121,13 +125,15 @@ parameters:
             websiteTitle: string
     stubFiles:
         - stubs/DomainObjectInterface.stub
-        - stubs/GeneralUtility.stub
         - stubs/ObjectStorage.stub
         - stubs/QueryFactory.stub
         - stubs/QueryInterface.stub
         - stubs/QueryResultInterface.stub
-        - stubs/QueryResult.stub
         - stubs/Repository.stub
+        # See SaschaEgerer\PhpstanTypo3\Stubs\StubFilesExtensionLoader
+        # GeneralUtility.stub is only used if TYPO3 version is < 12
+        #- stubs/GeneralUtility.stub
+        #- stubs/QueryResult.stub
     dynamicConstantNames:
         - TYPO3_MODE
         - TYPO3_REQUESTTYPE
