@@ -6,7 +6,7 @@ class GeneralUtility
     /**
      * @template T of object
      * @phpstan-param class-string<T> $className
-     * @phpstan-param array<int, mixed> $constructorArguments
+     * @phpstan-param mixed $constructorArguments
      * @phpstan-return T
      */
     public static function makeInstance($className, ...$constructorArguments);
