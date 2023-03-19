@@ -48,16 +48,28 @@ class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 	): Type
 	{
 		$argument = $methodCall->getArgs()[0] ?? null;
+		$defaultArgument = $methodCall->getArgs()[1] ?? null;
 
-		if ($argument === null || !($argument->value instanceof \PhpParser\Node\Scalar\String_)) {
-			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+		if ($argument === null
+			|| !($argument->value instanceof \PhpParser\Node\Scalar\String_)
+			|| !isset($this->requestGetAttributeMapping[$argument->value->value])
+		) {
+			$type = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+
+			if ($defaultArgument === null) {
+				return $type;
+			}
+
+			return TypeCombinator::union($type, $scope->getType($defaultArgument->value));
 		}
 
-		if (isset($this->requestGetAttributeMapping[$argument->value->value])) {
-			return TypeCombinator::addNull($this->typeStringResolver->resolve($this->requestGetAttributeMapping[$argument->value->value]));
+		$type = $this->typeStringResolver->resolve($this->requestGetAttributeMapping[$argument->value->value]);
+
+		if ($defaultArgument === null) {
+			return TypeCombinator::addNull($type);
 		}
 
-		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+		return TypeCombinator::union($type, $scope->getType($defaultArgument->value));
 	}
 
 	public function isMethodSupported(
