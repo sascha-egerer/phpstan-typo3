@@ -11,11 +11,13 @@ use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ErrorType;
 use PHPStan\Type\Generic\GenericObjectType;
 use PHPStan\Type\IntegerType;
+use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use SaschaEgerer\PhpstanTypo3\Helpers\Typo3ClassNamingUtilityTrait;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class QueryInterfaceDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -51,12 +53,15 @@ class QueryInterfaceDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 			if ($classReflection === null) {
 				return new ErrorType();
 			}
+			$modelType = [new MixedType()];
 
-			$modelName = $this->translateRepositoryNameToModelName(
-				$classReflection->getName()
-			);
+			if ($classReflection->isSubclassOf(Repository::class)) {
+				$modelName = $this->translateRepositoryNameToModelName(
+					$classReflection->getName()
+				);
 
-			$modelType = [new ObjectType($modelName)];
+				$modelType = [new ObjectType($modelName)];
+			}
 		}
 
 		if ($argument !== null) {
