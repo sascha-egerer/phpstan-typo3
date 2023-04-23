@@ -115,6 +115,7 @@ parameters:
             site: TYPO3\CMS\Core\Site\Entity\Site
             applicationType: TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_*
             routing: TYPO3\CMS\Core\Routing\SiteRouteResult|TYPO3\CMS\Core\Routing\PageArguments
+			currentContentObject: TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
         siteGetAttributeMapping:
             base: string
             baseVariants: list
