@@ -18,7 +18,7 @@
 	},
 	"require-dev": {
 		"consistence-community/coding-standard": "^3.11.1",
-		"slevomat/coding-standard": "^8.11.1",
+		"slevomat/coding-standard": "^7.2.1",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
 		"php-parallel-lint/php-parallel-lint": "^1.3.2",
 		"phing/phing": "^2.17.4",
