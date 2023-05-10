@@ -25,7 +25,7 @@ final class QueryResultToArrayDynamicReturnTypeExtensionTest extends TypeInferen
 	public function testFileAsserts(
 		string $assertType,
 		string $file,
-		...$args
+		mixed ...$args
 	): void
 	{
 		$this->assertFileAsserts($assertType, $file, ...$args);

@@ -11,7 +11,6 @@
 	<rule ref="vendor/consistence-community/coding-standard/Consistence/ruleset.xml">
 		<exclude name="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.InvalidFormat"/>
 		<exclude name="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable"/>
-		<exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameAfterKeyword"/>
 		<exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation"/>
 		<exclude name="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly"/>
 		<exclude name="Consistence.Exceptions.ExceptionDeclaration"/>
@@ -26,7 +25,8 @@
 	</rule>
 	<rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
 		<properties>
-			<property name="newlinesCountBetweenOpenTagAndDeclare" value="0"/>
+			<property name="declareOnFirstLine" value="true"/>
+			<property name="linesCountAfterDeclare" value="1"/>
 		</properties>
 	</rule>
 	<rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">

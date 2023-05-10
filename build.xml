@@ -36,6 +36,7 @@
 			logoutput="true"
 			passthru="true"
 			checkreturn="true"
+			level="error"
 		>
 		</exec>
 	</target>
@@ -46,6 +47,7 @@
 			logoutput="true"
 			passthru="true"
 			checkreturn="true"
+			level="error"
 		>
 		</exec>
 	</target>
