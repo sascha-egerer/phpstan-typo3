@@ -26,7 +26,7 @@ class RequestGetAttributeDynamicReturnTypeExtensionTest extends TypeInferenceTes
 	public function testFileAsserts(
 		string $assertType,
 		string $file,
-		mixed ...$args
+		...$args
 	): void
 	{
 		$this->assertFileAsserts($assertType, $file, ...$args);

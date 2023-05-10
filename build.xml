@@ -36,8 +36,8 @@
 			logoutput="true"
 			passthru="true"
 			checkreturn="true"
-			level="error"
 		>
+			<arg line="--runtime-set php_version 70400"/>
 		</exec>
 	</target>
 
@@ -49,6 +49,7 @@
 			checkreturn="true"
 			level="error"
 		>
+			<arg line="--runtime-set php_version 70400"/>
 		</exec>
 	</target>
 
