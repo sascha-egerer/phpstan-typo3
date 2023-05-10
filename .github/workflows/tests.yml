@@ -13,18 +13,6 @@ jobs:
       matrix:
         include:
           - typo3-version: "^10.4"
-            php-version: "7.2"
-            composer-flags: ""
-          - typo3-version: "^10.4"
-            php-version: "7.2"
-            composer-flags: " --prefer-lowest"
-          - typo3-version: "^10.4"
-            php-version: "7.3"
-            composer-flags: ""
-          - typo3-version: "^10.4"
-            php-version: "7.3"
-            composer-flags: " --prefer-lowest"
-          - typo3-version: "^10.4"
             php-version: "7.4"
             composer-flags: ""
           - typo3-version: "^10.4"
