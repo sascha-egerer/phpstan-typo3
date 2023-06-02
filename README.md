@@ -1,10 +1,66 @@
-# TYPO3 extension for PHPStan
+# PHPStan TYPO3 extensions and rules
 
-TYPO3 CMS class reflection extension for PHPStan &amp; framework-specific rules
+TYPO3 CMS class reflection extension for PHPStan &amp; framework-specific rules.
 
-[![Build Status](https://travis-ci.org/sascha-egerer/phpstan-typo3.svg?branch=master)](https://travis-ci.org/sascha-egerer/phpstan-typo3)
+[![Build](https://github.com/sascha-egerer/phpstan-typo3/workflows/Tests/badge.svg)](https://github.com/sascha-egerer/phpstan-typo3/actions)
 
-## Configuration
+* [PHPStan](https://phpstan.org/)
+
+This extension provides the following features (!!! not an exhaustive list !!!):
+
+**Dynamic Return Type Extensions**
+* Provides correct return type for `\TYPO3\CMS\Core\Context\Context->getAspect()`.
+* Provides correct return type for `\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()`.
+* Provides correct return type for `\TYPO3\CMS\Extbase\Object\ObjectManagerInterface->get()`.
+* Provides correct return type for `\TYPO3\CMS\Extbase\Object\ObjectManager->get()`.
+* Provides correct return type for `\TYPO3\CMS\Extbase\Property\PropertyMapper->convert()`.
+* Provides correct return type for `\TYPO3\CMS\Core\Utility\MathUtility` methods like isIntegerInRange.
+* Provides correct return type for `\TYPO3\CMS\Extbase\Persistence\Generic\Query->execute()`.
+* Provides correct return type for `\TYPO3\CMS\Extbase\Persistence\QueryInterface->execute()`.
+* Provides correct return type for `\TYPO3\CMS\Core\Site\Entity\Site->getAttribute()`.
+* Provides correct return type for `\Psr\Http\Message\ServerRequestInterface->getAttribute()`.
+* Uses under the hood [bnf/phpstan-psr-container](https://github.com/bnf/phpstan-psr-container)
+
+All these dynamic return type extensions are necessary to teach PHPStan what type will be returned by the specific method call.
+
+<details>
+<summary>Show me a practical use case.</summary>
+For example PHPStan cannot know innately what type will be returned if you call `\TYPO3\CMS\Core\Utility\MathUtility->forceIntegerInRange(1000, 1, 10)`.
+It will be an int<10>. With the help of this library PHPStan also knows what´s going up.
+
+Imagine the following situation in your code:
+
+```php
+
+use TYPO3\CMS\Core\Utility\MathUtility;
+
+$integer = MathUtility::forceIntegerInRange(100, 1, 10);
+
+if($integer > 10) {
+    throw new \UnexpectedValueException('The integer is too big')
+}
+```
+
+PHPStan wil tell you that the if condition is superfluous, because the variable $integer will never be higher than 10. Right?
+</details>
+
+**Framework specific rules**
+* Provides rule for `\TYPO3\CMS\Core\Context\Context->getAspect()`.
+* Provides rule for `\Psr\Http\Message\ServerRequestInterface->getAttribute()`.
+* Provides rule for `\TYPO3\CMS\Core\Site\Entity\Site->getAttribute()`.
+* Provides rule for `\TYPO3\CMS\Extbase\Validation\ValidatorResolver->createValidator()`.
+
+<details>
+<summary>Show me a practical use case.</summary>
+
+For example PHPStan cannot know innately that calling `ValidatorResolver->createValidator(RegularExpressionValidator::class)` is invalid, because we miss to pass the required option `regularExpression`.
+With the help of this library PHPStan now complaints that we have missed to pass the required option.
+So go ahead and find bugs in your code without running it.
+
+</details>
+
+
+## Installation & Configuration
 
 To use this extension, require it in [Composer](https://getcomposer.org/):
 
