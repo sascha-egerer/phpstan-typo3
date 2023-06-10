@@ -41,7 +41,7 @@ if($integer > 10) {
 }
 ```
 
-PHPStan wil tell you that the if condition is superfluous, because the variable $integer will never be higher than 10. Right?
+PHPStan will tell you that the if condition is superfluous, because the variable $integer will never be higher than 10. Right?
 </details>
 
 **Framework specific rules**
