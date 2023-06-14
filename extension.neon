@@ -97,6 +97,10 @@ services:
         class: SaschaEgerer\PhpstanTypo3\Stubs\StubFilesExtensionLoader
         tags:
             - phpstan.stubFilesExtension
+    -
+        class: SaschaEgerer\PhpstanTypo3\Type\UserAspectGetDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
 parameters:
     bootstrapFiles:
         - phpstan.bootstrap.php
