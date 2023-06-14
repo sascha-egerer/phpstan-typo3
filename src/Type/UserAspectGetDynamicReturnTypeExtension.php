@@ -43,14 +43,19 @@ class UserAspectGetDynamicReturnTypeExtension implements DynamicMethodReturnType
 		$argumentType = $scope->getType($firstArgument->value);
 
 		if ($argumentType instanceof ConstantStringType) {
-			return match ($argumentType->getValue()) {
-				'id' => IntegerRangeType::createAllGreaterThanOrEqualTo(0),
-				'username' => new StringType(),
-				'isLoggedIn', 'isAdmin' => new BooleanType(),
-				'groupIds' => new ArrayType(new IntegerType(), IntegerRangeType::fromInterval(-2, null)),
-				'groupNames' => new ArrayType(new IntegerType(), new StringType()),
-				default => null,
-			};
+			switch ($argumentType->getValue()) {
+				case 'id':
+					return IntegerRangeType::createAllGreaterThanOrEqualTo(0);
+				case 'username':
+					return new StringType();
+				case 'isLoggedIn':
+				case 'isAdmin':
+					return new BooleanType();
+				case 'groupIds':
+					return new ArrayType(new IntegerType(), IntegerRangeType::fromInterval(-2, null));
+				case 'groupNames':
+					return new ArrayType(new IntegerType(), new StringType());
+			}
 		}
 
 		return null;
