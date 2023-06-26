@@ -101,6 +101,10 @@ services:
         class: SaschaEgerer\PhpstanTypo3\Type\UserAspectGetDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
+        class: SaschaEgerer\PhpstanTypo3\Type\DateTimeAspectGetDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
 parameters:
     bootstrapFiles:
         - phpstan.bootstrap.php
