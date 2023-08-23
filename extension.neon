@@ -130,6 +130,7 @@ parameters:
             currentContentObject: TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
             frontend.controller: TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
             frontend.typoscript: TYPO3\CMS\Core\TypoScript\FrontendTypoScript
+            extbase: TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters
         siteGetAttributeMapping:
             base: string
             baseVariants: list
