@@ -1,6 +1,9 @@
 {
 	"name": "saschaegerer/phpstan-typo3",
 	"description": "TYPO3 CMS class reflection extension for PHPStan",
+	"keywords": [
+		"static analysis"
+	],
 	"license": [
 		"MIT"
 	],
