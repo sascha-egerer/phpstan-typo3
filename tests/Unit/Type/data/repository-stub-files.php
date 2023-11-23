@@ -14,6 +14,14 @@ class MyModel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
 }
 
+class ExtendingMyAbstractModel extends  \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
+
+	/** @var string */
+	protected $foo;
+
+}
+
 namespace RepositoryStubFiles\My\Test\Extension\Domain\Repository;
 
 use function PHPStan\Testing\assertType;
@@ -55,9 +63,42 @@ class MyModelRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 			'int',
 			$this->countByFoo('a')
 		);
+
+		// call findBy with non-existing model property
+		assertType(
+			'*ERROR*',
+			$this->findByNonexisting('a')
+		);
 	}
 
 }
+
+/** @extends \TYPO3\CMS\Extbase\Persistence\Repository<\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface> */
+abstract class MyAbstractModelRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
+
+}
+
+/** @template TEntityClass of \RepositoryStubFiles\My\Test\Extension\Domain\Model\ExtendingMyAbstractModel **/
+class ExtendingMyAbstractModelRepository extends MyAbstractModelRepository
+{
+
+	public function myTests(): void
+	{
+		// call findBy with a non existing model property
+		assertType(
+			'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\ExtendingMyAbstractModel>',
+			$this->findByFoo('a')
+		);
+		// call findBy with a non existing model property
+		assertType(
+			'*ERROR*',
+			$this->findByNonexisting('a')
+		);
+	}
+
+}
+
 
 class MyModelWithoutExtends extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {

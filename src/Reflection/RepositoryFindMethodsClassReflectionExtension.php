@@ -34,6 +34,10 @@ class RepositoryFindMethodsClassReflectionExtension implements MethodsClassRefle
 			return false;
 		}
 
+		if ($classReflection->isAbstract()) {
+			return false;
+		}
+
 		if (strpos($methodName, 'findOneBy') === 0) {
 			$propertyName = lcfirst(substr($methodName, 9));
 		} elseif (strpos($methodName, 'findBy') === 0) {
