@@ -69,6 +69,10 @@ class MyModelRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 			'*ERROR*',
 			$this->findByNonexisting('a')
 		);
+		assertType(
+			'*ERROR*',
+			$this->countByNonexisting('a')
+		);
 	}
 
 }
@@ -94,6 +98,10 @@ class ExtendingMyAbstractModelRepository extends MyAbstractModelRepository
 		assertType(
 			'*ERROR*',
 			$this->findByNonexisting('a')
+		);
+		assertType(
+			'*ERROR*',
+			$this->countByNonexisting('a')
 		);
 	}
 

@@ -32,6 +32,10 @@ class RepositoryCountByMethodsClassReflectionExtension implements MethodsClassRe
 			return false;
 		}
 
+		if ($classReflection->isAbstract()) {
+			return false;
+		}
+
 		if (strpos($methodName, 'countBy') !== 0) {
 			return false;
 		}
