@@ -14,8 +14,8 @@
 		"php": "^7.4 || ^8.0",
 		"phpstan/phpstan": "^1.8.9",
 		"nikic/php-parser": "^4.15.1",
-		"typo3/cms-core": "^10.4 || ^11.5 || ^12.4",
-		"typo3/cms-extbase": "^10.4 || ^11.5 || ^12.4",
+		"typo3/cms-core": "^10.4 || ^11.5 || ^12.4 || ^13.0",
+		"typo3/cms-extbase": "^10.4 || ^11.5 || ^12.4 || ^13.0",
 		"bnf/phpstan-psr-container": "^1.0",
 		"composer/semver": "^3.3"
 	},
