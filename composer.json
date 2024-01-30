@@ -13,7 +13,7 @@
 	"require": {
 		"php": "^7.4 || ^8.0",
 		"phpstan/phpstan": "^1.10.9",
-		"nikic/php-parser": "^4.15.1",
+		"nikic/php-parser": "^4.15.1 || ^5.0.0",
 		"typo3/cms-core": "^10.4 || ^11.5 || ^12.4 || ^13.0",
 		"typo3/cms-extbase": "^10.4 || ^11.5 || ^12.4 || ^13.0",
 		"bnf/phpstan-psr-container": "^1.0",
