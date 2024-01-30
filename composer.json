@@ -27,7 +27,7 @@
 		"phing/phing": "^2.17.4",
 		"phpstan/phpstan-strict-rules": "^1.5.1",
 		"phpunit/phpunit": "^9.6.16",
-		"symfony/polyfill-php80": "^1.27.0"
+		"symfony/polyfill-php80": "^1.28.0"
 	},
 	"autoload": {
 		"psr-4": {
