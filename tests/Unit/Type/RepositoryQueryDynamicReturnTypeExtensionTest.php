@@ -10,9 +10,9 @@ class RepositoryQueryDynamicReturnTypeExtensionTest extends TypeInferenceTestCas
 	/**
 	 * @return iterable<mixed>
 	 */
-	public function dataFileAsserts(): iterable
+	public static function dataFileAsserts(): iterable
 	{
-		yield from $this->gatherAssertTypes(__DIR__ . '/data/custom-query-type.php');
+		yield from self::gatherAssertTypes(__DIR__ . '/data/custom-query-type.php');
 	}
 
 	/**

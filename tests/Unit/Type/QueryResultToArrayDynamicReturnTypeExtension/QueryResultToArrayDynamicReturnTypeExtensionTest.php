@@ -10,9 +10,9 @@ final class QueryResultToArrayDynamicReturnTypeExtensionTest extends TypeInferen
 	/**
 	 * @return iterable<mixed>
 	 */
-	public function dataFileAsserts(): iterable
+	public static function dataFileAsserts(): iterable
 	{
-		yield from $this->gatherAssertTypes(__DIR__ . '/data/query-result-to-array.php');
+		yield from self::gatherAssertTypes(__DIR__ . '/data/query-result-to-array.php');
 	}
 
 	/**

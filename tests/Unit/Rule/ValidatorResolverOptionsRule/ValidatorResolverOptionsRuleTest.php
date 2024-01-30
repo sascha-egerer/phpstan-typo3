@@ -13,7 +13,7 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 {
 
 	/**
-	 * @dataProvider provideDataWithErrors()
+	 * @dataProvider provideDataWithErrors
 	 *
 	 * @param list<array{0: string, 1: int, 2?: string}> $expectedErrorMessagesWithLines
 	 */
@@ -27,7 +27,7 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 		$this->analyse([__DIR__ . '/Fixture/CreateValidatorWithCorrectOptions.php'], []);
 	}
 
-	public function provideDataWithErrors(): \Iterator
+	public static function provideDataWithErrors(): \Iterator
 	{
 		yield [
 			__DIR__ . '/Fixture/CreateValidatorWithUnresolvableType.php',

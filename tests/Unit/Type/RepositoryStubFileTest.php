@@ -10,9 +10,9 @@ class RepositoryStubFileTest extends TypeInferenceTestCase
 	/**
 	 * @return iterable<mixed>
 	 */
-	public function dataFileAsserts(): iterable
+	public static function dataFileAsserts(): iterable
 	{
-		yield from $this->gatherAssertTypes(__DIR__ . '/data/repository-stub-files.php');
+		yield from self::gatherAssertTypes(__DIR__ . '/data/repository-stub-files.php');
 	}
 
 	/**
