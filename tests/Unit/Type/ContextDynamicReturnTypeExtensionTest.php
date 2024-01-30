@@ -10,10 +10,10 @@ class ContextDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
 	/**
 	 * @return iterable<mixed>
 	 */
-	public function dataFileAsserts(): iterable
+	public static function dataFileAsserts(): iterable
 	{
 		// path to a file with actual asserts of expected types:
-		yield from $this->gatherAssertTypes(__DIR__ . '/data/context-get-aspect-return-types.php');
+		yield from self::gatherAssertTypes(__DIR__ . '/data/context-get-aspect-return-types.php');
 	}
 
 	/**

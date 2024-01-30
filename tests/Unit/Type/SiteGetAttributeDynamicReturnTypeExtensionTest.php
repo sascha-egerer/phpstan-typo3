@@ -10,10 +10,10 @@ class SiteGetAttributeDynamicReturnTypeExtensionTest extends TypeInferenceTestCa
 	/**
 	 * @return iterable<mixed>
 	 */
-	public function dataFileAsserts(): iterable
+	public static function dataFileAsserts(): iterable
 	{
 		// path to a file with actual asserts of expected types:
-		yield from $this->gatherAssertTypes(__DIR__ . '/data/site-get-attribute-return-types.php');
+		yield from self::gatherAssertTypes(__DIR__ . '/data/site-get-attribute-return-types.php');
 	}
 
 	/**

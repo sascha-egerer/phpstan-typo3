@@ -11,9 +11,9 @@ final class UserAspectGetDynamicReturnTypeExtensionTest extends TypeInferenceTes
 	 *
 	 * @return iterable<mixed>
 	 */
-	public function dataFileAsserts(): iterable
+	public static function dataFileAsserts(): iterable
 	{
-		yield from $this->gatherAssertTypes(__DIR__ . '/data/user-aspect-get-return-types.php');
+		yield from self::gatherAssertTypes(__DIR__ . '/data/user-aspect-get-return-types.php');
 	}
 
 	/**
