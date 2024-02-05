@@ -109,6 +109,7 @@ parameters:
     bootstrapFiles:
         - phpstan.bootstrap.php
     typo3:
+        containerXmlPath: null
         contextApiGetAspectMapping:
             date: TYPO3\CMS\Core\Context\DateTimeAspect
             visibility: TYPO3\CMS\Core\Context\VisibilityAspect
@@ -194,6 +195,7 @@ parameters:
             - pageErrorHandler
 parametersSchema:
     typo3: structure([
+        containerXmlPath: schema(string(), nullable())
         contextApiGetAspectMapping: arrayOf(string())
         requestGetAttributeMapping: arrayOf(string())
         siteGetAttributeMapping: arrayOf(string())
