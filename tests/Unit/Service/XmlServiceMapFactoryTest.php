@@ -38,6 +38,9 @@ final class XmlServiceMapFactoryTest extends TestCase
 
 		$serviceDefinition = $serviceMap->getServiceDefinitionById('public');
 		self::assertNotNull($serviceDefinition);
+
+		$serviceDefinitionExcluded = $serviceMap->getServiceDefinitionById('excluded');
+		self::assertNull($serviceDefinitionExcluded);
 	}
 
 	private function createServiceMap(?string $containerXmlPath): ServiceMap

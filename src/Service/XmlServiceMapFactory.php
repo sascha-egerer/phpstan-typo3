@@ -43,6 +43,12 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 				continue;
 			}
 
+			$tags = $this->createTags($def);
+
+			if (in_array('container.excluded', $tags, true)) {
+				continue;
+			}
+
 			$serviceDefinition = new ServiceDefinition(
 				strpos((string) $attrs->id, '.') === 0 ? substr((string) $attrs->id, 1) : (string) $attrs->id,
 				isset($attrs->class) ? (string) $attrs->class : null,
@@ -73,6 +79,28 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 		}
 
 		return new DefaultServiceMap($serviceDefinitions);
+	}
+
+	/**
+	 * @return string[]
+	 */
+	private function createTags(?SimpleXMLElement $def): array
+	{
+		if (!isset($def->tag)) {
+			return [];
+		}
+
+		$tagNames = [];
+
+		foreach ($def->tag as $tag) {
+			$attributes = $tag->attributes();
+			if (!isset($attributes->name)) {
+				continue;
+			}
+			$tagNames[] = (string) $attributes->name;
+		}
+
+		return $tagNames;
 	}
 
 }

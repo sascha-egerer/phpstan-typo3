@@ -8,7 +8,13 @@
 		<service id="publicNotTrue" class="Foo" public="false"></service>
 		<service id="public" class="Foo" public="true"></service>
 		<service id="synthetic" class="Foo" synthetic="true"></service>
-		<service id="alias" class="Bar" alias="withClass"></service>
+		<service id="alias" class="Bar" alias="withClass">
+			<tag name="event.listener"/>
+			<tag name="foo"/>
+		</service>
 		<service id="private" class="Foo" public="false"></service>
+		<service id="excluded" class="Foo" public="false">
+			<tag name="container.excluded"/>
+		</service>
 	</services>
 </container>
