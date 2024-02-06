@@ -1,14 +1,14 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace SaschaEgerer\PhpstanTypo3\Service;
 
-use SaschaEgerer\PhpstanTypo3\Contract\ServiceMapFactoryInterface;
-use SaschaEgerer\PhpstanTypo3\Contract\ServiceMapInterface;
+use SaschaEgerer\PhpstanTypo3\Contract\ServiceMap;
+use SaschaEgerer\PhpstanTypo3\Contract\ServiceMapFactory;
 use SimpleXMLElement;
 
-final class XmlServiceMapFactory implements ServiceMapFactoryInterface
+final class XmlServiceMapFactory implements ServiceMapFactory
 {
+
 	private ?string $containerXmlPath;
 
 	public function __construct(?string $containerXmlPath)
@@ -16,20 +16,20 @@ final class XmlServiceMapFactory implements ServiceMapFactoryInterface
 		$this->containerXmlPath = $containerXmlPath;
 	}
 
-	public function create(): ServiceMapInterface
+	public function create(): ServiceMap
 	{
 		if ($this->containerXmlPath === null) {
 			return new FakeServiceMap();
 		}
 
-		if(!file_exists($this->containerXmlPath)) {
-			throw ServiceDefinitionFileException::notFound($this->containerXmlPath);
+		if (!file_exists($this->containerXmlPath)) {
+			throw \SaschaEgerer\PhpstanTypo3\Service\ServiceDefinitionFileException::notFound($this->containerXmlPath);
 		}
 
 		$xml = @simplexml_load_file($this->containerXmlPath);
 
-		if($xml === false) {
-			throw ServiceDefinitionFileException::parseError($this->containerXmlPath);
+		if ($xml === false) {
+			throw \SaschaEgerer\PhpstanTypo3\Service\ServiceDefinitionFileException::parseError($this->containerXmlPath);
 		}
 
 		/** @var ServiceDefinition[] $serviceDefinitions */
@@ -72,6 +72,7 @@ final class XmlServiceMapFactory implements ServiceMapFactoryInterface
 			);
 		}
 
-		return new ServiceMap($serviceDefinitions);
+		return new DefaultServiceMap($serviceDefinitions);
 	}
+
 }

@@ -1,15 +1,15 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace SaschaEgerer\PhpstanTypo3\Service;
 
-use SaschaEgerer\PhpstanTypo3\Contract\ServiceMapInterface;
+use PhpParser\Node\Expr;
+use PHPStan\Analyser\Scope;
+use SaschaEgerer\PhpstanTypo3\Contract\ServiceMap;
 
-final class ServiceMap implements ServiceMapInterface
+final class DefaultServiceMap implements ServiceMap
 {
-	/**
-	 * @var ServiceDefinition[]
-	 */
+
+	/** @var ServiceDefinition[] */
 	private array $serviceDefinitions;
 
 	/**
@@ -29,4 +29,11 @@ final class ServiceMap implements ServiceMapInterface
 	{
 		return $this->serviceDefinitions[$id] ?? null;
 	}
+
+	public function getServiceIdFromNode(Expr $node, Scope $scope): ?string
+	{
+		$strings = $scope->getType($node)->getConstantStrings();
+		return count($strings) === 1 ? $strings[0]->getValue() : null;
+	}
+
 }

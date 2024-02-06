@@ -1,11 +1,12 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace SaschaEgerer\PhpstanTypo3\Service;
 
-use SaschaEgerer\PhpstanTypo3\Contract\ServiceMapInterface;
+use PhpParser\Node\Expr;
+use PHPStan\Analyser\Scope;
+use SaschaEgerer\PhpstanTypo3\Contract\ServiceMap;
 
-final class FakeServiceMap implements ServiceMapInterface
+final class FakeServiceMap implements ServiceMap
 {
 
 	public function getServiceDefinitions(): array
@@ -17,4 +18,10 @@ final class FakeServiceMap implements ServiceMapInterface
 	{
 		return null;
 	}
+
+	public function getServiceIdFromNode(Expr $node, Scope $scope): ?string
+	{
+		return null;
+	}
+
 }

@@ -1,14 +1,18 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace SaschaEgerer\PhpstanTypo3\Service;
 
 final class ServiceDefinition
 {
+
 	private string $id;
+
 	private ?string $class;
+
 	private bool $public;
+
 	private bool $synthetic;
+
 	private ?string $alias;
 
 	public function __construct(
@@ -19,7 +23,6 @@ final class ServiceDefinition
 		?string $alias
 	)
 	{
-
 		$this->id = $id;
 		$this->class = $class;
 		$this->public = $public;
@@ -51,4 +54,5 @@ final class ServiceDefinition
 	{
 		return $this->alias;
 	}
+
 }

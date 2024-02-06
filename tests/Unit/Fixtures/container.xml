@@ -9,5 +9,6 @@
 		<service id="public" class="Foo" public="true"></service>
 		<service id="synthetic" class="Foo" synthetic="true"></service>
 		<service id="alias" class="Bar" alias="withClass"></service>
+		<service id="private" class="Foo" public="false"></service>
 	</services>
 </container>

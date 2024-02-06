@@ -1,21 +1,22 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace SaschaEgerer\PhpstanTypo3\Service;
 
 final class ServiceDefinitionFileException extends \InvalidArgumentException
 {
+
 	public static function notFound(string $file): self
 	{
-		$message = sprintf('File "%s" does not exist', $file);
+		$message = sprintf('File "%s" does not exist', realpath($file));
 
 		return new self($message);
 	}
 
 	public static function parseError(string $file): self
 	{
-		$message = sprintf('File "%s" could not be parsed correctly', $file);
+		$message = sprintf('File "%s" could not be parsed correctly', realpath($file));
 
 		return new self($message);
 	}
+
 }
