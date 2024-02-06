@@ -54,7 +54,10 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 				isset($attrs->class) ? (string) $attrs->class : null,
 				isset($attrs->public) && (string) $attrs->public === 'true',
 				isset($attrs->synthetic) && (string) $attrs->synthetic === 'true',
-				isset($attrs->alias) ? (string) $attrs->alias : null
+				isset($attrs->alias) ? (string) $attrs->alias : null,
+				isset($def->argument),
+				isset($def->call),
+				isset($def->tag),
 			);
 
 			if ($serviceDefinition->getAlias() !== null) {
@@ -74,7 +77,10 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 				$serviceDefinitions[$alias]->getClass(),
 				$serviceDefinition->isPublic(),
 				$serviceDefinition->isSynthetic(),
-				$alias
+				$alias,
+				$serviceDefinition->isHasConstructorArguments(),
+				$serviceDefinition->isHasMethodCalls(),
+				$serviceDefinition->isHasTags()
 			);
 		}
 

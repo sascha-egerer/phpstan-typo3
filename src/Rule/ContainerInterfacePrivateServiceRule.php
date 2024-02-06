@@ -7,6 +7,7 @@ use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Type\ObjectType;
+use SaschaEgerer\PhpstanTypo3\Service\NullServiceDefinitionChecker;
 use SaschaEgerer\PhpstanTypo3\Service\PrivateServiceAnalyzer;
 
 /**
@@ -33,7 +34,7 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 			return [];
 		}
 
-		return $this->privateServiceAnalyzer->analyze($node, $scope);
+		return $this->privateServiceAnalyzer->analyze($node, $scope, new NullServiceDefinitionChecker());
 	}
 
 	private function shouldSkip(MethodCall $node, Scope $scope): bool

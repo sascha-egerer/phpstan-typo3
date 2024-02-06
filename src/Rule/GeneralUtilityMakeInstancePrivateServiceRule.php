@@ -7,6 +7,7 @@ use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use SaschaEgerer\PhpstanTypo3\Service\PrivateServiceAnalyzer;
+use SaschaEgerer\PhpstanTypo3\Service\PrototypeServiceDefinitionChecker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -33,7 +34,7 @@ final class GeneralUtilityMakeInstancePrivateServiceRule implements Rule
 			return [];
 		}
 
-		return $this->privateServiceAnalyzer->analyze($node, $scope);
+		return $this->privateServiceAnalyzer->analyze($node, $scope, new PrototypeServiceDefinitionChecker());
 	}
 
 	private function shouldSkip(StaticCall $node): bool

@@ -8,6 +8,7 @@ use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\RuleError;
 use PHPStan\Rules\RuleErrorBuilder;
+use SaschaEgerer\PhpstanTypo3\Contract\ServiceDefinitionChecker;
 use SaschaEgerer\PhpstanTypo3\Contract\ServiceMap;
 
 final class PrivateServiceAnalyzer
@@ -25,7 +26,7 @@ final class PrivateServiceAnalyzer
 	 *
 	 * @return RuleError[]
 	 */
-	public function analyze(Node $node, Scope $scope): array
+	public function analyze(Node $node, Scope $scope, ServiceDefinitionChecker $serviceDefinitionChecker): array
 	{
 		$serviceId = $this->serviceMap->getServiceIdFromNode($node->getArgs()[0]->value, $scope);
 
@@ -33,9 +34,13 @@ final class PrivateServiceAnalyzer
 			return [];
 		}
 
-		$service = $this->serviceMap->getServiceDefinitionById($serviceId);
+		$serviceDefinition = $this->serviceMap->getServiceDefinitionById($serviceId);
 
-		if ($service === null || $service->isPublic()) {
+		if ($serviceDefinition === null || $serviceDefinition->isPublic()) {
+			return [];
+		}
+
+		if ($serviceDefinitionChecker->isPrototype($serviceDefinition)) {
 			return [];
 		}
 
