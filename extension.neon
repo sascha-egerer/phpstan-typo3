@@ -106,6 +106,8 @@ services:
             - phpstan.broker.dynamicMethodReturnTypeExtension
     -
     	class: SaschaEgerer\PhpstanTypo3\Service\PrivateServiceAnalyzer
+    -
+        class: SaschaEgerer\PhpstanTypo3\Service\PrototypeServiceDefinitionChecker
     # service map
     typo3.serviceMapFactory:
         class: SaschaEgerer\PhpstanTypo3\Contract\ServiceMapFactory

@@ -18,9 +18,12 @@ final class GeneralUtilityMakeInstancePrivateServiceRule implements Rule
 
 	private PrivateServiceAnalyzer $privateServiceAnalyzer;
 
-	public function __construct(PrivateServiceAnalyzer $privateServiceAnalyzer)
+	private PrototypeServiceDefinitionChecker $prototypeServiceDefinitionChecker;
+
+	public function __construct(PrivateServiceAnalyzer $privateServiceAnalyzer, PrototypeServiceDefinitionChecker $prototypeServiceDefinitionChecker)
 	{
 		$this->privateServiceAnalyzer = $privateServiceAnalyzer;
+		$this->prototypeServiceDefinitionChecker = $prototypeServiceDefinitionChecker;
 	}
 
 	public function getNodeType(): string
@@ -34,7 +37,7 @@ final class GeneralUtilityMakeInstancePrivateServiceRule implements Rule
 			return [];
 		}
 
-		return $this->privateServiceAnalyzer->analyze($node, $scope, new PrototypeServiceDefinitionChecker());
+		return $this->privateServiceAnalyzer->analyze($node, $scope, $this->prototypeServiceDefinitionChecker);
 	}
 
 	private function shouldSkip(StaticCall $node): bool

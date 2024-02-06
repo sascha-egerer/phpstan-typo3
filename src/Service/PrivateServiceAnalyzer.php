@@ -40,7 +40,7 @@ final class PrivateServiceAnalyzer
 			return [];
 		}
 
-		if ($serviceDefinitionChecker->isPrototype($serviceDefinition)) {
+		if ($serviceDefinitionChecker->isPrototype($serviceDefinition, $node)) {
 			return [];
 		}
 
