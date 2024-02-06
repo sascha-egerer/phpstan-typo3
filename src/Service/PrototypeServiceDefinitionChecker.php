@@ -12,7 +12,7 @@ final class PrototypeServiceDefinitionChecker implements ServiceDefinitionChecke
 
 	public function isPrototype(ServiceDefinition $serviceDefinition, Node $node): bool
 	{
-		return !$serviceDefinition->isHasTags() && !$serviceDefinition->isHasMethodCalls() && !$serviceDefinition->isHasConstructorArguments() && !$this->canBePrototypeClass($node);
+		return !$serviceDefinition->isHasTags() && !$serviceDefinition->isHasMethodCalls() && $this->canBePrototypeClass($node);
 	}
 
 	private function extractFirstArgument(StaticCall $node): ?Node
