@@ -13,6 +13,7 @@ parameters:
          - tests
     reportUnmatchedIgnoredErrors: false
     excludePaths:
+         - '*tests/*/Fixtures/*'
          - '*tests/*/Fixture/*'
          - '*tests/*/Source/*'
          - '*tests/*/data/*'

@@ -66,7 +66,7 @@ final class PrototypeServiceDefinitionCheckerTest extends TestCase
 	 */
 	public function testIsPrototypeIsFalse(StaticCall $node, ServiceDefinition $serviceDefinition): void
 	{
-			self::assertFalse($this->subject->isPrototype($serviceDefinition, $node));
+		self::assertFalse($this->subject->isPrototype($serviceDefinition, $node));
 	}
 
 }
