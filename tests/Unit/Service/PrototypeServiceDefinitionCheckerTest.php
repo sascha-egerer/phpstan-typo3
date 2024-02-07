@@ -4,13 +4,14 @@ namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Service;
 
 use PhpParser\BuilderFactory;
 use PhpParser\Node\Expr\StaticCall;
-use PHPUnit\Framework\TestCase;
+use PHPStan\Testing\PHPStanTestCase;
 use SaschaEgerer\PhpstanTypo3\Service\PrototypeServiceDefinitionChecker;
 use SaschaEgerer\PhpstanTypo3\Service\ServiceDefinition;
 use SaschaEgerer\PhpstanTypo3\Tests\Unit\Fixtures\NonPrototypeClass;
 use SaschaEgerer\PhpstanTypo3\Tests\Unit\Fixtures\PrototypeClass;
+use SaschaEgerer\PhpstanTypo3\Tests\Unit\Fixtures\PrototypeClassWithoutConstructor;
 
-final class PrototypeServiceDefinitionCheckerTest extends TestCase
+final class PrototypeServiceDefinitionCheckerTest extends PHPStanTestCase
 {
 
 	private PrototypeServiceDefinitionChecker $subject;
@@ -40,17 +41,22 @@ final class PrototypeServiceDefinitionCheckerTest extends TestCase
 	public static function providePrototypes(): \Generator
 	{
 		$builderFactory = new BuilderFactory();
-		$prototypeClass = $builderFactory->classConstFetch(PrototypeClass::class, 'class');
+		$prototypeClass = $builderFactory->classConstFetch(self::class, 'class');
+		$prototypeClassWithoutConstructor = $builderFactory->classConstFetch(PrototypeClassWithoutConstructor::class, 'class');
 
 		yield 'Service definition has no tags, no method calls and class has no required constructor arguments' => [
 			$builderFactory->staticCall('Foo', 'foo', [$prototypeClass]),
+			new ServiceDefinition('foo', 'bar', false, false, null, false, false, false),
+		];
+		yield 'Service definition has no tags, no method calls and class has no constructor at all' => [
+			$builderFactory->staticCall('Foo', 'foo', [$prototypeClassWithoutConstructor]),
 			new ServiceDefinition('foo', 'bar', false, false, null, false, false, false),
 		];
 	}
 
 	protected function setUp(): void
 	{
-		$this->subject = new PrototypeServiceDefinitionChecker();
+		$this->subject = self::getContainer()->getByType(PrototypeServiceDefinitionChecker::class);
 	}
 
 	/**
@@ -67,6 +73,13 @@ final class PrototypeServiceDefinitionCheckerTest extends TestCase
 	public function testIsPrototypeIsFalse(StaticCall $node, ServiceDefinition $serviceDefinition): void
 	{
 		self::assertFalse($this->subject->isPrototype($serviceDefinition, $node));
+	}
+
+	public static function getAdditionalConfigFiles(): array
+	{
+		return [
+			__DIR__ . '/../../../extension.neon',
+		];
 	}
 
 }

@@ -5,10 +5,18 @@ namespace SaschaEgerer\PhpstanTypo3\Service;
 use PhpParser\Node;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\StaticCall;
+use PHPStan\Reflection\ReflectionProvider;
 use SaschaEgerer\PhpstanTypo3\Contract\ServiceDefinitionChecker;
 
 final class PrototypeServiceDefinitionChecker implements ServiceDefinitionChecker
 {
+
+	private ReflectionProvider $reflectionProvider;
+
+	public function __construct(ReflectionProvider $reflectionProvider)
+	{
+		$this->reflectionProvider = $reflectionProvider;
+	}
 
 	public function isPrototype(ServiceDefinition $serviceDefinition, Node $node): bool
 	{
@@ -44,28 +52,30 @@ final class PrototypeServiceDefinitionChecker implements ServiceDefinitionChecke
 			return false;
 		}
 
-		if ($firstArgument->class->isSpecialClassName()) {
+		$className = $firstArgument->class->toString();
+
+		if (!$this->reflectionProvider->hasClass($className)) {
 			return false;
 		}
 
-		/** @var class-string $className */
-		$className = $firstArgument->class->toString();
+		$classReflection = $this->reflectionProvider->getClass($className);
 
-		$reflection = new \ReflectionClass($className);
-
-		$constructorMethod = $reflection->getConstructor();
-
-		if ($constructorMethod === null) {
+		if (!$classReflection->hasConstructor()) {
 			return true;
 		}
 
-		$constructorParameters = $constructorMethod->getParameters();
+		$constructorMethod = $classReflection->getConstructor();
+
+		$constructorParameters = $constructorMethod->getVariants();
+
 		$hasRequiredParameter = false;
 		foreach ($constructorParameters as $constructorParameter) {
-			if ($constructorParameter->isOptional()) {
-				continue;
+			foreach ($constructorParameter->getParameters() as $parameter) {
+				if ($parameter->isOptional()) {
+					continue;
+				}
+				$hasRequiredParameter = true;
 			}
-			$hasRequiredParameter = true;
 		}
 
 		return $hasRequiredParameter === false;
