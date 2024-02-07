@@ -60,7 +60,7 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 		$isPsrContainerType = (new ObjectType('Psr\Container\ContainerInterface'))->isSuperTypeOf($argType);
 		$isTestCaseType = (new ObjectType('TYPO3\TestingFramework\Core\Functional\FunctionalTestCase'))->isSuperTypeOf($argType);
 
-		if ($isPsrContainerType->yes() && $isTestCaseType->yes()) {
+		if ($isTestCaseType->yes()) {
 			return true;
 		}
 
