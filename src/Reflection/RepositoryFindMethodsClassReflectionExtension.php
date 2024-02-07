@@ -14,8 +14,7 @@ class RepositoryFindMethodsClassReflectionExtension implements MethodsClassRefle
 
 	use Typo3ClassNamingUtilityTrait;
 
-	/** @var ReflectionProvider $reflectionProvider */
-	private $reflectionProvider;
+	private ReflectionProvider $reflectionProvider;
 
 	public function __construct(
 		ReflectionProvider $reflectionProvider

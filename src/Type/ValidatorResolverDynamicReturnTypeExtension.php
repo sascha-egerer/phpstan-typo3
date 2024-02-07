@@ -2,6 +2,7 @@
 
 namespace SaschaEgerer\PhpstanTypo3\Type;
 
+use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
@@ -42,7 +43,7 @@ class ValidatorResolverDynamicReturnTypeExtension implements DynamicMethodReturn
 
 		$argumentValue = $argument->value;
 
-		if (!($argumentValue instanceof \PhpParser\Node\Expr\ClassConstFetch)) {
+		if (!($argumentValue instanceof ClassConstFetch)) {
 			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 		}
 		/** @var Name $class */

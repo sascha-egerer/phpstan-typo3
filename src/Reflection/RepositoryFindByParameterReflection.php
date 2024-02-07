@@ -11,11 +11,9 @@ use PHPStan\Type\TypeCombinator;
 class RepositoryFindByParameterReflection implements ParameterReflection
 {
 
-	/** @var string */
-	private $name;
+	private string $name;
 
-	/** @var Type */
-	private $type;
+	private Type $type;
 
 	public function __construct(string $name, Type $type)
 	{

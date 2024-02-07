@@ -11,6 +11,7 @@ use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use SaschaEgerer\PhpstanTypo3\Helpers\Typo3ClassNamingUtilityTrait;
+use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
 
 class RepositoryDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -19,7 +20,7 @@ class RepositoryDynamicReturnTypeExtension implements DynamicMethodReturnTypeExt
 
 	public function getClass(): string
 	{
-		return \TYPO3\CMS\Extbase\Persistence\RepositoryInterface::class;
+		return RepositoryInterface::class;
 	}
 
 	public function isMethodSupported(

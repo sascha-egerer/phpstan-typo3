@@ -3,18 +3,23 @@
 namespace SaschaEgerer\PhpstanTypo3\Rule;
 
 use PhpParser\Node;
+use PhpParser\Node\Arg;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
+use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use TYPO3\CMS\Core\Site\Entity\Site;
 
 /**
- * @implements \PHPStan\Rules\Rule<\PhpParser\Node\Expr\MethodCall>
+ * @implements Rule<MethodCall>
  */
-class SiteAttributeValidationRule implements \PHPStan\Rules\Rule
+class SiteAttributeValidationRule implements Rule
 {
 
 	/** @var array<string, string> */
-	private $siteGetAttributeMapping;
+	private array $siteGetAttributeMapping;
 
 	/**
 	 * @param array<string, string> $siteGetAttributeMapping
@@ -26,7 +31,7 @@ class SiteAttributeValidationRule implements \PHPStan\Rules\Rule
 
 	public function getNodeType(): string
 	{
-		return Node\Expr\MethodCall::class;
+		return MethodCall::class;
 	}
 
 	/**
@@ -34,7 +39,7 @@ class SiteAttributeValidationRule implements \PHPStan\Rules\Rule
 	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
-		if (!$node->name instanceof Node\Identifier) {
+		if (!$node->name instanceof Identifier) {
 			return [];
 		}
 
@@ -51,7 +56,7 @@ class SiteAttributeValidationRule implements \PHPStan\Rules\Rule
 
 		$argument = $node->getArgs()[0] ?? null;
 
-		if (!($argument instanceof Node\Arg) || !($argument->value instanceof Node\Scalar\String_)) {
+		if (!($argument instanceof Arg) || !($argument->value instanceof String_)) {
 			return [];
 		}
 

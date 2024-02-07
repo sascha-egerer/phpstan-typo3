@@ -3,17 +3,23 @@
 namespace SaschaEgerer\PhpstanTypo3\Rule;
 
 use PhpParser\Node;
+use PhpParser\Node\Arg;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
+use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
+use TYPO3\CMS\Core\Context\Context;
 
 /**
- * @implements \PHPStan\Rules\Rule<\PhpParser\Node\Expr\MethodCall>
+ * @implements Rule<MethodCall>
  */
-class ContextAspectValidationRule implements \PHPStan\Rules\Rule
+class ContextAspectValidationRule implements Rule
 {
 
 	/** @var array<string, string> */
-	private $contextApiGetAspectMapping;
+	private array $contextApiGetAspectMapping;
 
 	/**
 	 * @param array<string, string> $contextApiGetAspectMapping
@@ -25,7 +31,7 @@ class ContextAspectValidationRule implements \PHPStan\Rules\Rule
 
 	public function getNodeType(): string
 	{
-		return Node\Expr\MethodCall::class;
+		return MethodCall::class;
 	}
 
 	/**
@@ -33,7 +39,7 @@ class ContextAspectValidationRule implements \PHPStan\Rules\Rule
 	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
-		if (!$node->name instanceof Node\Identifier) {
+		if (!$node->name instanceof Identifier) {
 			return [];
 		}
 
@@ -49,13 +55,13 @@ class ContextAspectValidationRule implements \PHPStan\Rules\Rule
 
 		$declaringClass = $methodReflection->getDeclaringClass();
 
-		if ($declaringClass->getName() !== \TYPO3\CMS\Core\Context\Context::class) {
+		if ($declaringClass->getName() !== Context::class) {
 			return [];
 		}
 
 		$argument = $node->getArgs()[0] ?? null;
 
-		if (!($argument instanceof Node\Arg) || !($argument->value instanceof Node\Scalar\String_)) {
+		if (!($argument instanceof Arg) || !($argument->value instanceof String_)) {
 			return [];
 		}
 

@@ -19,6 +19,7 @@ use SaschaEgerer\PhpstanTypo3\Helpers\Typo3ClassNamingUtilityTrait;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
+use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
 
 class RepositoryFindAllDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -27,7 +28,7 @@ class RepositoryFindAllDynamicReturnTypeExtension implements DynamicMethodReturn
 
 	public function getClass(): string
 	{
-		return \TYPO3\CMS\Extbase\Persistence\RepositoryInterface::class;
+		return RepositoryInterface::class;
 	}
 
 	public function isMethodSupported(

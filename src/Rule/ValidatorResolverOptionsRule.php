@@ -4,10 +4,12 @@ namespace SaschaEgerer\PhpstanTypo3\Rule;
 
 use PhpParser\Node;
 use PhpParser\Node\Arg;
+use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Identifier;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\InitializerExprTypeResolver;
@@ -31,11 +33,9 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 final class ValidatorResolverOptionsRule implements Rule
 {
 
-	/** @var InitializerExprTypeResolver */
-	private $initializerExprTypeResolver;
+	private InitializerExprTypeResolver $initializerExprTypeResolver;
 
-	/** @var ValidatorClassNameResolver */
-	private $validatorClassNameResolver;
+	private ValidatorClassNameResolver $validatorClassNameResolver;
 
 	public function __construct(
 		InitializerExprTypeResolver $initializerExprTypeResolver,
@@ -138,7 +138,7 @@ final class ValidatorResolverOptionsRule implements Rule
 			return true;
 		}
 
-		if (!$methodCall->name instanceof Node\Identifier) {
+		if (!$methodCall->name instanceof Identifier) {
 			return true;
 		}
 
@@ -246,12 +246,12 @@ final class ValidatorResolverOptionsRule implements Rule
 			return null;
 		}
 
-		if ($defaultValue->key instanceof ClassConstFetch && $defaultValue->key->name instanceof Node\Identifier) {
+		if ($defaultValue->key instanceof ClassConstFetch && $defaultValue->key->name instanceof Identifier) {
 			$keyType = $this->initializerExprTypeResolver->getClassConstFetchType(
 				$defaultValue->key->class,
 				$defaultValue->key->name->toString(),
 				$supportedOptions->getDeclaringClass()->getName(),
-				static function (\PhpParser\Node\Expr $expr) use ($scope): Type {
+				static function (Expr $expr) use ($scope): Type {
 					return $scope->getType($expr);
 				}
 			);

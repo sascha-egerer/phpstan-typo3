@@ -6,11 +6,14 @@ use PHPStan\Reflection\ClassMemberReflection;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\FunctionVariant;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\ParametersAcceptor;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\TrinaryLogic;
 use PHPStan\Type\Generic\GenericObjectType;
 use PHPStan\Type\Generic\TemplateTypeMap;
+use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
+use PHPStan\Type\Type;
 use SaschaEgerer\PhpstanTypo3\Helpers\Typo3ClassNamingUtilityTrait;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
@@ -19,14 +22,11 @@ class RepositoryFindByMethodReflection implements MethodReflection
 
 	use Typo3ClassNamingUtilityTrait;
 
-	/** @var \PHPStan\Reflection\ClassReflection */
-	private $classReflection;
+	private ClassReflection $classReflection;
 
-	/** @var string */
-	private $name;
+	private string $name;
 
-	/** @var ReflectionProvider */
-	private $reflectionProvider;
+	private ReflectionProvider $reflectionProvider;
 
 	public function __construct(ClassReflection $classReflection, string $name, ReflectionProvider $reflectionProvider)
 	{
@@ -89,7 +89,7 @@ class RepositoryFindByMethodReflection implements MethodReflection
 		if ($modelReflection->hasNativeProperty($this->getPropertyName())) {
 			$type = $modelReflection->getNativeProperty($this->getPropertyName())->getReadableType();
 		} else {
-			$type = new \PHPStan\Type\MixedType(\false);
+			$type = new MixedType(\false);
 		}
 
 		return [
@@ -108,7 +108,7 @@ class RepositoryFindByMethodReflection implements MethodReflection
 	}
 
 	/**
-	 * @return \PHPStan\Reflection\ParametersAcceptor[]
+	 * @return ParametersAcceptor[]
 	 */
 	public function getVariants(): array
 	{
@@ -148,7 +148,7 @@ class RepositoryFindByMethodReflection implements MethodReflection
 		return TrinaryLogic::createNo();
 	}
 
-	public function getThrowType(): ?\PHPStan\Type\Type
+	public function getThrowType(): ?Type
 	{
 		return null;
 	}

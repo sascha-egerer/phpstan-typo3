@@ -6,6 +6,7 @@ use PHPStan\Reflection\ClassMemberReflection;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\FunctionVariant;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\ParametersAcceptor;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\TrinaryLogic;
 use PHPStan\Type\Generic\TemplateTypeMap;
@@ -19,14 +20,11 @@ class RepositoryFindOneByMethodReflection implements MethodReflection
 
 	use Typo3ClassNamingUtilityTrait;
 
-	/** @var \PHPStan\Reflection\ClassReflection */
-	private $classReflection;
+	private ClassReflection $classReflection;
 
-	/** @var string */
-	private $name;
+	private string $name;
 
-	/** @var ReflectionProvider */
-	private $reflectionProvider;
+	private ReflectionProvider $reflectionProvider;
 
 	public function __construct(ClassReflection $classReflection, string $name, ReflectionProvider $reflectionProvider)
 	{
@@ -105,7 +103,7 @@ class RepositoryFindOneByMethodReflection implements MethodReflection
 	}
 
 	/**
-	 * @return \PHPStan\Reflection\ParametersAcceptor[]
+	 * @return ParametersAcceptor[]
 	 */
 	public function getVariants(): array
 	{
@@ -125,7 +123,7 @@ class RepositoryFindOneByMethodReflection implements MethodReflection
 		return null;
 	}
 
-	public function isDeprecated(): \PHPStan\TrinaryLogic
+	public function isDeprecated(): TrinaryLogic
 	{
 		return TrinaryLogic::createNo();
 	}
@@ -135,22 +133,22 @@ class RepositoryFindOneByMethodReflection implements MethodReflection
 		return null;
 	}
 
-	public function isFinal(): \PHPStan\TrinaryLogic
+	public function isFinal(): TrinaryLogic
 	{
 		return TrinaryLogic::createNo();
 	}
 
-	public function isInternal(): \PHPStan\TrinaryLogic
+	public function isInternal(): TrinaryLogic
 	{
 		return TrinaryLogic::createNo();
 	}
 
-	public function getThrowType(): ?\PHPStan\Type\Type
+	public function getThrowType(): ?Type
 	{
 		return null;
 	}
 
-	public function hasSideEffects(): \PHPStan\TrinaryLogic
+	public function hasSideEffects(): TrinaryLogic
 	{
 		return TrinaryLogic::createNo();
 	}
