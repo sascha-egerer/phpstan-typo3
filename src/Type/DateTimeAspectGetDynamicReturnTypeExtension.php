@@ -2,6 +2,7 @@
 
 namespace SaschaEgerer\PhpstanTypo3\Type;
 
+use DateTimeImmutable;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
@@ -11,6 +12,7 @@ use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
+use PHPStan\Type\Type;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 
 class DateTimeAspectGetDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -30,7 +32,7 @@ class DateTimeAspectGetDynamicReturnTypeExtension implements DynamicMethodReturn
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
 		Scope $scope
-	): ?\PHPStan\Type\Type
+	): ?Type
 	{
 		$firstArgument = $methodCall->args[0];
 
@@ -49,7 +51,7 @@ class DateTimeAspectGetDynamicReturnTypeExtension implements DynamicMethodReturn
 				case 'timezone':
 					return new StringType();
 				case 'full':
-					return new ObjectType(\DateTimeImmutable::class);
+					return new ObjectType(DateTimeImmutable::class);
 			}
 		}
 

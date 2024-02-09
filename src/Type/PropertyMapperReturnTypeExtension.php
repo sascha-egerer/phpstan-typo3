@@ -23,8 +23,7 @@ use TYPO3\CMS\Extbase\Property\PropertyMapper;
 final class PropertyMapperReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
-	/** @var ReflectionProvider */
-	private $reflectionProvider;
+	private ReflectionProvider $reflectionProvider;
 
 	public function __construct(ReflectionProvider $reflectionProvider)
 	{

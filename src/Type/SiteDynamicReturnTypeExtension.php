@@ -3,21 +3,22 @@
 namespace SaschaEgerer\PhpstanTypo3\Type;
 
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\PhpDoc\TypeStringResolver;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
+use TYPO3\CMS\Core\Site\Entity\Site;
 
 class SiteDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
 	/** @var array<string, string> */
-	private $siteGetAttributeMapping;
+	private array $siteGetAttributeMapping;
 
-	/** @var TypeStringResolver */
-	private $typeStringResolver;
+	private TypeStringResolver $typeStringResolver;
 
 	/**
 	 * @param array<string, string> $siteGetAttributeMapping
@@ -30,7 +31,7 @@ class SiteDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 
 	public function getClass(): string
 	{
-		return \TYPO3\CMS\Core\Site\Entity\Site::class;
+		return Site::class;
 	}
 
 	public function getTypeFromMethodCall(
@@ -41,7 +42,7 @@ class SiteDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 	{
 		$argument = $methodCall->getArgs()[0] ?? null;
 
-		if ($argument === null || !($argument->value instanceof \PhpParser\Node\Scalar\String_)) {
+		if ($argument === null || !($argument->value instanceof String_)) {
 			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 		}
 

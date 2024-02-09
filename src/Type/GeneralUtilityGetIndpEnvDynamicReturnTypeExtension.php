@@ -11,6 +11,7 @@ use PHPStan\Type\BooleanType;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\DynamicStaticMethodReturnTypeExtension;
 use PHPStan\Type\StringType;
+use PHPStan\Type\Type;
 use PHPStan\Type\UnionType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -27,7 +28,7 @@ class GeneralUtilityGetIndpEnvDynamicReturnTypeExtension implements DynamicStati
 		return $methodReflection->getName() === 'getIndpEnv';
 	}
 
-	public function getTypeFromStaticMethodCall(MethodReflection $methodReflection, StaticCall $methodCall, Scope $scope): ?\PHPStan\Type\Type
+	public function getTypeFromStaticMethodCall(MethodReflection $methodReflection, StaticCall $methodCall, Scope $scope): ?Type
 	{
 		$firstArgument = $methodCall->args[0];
 

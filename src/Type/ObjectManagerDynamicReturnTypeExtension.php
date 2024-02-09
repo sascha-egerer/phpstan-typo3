@@ -2,6 +2,7 @@
 
 namespace SaschaEgerer\PhpstanTypo3\Type;
 
+use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
@@ -10,6 +11,7 @@ use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * @deprecated This class will be dropped once support for TYPO3 <= 10 is dropped.
@@ -19,15 +21,15 @@ class ObjectManagerDynamicReturnTypeExtension implements DynamicMethodReturnType
 
 	public function getClass(): string
 	{
-		return interface_exists(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class)
-			? \TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class : '';
+		return interface_exists(ObjectManagerInterface::class)
+			? ObjectManagerInterface::class : '';
 	}
 
 	public function isMethodSupported(
 		MethodReflection $methodReflection
 	): bool
 	{
-		return interface_exists(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class)
+		return interface_exists(ObjectManagerInterface::class)
 			&& $methodReflection->getName() === 'get';
 	}
 
@@ -45,7 +47,7 @@ class ObjectManagerDynamicReturnTypeExtension implements DynamicMethodReturnType
 
 		$argumentValue = $argument->value;
 
-		if (!($argumentValue instanceof \PhpParser\Node\Expr\ClassConstFetch)) {
+		if (!($argumentValue instanceof ClassConstFetch)) {
 			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 		}
 		/** @var Name $class */

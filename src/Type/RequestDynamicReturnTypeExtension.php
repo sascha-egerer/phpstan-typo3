@@ -3,6 +3,7 @@
 namespace SaschaEgerer\PhpstanTypo3\Type;
 
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\PhpDoc\TypeStringResolver;
 use PHPStan\Reflection\MethodReflection;
@@ -16,10 +17,9 @@ class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 {
 
 	/** @var array<string, string> */
-	private $requestGetAttributeMapping;
+	private array $requestGetAttributeMapping;
 
-	/** @var TypeStringResolver */
-	private $typeStringResolver;
+	private TypeStringResolver $typeStringResolver;
 
 	/**
 	 * @param array<string, string> $requestGetAttributeMapping
@@ -51,7 +51,7 @@ class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 		$defaultArgument = $methodCall->getArgs()[1] ?? null;
 
 		if ($argument === null
-			|| !($argument->value instanceof \PhpParser\Node\Scalar\String_)
+			|| !($argument->value instanceof String_)
 			|| !isset($this->requestGetAttributeMapping[$argument->value->value])
 		) {
 			$type = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();

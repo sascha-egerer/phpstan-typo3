@@ -6,10 +6,10 @@ final class ValidatorOptionsConfiguration
 {
 
 	/** @var string[] */
-	private $supportedOptions;
+	private array $supportedOptions;
 
 	/** @var string[] */
-	private $requriedOptions;
+	private array $requriedOptions;
 
 	/**
 	 * @param string[] $supportedOptions

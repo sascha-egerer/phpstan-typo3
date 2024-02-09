@@ -3,9 +3,10 @@
 namespace SaschaEgerer\PhpstanTypo3\Stubs;
 
 use Composer\Semver\VersionParser;
+use PHPStan\PhpDoc\StubFilesExtension;
 use TYPO3\CMS\Core\Information\Typo3Version;
 
-class StubFilesExtensionLoader implements \PHPStan\PhpDoc\StubFilesExtension
+class StubFilesExtensionLoader implements StubFilesExtension
 {
 
 	public function getFiles(): array

@@ -3,21 +3,22 @@
 namespace SaschaEgerer\PhpstanTypo3\Type;
 
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\PhpDoc\TypeStringResolver;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
+use TYPO3\CMS\Core\Context\Context;
 
 class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
 	/** @var array<string, string> */
-	private $contextApiGetAspectMapping;
+	private array $contextApiGetAspectMapping;
 
-	/** @var TypeStringResolver */
-	private $typeStringResolver;
+	private TypeStringResolver $typeStringResolver;
 
 	/**
 	 * @param array<string, string> $contextApiGetAspectMapping
@@ -30,7 +31,7 @@ class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 
 	public function getClass(): string
 	{
-		return \TYPO3\CMS\Core\Context\Context::class;
+		return Context::class;
 	}
 
 	public function isMethodSupported(
@@ -48,7 +49,7 @@ class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 	{
 		$argument = $methodCall->getArgs()[0] ?? null;
 
-		if ($argument === null || !($argument->value instanceof \PhpParser\Node\Scalar\String_)) {
+		if ($argument === null || !($argument->value instanceof String_)) {
 			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 		}
 

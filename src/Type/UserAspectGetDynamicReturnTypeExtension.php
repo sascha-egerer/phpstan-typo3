@@ -13,6 +13,7 @@ use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\IntegerRangeType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\StringType;
+use PHPStan\Type\Type;
 use TYPO3\CMS\Core\Context\UserAspect;
 
 class UserAspectGetDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -32,7 +33,7 @@ class UserAspectGetDynamicReturnTypeExtension implements DynamicMethodReturnType
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
 		Scope $scope
-	): ?\PHPStan\Type\Type
+	): ?Type
 	{
 		$firstArgument = $methodCall->args[0];
 
