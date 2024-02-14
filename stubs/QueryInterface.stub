@@ -6,6 +6,9 @@ namespace TYPO3\CMS\Extbase\Persistence;
  */
 interface QueryInterface
 {
+    public const ORDER_ASCENDING = 'ASC';
+    public const ORDER_DESCENDING = 'DESC';
+
     /**
      * @param bool $returnRawQueryResult
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface<ModelType>|array<string, mixed>

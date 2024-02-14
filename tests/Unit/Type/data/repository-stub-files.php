@@ -159,6 +159,11 @@ class FindAllWithoutReturnTestRepository extends \TYPO3\CMS\Extbase\Persistence\
 			'array<int, RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>|TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
 			$this->findAll()
 		);
+
+		assertType(
+			'array<int, RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>|TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
+			$this->findBy(['foo' => 'baz'])
+		);
 	}
 
 	public function findAll() // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
