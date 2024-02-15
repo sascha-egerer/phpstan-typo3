@@ -2,27 +2,26 @@
 namespace TYPO3\CMS\Extbase\Persistence;
 
 /**
- * @template ModelType
+ * @template T of object
  */
 interface QueryInterface
 {
-    public const ORDER_ASCENDING = 'ASC';
-    public const ORDER_DESCENDING = 'DESC';
-
     /**
-     * @param bool $returnRawQueryResult
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface<ModelType>|array<string, mixed>
+     * @param bool $returnRawQueryResult avoids the object mapping by the persistence
+     * @phpstan-return ($returnRawQueryResult is true ? list<T> : QueryResultInterface<T>)
      */
     public function execute($returnRawQueryResult = false);
 
     /**
      * @param mixed $constraint
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface<ModelType>
+     * @return QueryInterface
+     * @phpstan-return QueryInterface<T>
      */
     public function matching($constraint);
 
     /**
-     * @return class-string<ModelType>
+     * @return string
+     * @phpstan-return class-string<T>
      */
     public function getType();
 }

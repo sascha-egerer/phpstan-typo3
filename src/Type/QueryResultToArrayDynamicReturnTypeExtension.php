@@ -51,9 +51,10 @@ class QueryResultToArrayDynamicReturnTypeExtension implements DynamicMethodRetur
 		if ($resultType instanceof GenericObjectType) {
 			$modelType = $resultType->getTypes()[0] ?? new ErrorType();
 		} else {
-			$modelType = $methodReflection->getDeclaringClass()
-				->getPossiblyIncompleteActiveTemplateTypeMap()
-				->getType('ModelType') ?? new ErrorType();
+			$declaringClass = $methodReflection->getDeclaringClass();
+			$possibleTypes = $declaringClass->getPossiblyIncompleteActiveTemplateTypeMap();
+			$type = $possibleTypes->getType('TValue');
+			$modelType = $type ?? new ErrorType();
 		}
 
 		return new ArrayType(new IntegerType(), $modelType);

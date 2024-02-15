@@ -20,7 +20,12 @@ class StubFilesExtensionLoader implements StubFilesExtension
 			$files[] = $stubsDir . '/GeneralUtility.stub';
 		}
 		if ($versionParser->parseConstraints($typo3Version->getVersion())->matches($versionParser->parseConstraints('<= 12.2.0'))) {
-			$files[] = $stubsDir . '/QueryResult.stub';
+			$files[] = $stubsDir . '/DomainObjectInterface.stub';
+			$files[] = $stubsDir . '/QueryFactory.stub';
+			$files[] = $stubsDir . '/QueryInterface.stub';
+			$files[] = $stubsDir . '/QueryResultInterface.stub';
+			$files[] = $stubsDir . '/Repository.stub';
+			$files[] = $stubsDir . '/RepositoryInterface.stub';
 		}
 
 		return $files;

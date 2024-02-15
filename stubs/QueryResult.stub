@@ -4,13 +4,13 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
- * @template ModelType
- * @implements QueryResultInterface<ModelType>
+ * @template TValue of object
+ * @implements QueryResultInterface<int,TValue>
  */
 class QueryResult implements QueryResultInterface
 {
     /**
-     * @return null|ModelType
+     * @return null|TValue
      */
     public function getFirst();
 }

@@ -2,24 +2,24 @@
 namespace TYPO3\CMS\Extbase\Persistence;
 
 /**
- * @template ModelType
- * @extends \ArrayAccess<string, ModelType>
- * @extends \Iterator<string, ModelType>
+ * @template TValue of object
+ * @extends \Iterator<string,TValue>
+ * @extends \ArrayAccess<string,TValue>
  */
 interface QueryResultInterface extends \Countable, \Iterator, \ArrayAccess
 {
     /**
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface<ModelType>
+     * @phpstan-return QueryInterface<TValue>
      */
     public function getQuery();
 
     /**
-     * @return null|ModelType
+     * @phpstan-return TValue|null
      */
     public function getFirst();
 
     /**
-     * @return ModelType[]
+     * @phpstan-return TValue[]
      */
     public function toArray();
 }
