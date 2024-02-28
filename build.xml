@@ -60,6 +60,7 @@
 			passthru="true"
 			checkreturn="true"
 		>
+			<arg line="--memory-limit=-1"/>
 		</exec>
 	</target>
 

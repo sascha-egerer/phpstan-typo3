@@ -1,0 +1,4 @@
+rules:
+   - SaschaEgerer\PhpstanTypo3\Rule\ValidatorResolverOptionsRule
+   - SaschaEgerer\PhpstanTypo3\Rule\ContainerInterfacePrivateServiceRule
+   - SaschaEgerer\PhpstanTypo3\Rule\GeneralUtilityMakeInstancePrivateServiceRule

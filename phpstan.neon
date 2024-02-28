@@ -1,5 +1,6 @@
 includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
     - extension.neon
     - tests/Unit/Type/data/context-get-aspect-return-types.neon
     - tests/Unit/Type/data/request-get-attribute-return-types.neon
@@ -12,6 +13,7 @@ parameters:
          - tests
     reportUnmatchedIgnoredErrors: false
     excludePaths:
+         - '*tests/*/Fixtures/*'
          - '*tests/*/Fixture/*'
          - '*tests/*/Source/*'
          - '*tests/*/data/*'

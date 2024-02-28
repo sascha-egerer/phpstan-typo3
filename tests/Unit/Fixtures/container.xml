@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+	<services>
+		<service></service><!-- without id -->
+		<service id="withoutClass"></service>
+		<service id="withClass" class="Foo"></service>
+		<service id="withoutPublic" class="Foo"></service>
+		<service id="publicNotTrue" class="Foo" public="false"></service>
+		<service id="public" class="Foo" public="true"></service>
+		<service id="synthetic" class="Foo" synthetic="true">
+			<call method="pushProcessor">
+				<argument type="service" id="debug.log_processor"/>
+			</call>
+		</service>
+		<service id="alias" class="Bar" alias="withClass">
+			<tag name="event.listener"/>
+			<tag name="foo"/>
+		</service>
+		<service id="private" class="Foo" public="false">
+			<argument>security</argument>
+		</service>
+		<service id="excluded" class="Foo" public="false">
+			<tag name="container.excluded"/>
+		</service>
+	</services>
+</container>

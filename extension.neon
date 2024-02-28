@@ -1,3 +1,6 @@
+includes:
+    - rules.neon
+
 services:
     -
         class: SaschaEgerer\PhpstanTypo3\Reflection\RepositoryFindMethodsClassReflectionExtension
@@ -52,10 +55,6 @@ services:
         tags:
             - phpstan.rules.rule
     -
-        class: SaschaEgerer\PhpstanTypo3\Rule\ValidatorResolverOptionsRule
-        tags:
-            - phpstan.rules.rule
-    -
         class: SaschaEgerer\PhpstanTypo3\Type\RepositoryQueryDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
@@ -105,10 +104,23 @@ services:
         class: SaschaEgerer\PhpstanTypo3\Type\DateTimeAspectGetDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
+    	class: SaschaEgerer\PhpstanTypo3\Service\PrivateServiceAnalyzer
+    -
+        class: SaschaEgerer\PhpstanTypo3\Service\PrototypeServiceDefinitionChecker
+    # service map
+    typo3.serviceMapFactory:
+        class: SaschaEgerer\PhpstanTypo3\Contract\ServiceMapFactory
+        factory: SaschaEgerer\PhpstanTypo3\Service\XmlServiceMapFactory
+        arguments:
+             containerXmlPath: %typo3.containerXmlPath%
+    -
+        factory: @typo3.serviceMapFactory::create()
 parameters:
     bootstrapFiles:
         - phpstan.bootstrap.php
     typo3:
+        containerXmlPath: null
         contextApiGetAspectMapping:
             date: TYPO3\CMS\Core\Context\DateTimeAspect
             visibility: TYPO3\CMS\Core\Context\VisibilityAspect
@@ -194,6 +206,7 @@ parameters:
             - pageErrorHandler
 parametersSchema:
     typo3: structure([
+        containerXmlPath: schema(string(), nullable())
         contextApiGetAspectMapping: arrayOf(string())
         requestGetAttributeMapping: arrayOf(string())
         siteGetAttributeMapping: arrayOf(string())

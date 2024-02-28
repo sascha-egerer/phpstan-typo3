@@ -1,0 +1,3 @@
+parameters:
+   typo3:
+       containerXmlPath: %rootDir%/../../../tests/Unit/Fixtures/container.xml
