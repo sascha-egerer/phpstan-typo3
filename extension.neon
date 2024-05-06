@@ -152,17 +152,9 @@ parameters:
             routeEnhancers: array
             websiteTitle: string
     stubFiles:
-        - stubs/DomainObjectInterface.stub
         - stubs/EventDispatcher.stub
         - stubs/ObjectStorage.stub
-        - stubs/QueryFactory.stub
-        - stubs/QueryInterface.stub
-        - stubs/QueryResultInterface.stub
-        - stubs/Repository.stub
-        # See SaschaEgerer\PhpstanTypo3\Stubs\StubFilesExtensionLoader
-        # GeneralUtility.stub is only used if TYPO3 version is < 12
-        #- stubs/GeneralUtility.stub
-        #- stubs/QueryResult.stub
+        # Some stubs are loaded depending on the TYPO3 version used. See SaschaEgerer\PhpstanTypo3\Stubs\StubFilesExtensionLoader
     dynamicConstantNames:
         - TYPO3_MODE
         - TYPO3_REQUESTTYPE
