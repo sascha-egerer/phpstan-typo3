@@ -143,6 +143,8 @@ parameters:
             frontend.controller: TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
             frontend.typoscript: TYPO3\CMS\Core\TypoScript\FrontendTypoScript
             extbase: TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters
+            frontend.page.information: TYPO3\CMS\Frontend\Page\PageInformation
+            frontend.cache.instruction: TYPO3\CMS\Frontend\Cache\CacheInstruction
         siteGetAttributeMapping:
             base: string
             baseVariants: list
