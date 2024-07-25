@@ -19,7 +19,7 @@ interface QueryResultInterface extends \Countable, \Iterator, \ArrayAccess
     public function getFirst();
 
     /**
-     * @return ModelType[]
+     * @return list<ModelType>
      */
     public function toArray();
 }

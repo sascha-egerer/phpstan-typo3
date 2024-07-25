@@ -45,12 +45,12 @@ class ObjectStorage implements \Iterator, \ArrayAccess
     public function key();
 
     /**
-     * @return array<TEntity>
+     * @return list<TEntity>
      */
     public function toArray();
 
     /**
-     * @return array<TEntity>
+     * @return list<TEntity>
      */
     public function getArray();
 
