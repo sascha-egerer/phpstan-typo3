@@ -7,12 +7,6 @@ namespace TYPO3\CMS\Extbase\Persistence;
 interface QueryInterface
 {
     /**
-     * @param bool $returnRawQueryResult
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface<ModelType>|array<string, mixed>
-     */
-    public function execute($returnRawQueryResult = false);
-
-    /**
      * @param mixed $constraint
      * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface<ModelType>
      */

@@ -28,19 +28,31 @@ use function PHPStan\Testing\assertType;
 class MyModelRepository extends Repository
 {
 
-	public function findBySomething(): void
+	public function findBySomething(bool $booleanParameter = false): void
 	{
 		/** @var QueryInterface<SomeOtherModel> $query */
 		$query = $this->persistenceManager->createQueryForType(SomeOtherModel::class);
 
 		$result = $query->execute();
 		assertType(
-			'TYPO3\CMS\Extbase\Persistence\QueryInterface<CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>',
-			$query
+			'TYPO3\CMS\Extbase\Persistence\Generic\QueryResult<CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>',
+			$result
+		);
+
+		$result = $query->execute(false);
+		assertType(
+			'TYPO3\CMS\Extbase\Persistence\Generic\QueryResult<CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>',
+			$result
+		);
+
+		$result = $query->execute($booleanParameter);
+		assertType(
+			'array<int, array<string, mixed>>|TYPO3\CMS\Extbase\Persistence\Generic\QueryResult<CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>',
+			$result
 		);
 
 		$rawResult = $query->execute(true);
-		assertType('array<int, CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>', $rawResult);
+		assertType('array<int, array<string, mixed>>', $rawResult);
 
 		$array = $result->toArray();
 		assertType('array<int, CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>', $array);
