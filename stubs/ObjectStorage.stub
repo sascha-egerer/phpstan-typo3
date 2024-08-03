@@ -42,6 +42,7 @@ class ObjectStorage implements \Iterator, \ArrayAccess
      * @phpstan-ignore-next-line See https://forge.typo3.org/issues/98146
      * @return string|null
      */
+    // @phpstan-ignore-next-line See https://forge.typo3.org/issues/98146
     public function key();
 
     /**
