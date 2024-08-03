@@ -153,7 +153,7 @@ parameters:
             websiteTitle: string
     stubFiles:
         - stubs/DomainObjectInterface.stub
-        - stubs/EventDispatcher.stub
+        - stubs/EventDispatcherInterface.stub
         - stubs/ObjectStorage.stub
         - stubs/QueryFactory.stub
         - stubs/QueryInterface.stub
