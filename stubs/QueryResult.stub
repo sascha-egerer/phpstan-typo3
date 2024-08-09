@@ -10,7 +10,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 class QueryResult implements QueryResultInterface
 {
     /**
-     * @return null|ModelType
+     * @return ModelType|null
      */
     public function getFirst();
 }
