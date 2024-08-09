@@ -47,7 +47,7 @@ class Repository
     public function findByIdentifier($identifier);
 
     /**
-     * @phpstan-param array<string,string> $defaultOrderings
+     * @phpstan-param array<non-empty-string, QueryInterface::ORDER_*> $defaultOrderings
      * @phpstan-return void
      */
     public function setDefaultOrderings($defaultOrderings);
