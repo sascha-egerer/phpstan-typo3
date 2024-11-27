@@ -141,6 +141,7 @@ parameters:
             routing: TYPO3\CMS\Core\Routing\SiteRouteResult|TYPO3\CMS\Core\Routing\PageArguments
             currentContentObject: TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
             frontend.controller: TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+            frontend.page.information: TYPO3\CMS\Frontend\Page\PageInformation
             frontend.typoscript: TYPO3\CMS\Core\TypoScript\FrontendTypoScript
             extbase: TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters
         siteGetAttributeMapping:
