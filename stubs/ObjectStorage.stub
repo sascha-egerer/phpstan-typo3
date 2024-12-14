@@ -15,24 +15,24 @@ class ObjectStorage implements \Iterator, \ArrayAccess
     protected $storage;
 
     /**
-     * @param TEntity $value
+     * @param TEntity|string|null $value
      * @param mixed $information
      */
     public function offsetSet($value, $information);
 
     /**
-     * @param TEntity|int $value
+     * @param TEntity|int|string $value
      * @return bool
      */
     public function offsetExists($value);
 
     /**
-     * @param TEntity|int $value
+     * @param TEntity|int|string $value
      */
     public function offsetUnset($value);
 
     /**
-     * @param TEntity|int $value
+     * @param TEntity|int|string $value
      * @return ($value is int ? TEntity|null : mixed)
      */
     public function offsetGet($value);
@@ -40,17 +40,18 @@ class ObjectStorage implements \Iterator, \ArrayAccess
     /**
      * This is different from the SplObjectStorage as the key in this implementation is the object hash (string).
      * @phpstan-ignore-next-line See https://forge.typo3.org/issues/98146
-     * @return string|null
+     * @return string
      */
+    // @phpstan-ignore-next-line See https://forge.typo3.org/issues/98146
     public function key();
 
     /**
-     * @return array<TEntity>
+     * @return list<TEntity>
      */
     public function toArray();
 
     /**
-     * @return array<TEntity>
+     * @return list<TEntity>
      */
     public function getArray();
 
