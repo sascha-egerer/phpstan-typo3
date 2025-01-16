@@ -13,9 +13,9 @@ class MySite
 	public function getAttributeTests(Site $site): void
 	{
 		assertType('string', $site->getAttribute('base'));
-		assertType('array<int, mixed>', $site->getAttribute('baseVariants'));
-		assertType('array<int, mixed>', $site->getAttribute('errorHandling'));
-		assertType('array<int, mixed>', $site->getAttribute('languages'));
+		assertType('list', $site->getAttribute('baseVariants'));
+		assertType('list', $site->getAttribute('errorHandling'));
+		assertType('list', $site->getAttribute('languages'));
 		assertType('int', $site->getAttribute('rootPageId'));
 		assertType('array', $site->getAttribute('routeEnhancers'));
 		assertType('string', $site->getAttribute('websiteTitle'));

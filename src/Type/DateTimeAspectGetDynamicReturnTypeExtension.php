@@ -7,7 +7,6 @@ use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
@@ -42,8 +41,8 @@ class DateTimeAspectGetDynamicReturnTypeExtension implements DynamicMethodReturn
 
 		$argumentType = $scope->getType($firstArgument->value);
 
-		if ($argumentType instanceof ConstantStringType) {
-			switch ($argumentType->getValue()) {
+		if ($argumentType->getConstantStrings() !== []) {
+			switch ($argumentType->getConstantStrings()[0]->getValue()) {
 				case 'timestamp':
 				case 'accessTime':
 					return new IntegerType();

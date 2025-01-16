@@ -3,29 +3,7 @@ includes:
 
 services:
     -
-        class: SaschaEgerer\PhpstanTypo3\Reflection\RepositoryFindMethodsClassReflectionExtension
-        tags:
-            - phpstan.broker.methodsClassReflectionExtension
-    -
-        class: SaschaEgerer\PhpstanTypo3\Reflection\RepositoryCountByMethodsClassReflectionExtension
-        tags:
-            - phpstan.broker.methodsClassReflectionExtension
-    -
-        class: SaschaEgerer\PhpstanTypo3\Type\ObjectManagerDynamicReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicMethodReturnTypeExtension
-    -
-        class: SaschaEgerer\PhpstanTypo3\Type\QueryInterfaceDynamicReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicMethodReturnTypeExtension
-    -
-        class: SaschaEgerer\PhpstanTypo3\Type\QueryResultToArrayDynamicReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicMethodReturnTypeExtension
-    -
-        class: SaschaEgerer\PhpstanTypo3\Type\RepositoryDynamicReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicMethodReturnTypeExtension
+        class: PhpParser\NodeVisitor\NodeConnectingVisitor
     -
         class: SaschaEgerer\PhpstanTypo3\Type\ValidatorResolverDynamicReturnTypeExtension
         tags:
@@ -54,14 +32,6 @@ services:
             siteGetAttributeMapping: %typo3.siteGetAttributeMapping%
         tags:
             - phpstan.rules.rule
-    -
-        class: SaschaEgerer\PhpstanTypo3\Type\RepositoryQueryDynamicReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicMethodReturnTypeExtension
-    -
-        class: SaschaEgerer\PhpstanTypo3\Type\RepositoryFindAllDynamicReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicMethodReturnTypeExtension
     -
         class: SaschaEgerer\PhpstanTypo3\Type\RequestDynamicReturnTypeExtension
         arguments:
@@ -93,10 +63,6 @@ services:
         tags:
             - phpstan.broker.dynamicStaticMethodReturnTypeExtension
     -
-        class: SaschaEgerer\PhpstanTypo3\Stubs\StubFilesExtensionLoader
-        tags:
-            - phpstan.stubFilesExtension
-    -
         class: SaschaEgerer\PhpstanTypo3\Type\UserAspectGetDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
@@ -105,7 +71,7 @@ services:
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
     -
-    	class: SaschaEgerer\PhpstanTypo3\Service\PrivateServiceAnalyzer
+        class: SaschaEgerer\PhpstanTypo3\Service\PrivateServiceAnalyzer
     -
         class: SaschaEgerer\PhpstanTypo3\Service\PrototypeServiceDefinitionChecker
     # service map
@@ -155,16 +121,11 @@ parameters:
             websiteTitle: string
     stubFiles:
         - stubs/DomainObjectInterface.stub
-        - stubs/EventDispatcherInterface.stub
         - stubs/ObjectStorage.stub
-        - stubs/QueryFactory.stub
         - stubs/QueryInterface.stub
         - stubs/QueryResultInterface.stub
         - stubs/Repository.stub
-        # See SaschaEgerer\PhpstanTypo3\Stubs\StubFilesExtensionLoader
-        # GeneralUtility.stub is only used if TYPO3 version is < 12
-        #- stubs/GeneralUtility.stub
-        #- stubs/QueryResult.stub
+        - stubs/RepositoryInterface.stub
     dynamicConstantNames:
         - TYPO3_MODE
         - TYPO3_REQUESTTYPE
@@ -213,3 +174,6 @@ parametersSchema:
         requestGetAttributeMapping: arrayOf(string())
         siteGetAttributeMapping: arrayOf(string())
     ])
+conditionalTags:
+    PhpParser\NodeVisitor\NodeConnectingVisitor:
+        phpstan.parser.richParserNodeVisitor: true

@@ -74,7 +74,10 @@ class ContextAspectValidationRule implements Rule
 			$argument->value->value,
 			$declaringClass->getDisplayName(),
 			$methodReflection->getName()
-		))->tip('You should add custom aspects to the typo3.contextApiGetAspectMapping setting.')->build();
+		))
+			->tip('You should add custom aspects to the typo3.contextApiGetAspectMapping setting.')
+			->identifier('phpstanTypo3.contextAspectValidation')
+			->build();
 
 		return [$ruleError];
 	}

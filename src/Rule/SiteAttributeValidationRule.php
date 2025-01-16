@@ -64,14 +64,17 @@ class SiteAttributeValidationRule implements Rule
 			return [];
 		}
 
-		$ruleError = RuleErrorBuilder::message(sprintf(
-			'There is no site attribute "%s" configured so we can\'t figure out the exact type to return when calling %s::%s',
-			$argument->value->value,
-			$declaringClass->getDisplayName(),
-			$methodReflection->getName()
-		))->tip('You should add custom site attribute to the typo3.siteGetAttributeMapping setting.')->build();
-
-		return [$ruleError];
+		return [
+			RuleErrorBuilder::message(sprintf(
+				'There is no site attribute "%s" configured so we can\'t figure out the exact type to return when calling %s::%s',
+				$argument->value->value,
+				$declaringClass->getDisplayName(),
+				$methodReflection->getName()
+			))
+			->tip('You should add custom site attribute to the typo3.siteGetAttributeMapping setting.')
+			->identifier('phpstanTypo3.siteAttributeValidation')
+			->build(),
+		];
 	}
 
 }

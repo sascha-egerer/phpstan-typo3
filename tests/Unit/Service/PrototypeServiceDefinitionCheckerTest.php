@@ -41,7 +41,7 @@ final class PrototypeServiceDefinitionCheckerTest extends PHPStanTestCase
 	public static function providePrototypes(): \Generator
 	{
 		$builderFactory = new BuilderFactory();
-		$prototypeClass = $builderFactory->classConstFetch(self::class, 'class');
+		$prototypeClass = $builderFactory->classConstFetch(PrototypeClass::class, 'class');
 		$prototypeClassWithoutConstructor = $builderFactory->classConstFetch(PrototypeClassWithoutConstructor::class, 'class');
 
 		yield 'Service definition has no tags, no method calls and class has no required constructor arguments' => [

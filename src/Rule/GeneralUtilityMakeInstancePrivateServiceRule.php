@@ -37,7 +37,12 @@ final class GeneralUtilityMakeInstancePrivateServiceRule implements Rule
 			return [];
 		}
 
-		return $this->privateServiceAnalyzer->analyze($node, $scope, $this->prototypeServiceDefinitionChecker);
+		return $this->privateServiceAnalyzer->analyze(
+			$node,
+			$scope,
+			$this->prototypeServiceDefinitionChecker,
+			'phpstanTypo3.generalUtilityMakeInstancePrivateService'
+		);
 	}
 
 	private function shouldSkip(StaticCall $node): bool

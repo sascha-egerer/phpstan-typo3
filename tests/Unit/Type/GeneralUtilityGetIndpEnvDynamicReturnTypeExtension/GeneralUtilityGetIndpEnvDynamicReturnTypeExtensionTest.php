@@ -12,7 +12,7 @@ final class GeneralUtilityGetIndpEnvDynamicReturnTypeExtensionTest extends TypeI
 	 */
 	public static function dataFileAsserts(): iterable
 	{
-		yield from self::gatherAssertTypes(__DIR__ . '/data/GeneralUtilityGetIndpEnvTest.php');
+		yield from self::gatherAssertTypes(__DIR__ . '/data/GeneralUtilityGetIndpEnv.php');
 	}
 
 	/**

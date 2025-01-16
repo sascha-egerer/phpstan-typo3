@@ -9,16 +9,16 @@ final class ValidatorOptionsConfiguration
 	private array $supportedOptions;
 
 	/** @var string[] */
-	private array $requriedOptions;
+	private array $requiredOptions;
 
 	/**
 	 * @param string[] $supportedOptions
-	 * @param string[] $requriedOptions
+	 * @param string[] $requiredOptions
 	 */
-	public function __construct(array $supportedOptions, array $requriedOptions)
+	public function __construct(array $supportedOptions, array $requiredOptions)
 	{
 		$this->supportedOptions = $supportedOptions;
-		$this->requriedOptions = $requriedOptions;
+		$this->requiredOptions = $requiredOptions;
 	}
 
 	public static function empty(): self
@@ -39,7 +39,7 @@ final class ValidatorOptionsConfiguration
 	 */
 	public function getRequiredOptions(): array
 	{
-		return $this->requriedOptions;
+		return $this->requiredOptions;
 	}
 
 }

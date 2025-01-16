@@ -72,7 +72,10 @@ class RequestAttributeValidationRule implements Rule
 			$argument->value->value,
 			$declaringClass->getDisplayName(),
 			$methodReflection->getName()
-		))->tip('You should add custom request attribute to the typo3.requestGetAttributeMapping setting.')->build();
+		))
+			->tip('You should add custom request attribute to the typo3.requestGetAttributeMapping setting.')
+			->identifier('phpstanTypo3.requestAttributeValidation')
+			->build();
 
 		return [$ruleError];
 	}

@@ -12,7 +12,7 @@ final class MathUtilityTypeSpecifyingExtensionTest extends TypeInferenceTestCase
 	 */
 	public static function dataFileAsserts(): iterable
 	{
-		yield from self::gatherAssertTypes(__DIR__ . '/data/MathUtilityTest.php');
+		yield from self::gatherAssertTypes(__DIR__ . '/data/MathUtilityType.php');
 	}
 
 	/**

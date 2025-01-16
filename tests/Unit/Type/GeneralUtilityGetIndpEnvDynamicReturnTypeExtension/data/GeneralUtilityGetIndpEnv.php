@@ -5,7 +5,7 @@ namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\GeneralUtilityGetIndpEnvDyna
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use function PHPStan\Testing\assertType;
 
-final class GeneralUtilityGetIndpEnvTest
+final class GeneralUtilityGetIndpEnv
 {
 
 	public function getScriptName(): void

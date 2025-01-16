@@ -7,7 +7,6 @@ use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\PhpDoc\TypeStringResolver;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
@@ -54,7 +53,8 @@ class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 			|| !($argument->value instanceof String_)
 			|| !isset($this->requestGetAttributeMapping[$argument->value->value])
 		) {
-			$type = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+
+			$type = $methodReflection->getVariants()[0]->getReturnType();
 
 			if ($defaultArgument === null) {
 				return $type;

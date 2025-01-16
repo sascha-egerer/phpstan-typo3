@@ -8,7 +8,6 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\BooleanType;
-use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\IntegerRangeType;
 use PHPStan\Type\IntegerType;
@@ -43,8 +42,8 @@ class UserAspectGetDynamicReturnTypeExtension implements DynamicMethodReturnType
 
 		$argumentType = $scope->getType($firstArgument->value);
 
-		if ($argumentType instanceof ConstantStringType) {
-			switch ($argumentType->getValue()) {
+		if ($argumentType->getConstantStrings() !== []) {
+			switch ($argumentType->getConstantStrings()[0]->getValue()) {
 				case 'id':
 					return IntegerRangeType::createAllGreaterThanOrEqualTo(0);
 				case 'username':

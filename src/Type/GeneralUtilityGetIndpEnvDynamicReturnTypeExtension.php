@@ -8,7 +8,6 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\BooleanType;
-use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\DynamicStaticMethodReturnTypeExtension;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
@@ -38,15 +37,16 @@ class GeneralUtilityGetIndpEnvDynamicReturnTypeExtension implements DynamicStati
 
 		$argumentType = $scope->getType($firstArgument->value);
 
-		if (!$argumentType instanceof ConstantStringType) {
+		if ($argumentType->getConstantStrings() === []) {
 			return null;
 		}
+		$value = $argumentType->getConstantStrings()[0]->getValue();
 
-		if ($argumentType->getValue() === '_ARRAY') {
+		if ($value === '_ARRAY') {
 			return new ArrayType(new StringType(), new UnionType([new StringType(), new BooleanType()]));
 		}
 
-		if (in_array($argumentType->getValue(), ['TYPO3_SSL', 'TYPO3_PROXY', 'TYPO3_REV_PROXY'], true)) {
+		if (in_array($value, ['TYPO3_SSL', 'TYPO3_PROXY', 'TYPO3_REV_PROXY'], true)) {
 			return new BooleanType();
 		}
 

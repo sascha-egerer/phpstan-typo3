@@ -2,9 +2,9 @@
 namespace TYPO3\CMS\Extbase\Persistence;
 
 /**
- * @template TEntity
- * @implements \ArrayAccess<int, TEntity>
- * @implements \Iterator<int, TEntity>
+ * @template TEntity of object
+ * @implements \ArrayAccess<string, TEntity>
+ * @implements \Iterator<string, TEntity>
  * @phpstan-type ObjectStorageInternal array{obj: TEntity, inf: mixed}
  */
 class ObjectStorage implements \Iterator, \ArrayAccess
@@ -12,52 +12,28 @@ class ObjectStorage implements \Iterator, \ArrayAccess
     /**
      * @var array<string, ObjectStorageInternal>
      */
-    protected $storage;
-
-    /**
-     * @param TEntity|string|null $value
-     * @param mixed $information
-     */
-    public function offsetSet($value, $information);
-
-    /**
-     * @param TEntity|int|string $value
-     * @return bool
-     */
-    public function offsetExists($value);
-
-    /**
-     * @param TEntity|int|string $value
-     */
-    public function offsetUnset($value);
-
-    /**
-     * @param TEntity|int|string $value
-     * @return ($value is int ? TEntity|null : mixed)
-     */
-    public function offsetGet($value);
-
-    /**
-     * This is different from the SplObjectStorage as the key in this implementation is the object hash (string).
-     * @phpstan-ignore-next-line See https://forge.typo3.org/issues/98146
-     * @return string
-     */
-    // @phpstan-ignore-next-line See https://forge.typo3.org/issues/98146
-    public function key();
-
-    /**
-     * @return list<TEntity>
-     */
-    public function toArray();
-
-    /**
-     * @return list<TEntity>
-     */
-    public function getArray();
+    protected array $storage;
 
     /**
      * @param TEntity $object
+     * @param mixed $information
+     */
+    public function offsetSet(mixed $object, mixed $information);
+
+    /**
+     * @param TEntity|int $value
      * @return bool
      */
-    public function isRelationDirty($object);
+    public function offsetExists(mixed $value);
+
+    /**
+     * @param TEntity|int $value
+     */
+    public function offsetUnset(mixed $value);
+
+    /**
+     * @param TEntity|int $value
+     * @return ($value is int ? TEntity|null : mixed)
+     */
+    public function offsetGet(mixed $value);
 }

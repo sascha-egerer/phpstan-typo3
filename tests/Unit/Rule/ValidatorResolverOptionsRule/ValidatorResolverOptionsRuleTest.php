@@ -58,15 +58,15 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 			[
 				[
 					'Unsupported validation option(s) found: non-existing-option',
-					16,
+					14,
 				],
 				[
 					'Unsupported validation option(s) found: foo',
-					24,
+					22,
 				],
 				[
 					'Unsupported validation option(s) found: minmum',
-					29,
+					26,
 				],
 			],
 		];

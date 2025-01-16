@@ -10,9 +10,6 @@ This extension provides the following features (!!! not an exhaustive list !!!):
 
 **Dynamic Return Type Extensions**
 * Provides correct return type for `\TYPO3\CMS\Core\Context\Context->getAspect()`.
-* Provides correct return type for `\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()`.
-* Provides correct return type for `\TYPO3\CMS\Extbase\Object\ObjectManagerInterface->get()`.
-* Provides correct return type for `\TYPO3\CMS\Extbase\Object\ObjectManager->get()`.
 * Provides correct return type for `\TYPO3\CMS\Extbase\Property\PropertyMapper->convert()`.
 * Provides correct return type for `\TYPO3\CMS\Core\Utility\MathUtility` methods like isIntegerInRange.
 * Provides correct return type for `\TYPO3\CMS\Extbase\Persistence\Generic\Query->execute()`.

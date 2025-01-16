@@ -7,7 +7,6 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
@@ -38,13 +37,13 @@ class ValidatorResolverDynamicReturnTypeExtension implements DynamicMethodReturn
 		$argument = $methodCall->getArgs()[0] ?? null;
 
 		if ($argument === null) {
-			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+			return $methodReflection->getVariants()[0]->getReturnType();
 		}
 
 		$argumentValue = $argument->value;
 
 		if (!($argumentValue instanceof ClassConstFetch)) {
-			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+			return $methodReflection->getVariants()[0]->getReturnType();
 		}
 		/** @var Name $class */
 		$class = $argumentValue->class;

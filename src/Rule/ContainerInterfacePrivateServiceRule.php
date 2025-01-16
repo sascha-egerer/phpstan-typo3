@@ -34,7 +34,12 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 			return [];
 		}
 
-		return $this->privateServiceAnalyzer->analyze($node, $scope, new NullServiceDefinitionChecker());
+		return $this->privateServiceAnalyzer->analyze(
+			$node,
+			$scope,
+			new NullServiceDefinitionChecker(),
+			'phpstanTypo3.containerInterfacePrivateService'
+		);
 	}
 
 	private function shouldSkip(MethodCall $node, Scope $scope): bool

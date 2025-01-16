@@ -27,7 +27,7 @@ class FrontendUserGroupCustomFindAllRepository extends Repository
 {
 
 	/**
-	 * @return QueryResultInterface<FrontendUserGroup>
+	 * @return QueryResultInterface<int, FrontendUserGroup>
 	 */
 	public function findAll(): QueryResultInterface // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
 	{
@@ -47,7 +47,7 @@ class FrontendUserGroupCustomFindAllWithoutModelTypeRepository extends Repositor
 	public function findAll(): QueryResultInterface // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
 	{
 		$queryResult = null; // phpcs:ignore SlevomatCodingStandard.Variables.UselessVariable.UselessVariable
-		/** @var QueryResult $queryResult */
+		/** @var QueryResult<> $queryResult */
 		return $queryResult;
 	}
 
@@ -76,17 +76,13 @@ class FrontendUserGroup extends AbstractEntity
 class MyController extends ActionController
 {
 
-	/** @var FrontendUserGroupRepository */
-	private $myRepository;
+	private FrontendUserGroupRepository $myRepository;
 
-	/** @var FrontendUserGroupCustomFindAllRepository */
-	private $myCustomFindAllRepository;
+	private FrontendUserGroupCustomFindAllRepository $myCustomFindAllRepository;
 
-	/** @var FrontendUserGroupCustomFindAllWithoutModelTypeRepository */
-	private $myCustomFindAllRepositoryWithoutModelAnnotation;
+	private FrontendUserGroupCustomFindAllWithoutModelTypeRepository $myCustomFindAllRepositoryWithoutModelAnnotation;
 
-	/** @var FrontendUserGroupCustomFindAllWithoutAnnotationRepository */
-	private $myCustomFindAllRepositoryWithoutAnnotationRepository;
+	private FrontendUserGroupCustomFindAllWithoutAnnotationRepository $myCustomFindAllRepositoryWithoutAnnotationRepository;
 
 	public function __construct(
 		FrontendUserGroupRepository $myRepository,
@@ -104,28 +100,28 @@ class MyController extends ActionController
 	public function showAction(): void
 	{
 		assertType(
-			'array<int, SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\QueryResultToArrayDynamicReturnTypeExtension\FrontendUserGroup>',
+			'list<SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\QueryResultToArrayDynamicReturnTypeExtension\FrontendUserGroup>',
 			$this->myRepository->findAll()->toArray()
 		);
 
 		$queryResult = $this->myRepository->findAll();
 		$myObjects = $queryResult->toArray();
 		assertType(
-			'array<int, SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\QueryResultToArrayDynamicReturnTypeExtension\FrontendUserGroup>',
+			'list<SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\QueryResultToArrayDynamicReturnTypeExtension\FrontendUserGroup>',
 			$myObjects
 		);
 
 		$queryResult = $this->myCustomFindAllRepository->findAll();
 		$myObjects = $queryResult->toArray();
 		assertType(
-			'array<int, SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\QueryResultToArrayDynamicReturnTypeExtension\FrontendUserGroup>',
+			'list<SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\QueryResultToArrayDynamicReturnTypeExtension\FrontendUserGroup>',
 			$myObjects
 		);
 
 		$queryResult = $this->myCustomFindAllRepositoryWithoutModelAnnotation->findAll();
 		$myObjects = $queryResult->toArray();
 		assertType(
-			'array<int, SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\QueryResultToArrayDynamicReturnTypeExtension\FrontendUserGroup>',
+			'list<SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\QueryResultToArrayDynamicReturnTypeExtension\FrontendUserGroup>',
 			$myObjects
 		);
 
@@ -136,7 +132,7 @@ class MyController extends ActionController
 
 		$myObjects = $queryResult->toArray();
 		assertType(
-			'array<int, SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\QueryResultToArrayDynamicReturnTypeExtension\FrontendUserGroup>',
+			'list<SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\QueryResultToArrayDynamicReturnTypeExtension\FrontendUserGroup>',
 			$myObjects
 		);
 	}

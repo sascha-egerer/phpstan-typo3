@@ -13,31 +13,30 @@ use function PHPStan\Testing\assertType;
 class MyModel extends AbstractEntity
 {
 
-	/** @var ObjectStorage<MyModel> */
-	protected ObjectStorage $objectStorage;
-
 	public function foo(): void
 	{
-		$myModel = new MyModel();
-		$this->objectStorage = new ObjectStorage();
-		$this->objectStorage->attach($myModel);
+		$myModel = new self();
+		/** @var ObjectStorage<MyModel> $objectStorage */
+		$objectStorage = new ObjectStorage();
+		$objectStorage->attach($myModel);
 
-		assertType('TYPO3\CMS\Extbase\Persistence\ObjectStorage<' . self::class . '>', $this->objectStorage);
+		assertType('TYPO3\CMS\Extbase\Persistence\ObjectStorage<' . self::class . '>', $objectStorage);
 
-		foreach ($this->objectStorage as $key => $value) {
-			assertType('int', $key);
+		foreach ($objectStorage as $key => $value) {
+
+			assertType('string', $key);
 			assertType(self::class, $value);
 		}
 
-		assertType(self::class . '|null', $this->objectStorage->offsetGet(0));
+		assertType(self::class . '|null', $objectStorage->offsetGet(0));
 
 		// We ignore errors in the next line as this will produce an
 		// "Offset 0 does not exist on TYPO3\CMS\Extbase\Persistence\ObjectStorage<ObjectStorage\My\Test\Extension\Domain\Model\MyModel>
 		// due to the weird implementation of ArrayAccess in ObjectStorage::offsetGet()
 		// @phpstan-ignore-next-line
-		assertType(self::class . '|null', $this->objectStorage[0]);
+		assertType(self::class . '|null', $objectStorage[0]);
 
-		assertType('mixed', $this->objectStorage->offsetGet($myModel));
+		assertType('mixed', $objectStorage->offsetGet($myModel));
 	}
 
 }

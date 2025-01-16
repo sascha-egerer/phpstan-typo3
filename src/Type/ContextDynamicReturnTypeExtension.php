@@ -7,7 +7,6 @@ use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\PhpDoc\TypeStringResolver;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
 use TYPO3\CMS\Core\Context\Context;
@@ -50,14 +49,14 @@ class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 		$argument = $methodCall->getArgs()[0] ?? null;
 
 		if ($argument === null || !($argument->value instanceof String_)) {
-			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+			return $methodReflection->getVariants()[0]->getReturnType();
 		}
 
 		if (isset($this->contextApiGetAspectMapping[$argument->value->value])) {
 			return $this->typeStringResolver->resolve($this->contextApiGetAspectMapping[$argument->value->value]);
 		}
 
-		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+		return $methodReflection->getVariants()[0]->getReturnType();
 	}
 
 }

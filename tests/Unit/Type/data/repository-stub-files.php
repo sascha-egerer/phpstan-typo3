@@ -40,50 +40,45 @@ class MyModelRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 		);
 
 		assertType(
-			'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
+			'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<int, RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
 			$this->findAll()
 		);
 
 		assertType(
-			'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
-			$this->findByFoo('a')
+			'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<int, RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
+			$this->findBy(['foo' => 'a'])
 		);
 
 		assertType(
 			'RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel|null',
-			$this->findOneByFoo('a')
+			$this->findOneBy(['foo' => 'a'])
 		);
 
 		assertType(
-			'array<int, RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
-			$this->findByFoo('a')->toArray()
+			'list<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
+			$this->findBy(['foo' => 'a'])->toArray()
 		);
 
 		assertType(
-			'int',
-			$this->countByFoo('a')
-		);
-
-		// call findBy with non-existing model property
-		assertType(
-			'*ERROR*',
-			$this->findByNonexisting('a')
-		);
-		assertType(
-			'*ERROR*',
-			$this->countByNonexisting('a')
+			'int<0, max>',
+			$this->count(['foo' => 'a'])
 		);
 	}
 
 }
 
-/** @extends \TYPO3\CMS\Extbase\Persistence\Repository<\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface> */
+/**
+ * @template T of \RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel
+ * @extends \TYPO3\CMS\Extbase\Persistence\Repository<T>
+ */
 abstract class MyAbstractModelRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
 
 }
 
-/** @template TEntityClass of \RepositoryStubFiles\My\Test\Extension\Domain\Model\ExtendingMyAbstractModel **/
+/**
+ * @extends MyAbstractModelRepository<\RepositoryStubFiles\My\Test\Extension\Domain\Model\ExtendingMyAbstractModel>
+ */
 class ExtendingMyAbstractModelRepository extends MyAbstractModelRepository
 {
 
@@ -91,37 +86,8 @@ class ExtendingMyAbstractModelRepository extends MyAbstractModelRepository
 	{
 		// call findBy with a non existing model property
 		assertType(
-			'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\ExtendingMyAbstractModel>',
-			$this->findByFoo('a')
-		);
-		// call findBy with a non existing model property
-		assertType(
-			'*ERROR*',
-			$this->findByNonexisting('a')
-		);
-		assertType(
-			'*ERROR*',
-			$this->countByNonexisting('a')
-		);
-	}
-
-}
-
-
-class MyModelWithoutExtends extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
-{
-
-}
-
-/** @phpstan-ignore-next-line */
-class MyModelWithoutExtendsRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
-{
-
-	public function myTests(): void
-	{
-		assertType(
-			'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModelWithoutExtends>',
-			$this->findAll()
+			'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<int, RepositoryStubFiles\My\Test\Extension\Domain\Model\ExtendingMyAbstractModel>',
+			$this->findBy(['foo' => 'a'])
 		);
 	}
 
@@ -134,7 +100,7 @@ class FindAllTestRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 	public function myTests(): void
 	{
 		assertType(
-			'array<int, RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
+			'list<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
 			$this->findAll()
 		);
 	}
@@ -156,7 +122,7 @@ class FindAllWithoutReturnTestRepository extends \TYPO3\CMS\Extbase\Persistence\
 	public function myTests(): void
 	{
 		assertType(
-			'array<int, RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>|TYPO3\CMS\Extbase\Persistence\QueryResultInterface<RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
+			'TYPO3\CMS\Extbase\Persistence\QueryResultInterface<int, RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>',
 			$this->findAll()
 		);
 	}
@@ -165,7 +131,7 @@ class FindAllWithoutReturnTestRepository extends \TYPO3\CMS\Extbase\Persistence\
 	{
 		$foo = null; // phpcs:ignore SlevomatCodingStandard.Variables.UselessVariable.UselessVariable
 		/**
-		 * @var array<int, \RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface<\RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel> $foo
+		 * @var list<\RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface<int, \RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel> $foo
 		 */
 		return $foo;
 	}

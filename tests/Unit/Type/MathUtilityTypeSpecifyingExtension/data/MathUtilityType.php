@@ -6,7 +6,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use function PHPStan\Testing\assertType;
 
 // phpcs:disable SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint
-final class MathUtilityTest
+final class MathUtilityType
 {
 
 	public function forceIntegerInRangeWithMinAndMaxValueDefined(int $theInt): void

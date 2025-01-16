@@ -6,7 +6,7 @@ use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
-use PHPStan\Rules\RuleError;
+use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\RuleErrorBuilder;
 use SaschaEgerer\PhpstanTypo3\Contract\ServiceDefinitionChecker;
 use SaschaEgerer\PhpstanTypo3\Contract\ServiceMap;
@@ -24,9 +24,9 @@ final class PrivateServiceAnalyzer
 	/**
 	 * @param MethodCall|StaticCall $node
 	 *
-	 * @return RuleError[]
+	 * @return list<IdentifierRuleError>
 	 */
-	public function analyze(Node $node, Scope $scope, ServiceDefinitionChecker $serviceDefinitionChecker): array
+	public function analyze(Node $node, Scope $scope, ServiceDefinitionChecker $serviceDefinitionChecker, string $identifier): array
 	{
 		$serviceId = $this->serviceMap->getServiceIdFromNode($node->getArgs()[0]->value, $scope);
 
@@ -45,7 +45,7 @@ final class PrivateServiceAnalyzer
 		}
 
 		return [
-			RuleErrorBuilder::message(sprintf('Service "%s" is private.', $serviceId))->build(),
+			RuleErrorBuilder::message(sprintf('Service "%s" is private.', $serviceId))->identifier($identifier)->build(),
 		];
 	}
 

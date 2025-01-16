@@ -40,10 +40,10 @@ class MyModelRepository extends Repository
 		);
 
 		$rawResult = $query->execute(true);
-		assertType('array<int, CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>', $rawResult);
+		assertType('list<array<string, mixed>>', $rawResult);
 
 		$array = $result->toArray();
-		assertType('array<int, CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>', $array);
+		assertType('list<CustomQueryType\My\Test\Extension\Domain\Model\SomeOtherModel>', $array);
 	}
 
 }
