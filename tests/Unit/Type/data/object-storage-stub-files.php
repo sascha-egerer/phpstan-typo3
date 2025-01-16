@@ -16,11 +16,11 @@ class MyModel extends AbstractEntity
 	public function foo(): void
 	{
 		$myModel = new self();
-		/** @var ObjectStorage<string, MyModel> $objectStorage */
+		/** @var ObjectStorage<MyModel> $objectStorage */
 		$objectStorage = new ObjectStorage();
 		$objectStorage->attach($myModel);
 
-		assertType('TYPO3\CMS\Extbase\Persistence\ObjectStorage<string, ' . self::class . '>', $objectStorage);
+		assertType('TYPO3\CMS\Extbase\Persistence\ObjectStorage<' . self::class . '>', $objectStorage);
 
 		foreach ($objectStorage as $key => $value) {
 
@@ -36,7 +36,7 @@ class MyModel extends AbstractEntity
 		// @phpstan-ignore-next-line
 		assertType(self::class . '|null', $objectStorage[0]);
 
-		assertType('array{obj: ObjectStorage\My\Test\Extension\Domain\Model\MyModel, inf: mixed}', $objectStorage->offsetGet($myModel));
+		assertType('mixed', $objectStorage->offsetGet($myModel));
 	}
 
 }

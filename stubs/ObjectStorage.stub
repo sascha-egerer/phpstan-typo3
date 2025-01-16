@@ -2,39 +2,62 @@
 namespace TYPO3\CMS\Extbase\Persistence;
 
 /**
- * @template TKey of object
- * @template TEntity of object
+ * @template TEntity
+ * @implements \ArrayAccess<string, TEntity>
+ * @implements \Iterator<string, TEntity>
  * @phpstan-type ObjectStorageInternal array{obj: TEntity, inf: mixed}
- * @implements \ArrayAccess<TKey, TEntity>
- * @implements \Iterator<TKey, TEntity>
  */
-class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonitoringInterface
+class ObjectStorage implements \Iterator, \ArrayAccess
 {
     /**
      * @var array<string, ObjectStorageInternal>
      */
-    protected array $storage;
+    protected $storage;
 
     /**
-     * @phpstan-param TEntity $offset
-     * @param ObjectStorageInternal $information
+     * @param TEntity|string|null $value
+     * @param mixed $information
      */
-    public function offsetSet(mixed $offset, mixed $information): void;
+    public function offsetSet($value, $information);
 
     /**
-     * @param TEntity|int $value
+     * @param TEntity|int|string $value
      * @return bool
      */
-    public function offsetExists(mixed $value);
+    public function offsetExists($value);
 
     /**
-     * @param TEntity|int $value
+     * @param TEntity|int|string $value
      */
-    public function offsetUnset(mixed $value): void;
+    public function offsetUnset($value);
 
     /**
-     * @param TEntity|int $value
-     * @return ($value is int ? TEntity|null : ObjectStorageInternal)
+     * @param TEntity|int|string $value
+     * @return ($value is int ? TEntity|null : mixed)
      */
-    public function offsetGet(mixed $value);
+    public function offsetGet($value);
+
+    /**
+     * This is different from the SplObjectStorage as the key in this implementation is the object hash (string).
+     * @phpstan-ignore-next-line See https://forge.typo3.org/issues/98146
+     * @return string
+     */
+    // @phpstan-ignore-next-line See https://forge.typo3.org/issues/98146
+    public function key();
+
+    /**
+     * @return list<TEntity>
+     */
+    public function toArray();
+
+    /**
+     * @return list<TEntity>
+     */
+    public function getArray();
+
+    /**
+     * @param TEntity $object
+     * @return bool
+     */
+    public function isRelationDirty($object);
 }
