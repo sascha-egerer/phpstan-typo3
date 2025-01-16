@@ -2,12 +2,13 @@
 namespace TYPO3\CMS\Extbase\Persistence;
 
 /**
+ * @template TKey of object
  * @template TEntity of object
- * @implements \ArrayAccess<string, TEntity>
- * @implements \Iterator<string, TEntity>
  * @phpstan-type ObjectStorageInternal array{obj: TEntity, inf: mixed}
+ * @implements \ArrayAccess<TKey, TEntity>
+ * @implements \Iterator<TKey, TEntity>
  */
-class ObjectStorage implements \Iterator, \ArrayAccess
+class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonitoringInterface
 {
     /**
      * @var array<string, ObjectStorageInternal>
@@ -15,10 +16,10 @@ class ObjectStorage implements \Iterator, \ArrayAccess
     protected array $storage;
 
     /**
-     * @param TEntity $object
-     * @param mixed $information
+     * @phpstan-param TEntity $offset
+     * @param ObjectStorageInternal $information
      */
-    public function offsetSet(mixed $object, mixed $information);
+    public function offsetSet(mixed $offset, mixed $information): void;
 
     /**
      * @param TEntity|int $value
@@ -29,11 +30,11 @@ class ObjectStorage implements \Iterator, \ArrayAccess
     /**
      * @param TEntity|int $value
      */
-    public function offsetUnset(mixed $value);
+    public function offsetUnset(mixed $value): void;
 
     /**
      * @param TEntity|int $value
-     * @return ($value is int ? TEntity|null : mixed)
+     * @return ($value is int ? TEntity|null : ObjectStorageInternal)
      */
     public function offsetGet(mixed $value);
 }
