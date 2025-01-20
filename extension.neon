@@ -145,6 +145,7 @@ parameters:
             frontend.typoscript: TYPO3\CMS\Core\TypoScript\FrontendTypoScript
             extbase: TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters
             frontend.cache.instruction: TYPO3\CMS\Frontend\Cache\CacheInstruction
+            frontend.cache.collector: TYPO3\CMS\Core\Cache\CacheDataCollector
         siteGetAttributeMapping:
             base: string
             baseVariants: list
