@@ -88,29 +88,37 @@ parameters:
     typo3:
         containerXmlPath: null
         contextApiGetAspectMapping:
-            date: TYPO3\CMS\Core\Context\DateTimeAspect
-            visibility: TYPO3\CMS\Core\Context\VisibilityAspect
             backend.user: TYPO3\CMS\Core\Context\UserAspect
+            date: TYPO3\CMS\Core\Context\DateTimeAspect
+            fileProcessing: TYPO3\CMS\Core\Context\FileProcessingAspect
+            frontend.preview: TYPO3\CMS\Core\Context\PreviewAspect
             frontend.user: TYPO3\CMS\Core\Context\UserAspect
-            workspace: TYPO3\CMS\Core\Context\WorkspaceAspect
             language: TYPO3\CMS\Core\Context\LanguageAspect
+            security: TYPO3\CMS\Core\Context\SecurityAspect
             typoscript: TYPO3\CMS\Core\Context\TypoScriptAspect
+            visibility: TYPO3\CMS\Core\Context\VisibilityAspect
+            workspace: TYPO3\CMS\Core\Context\WorkspaceAspect
         requestGetAttributeMapping:
+            adminPanelRequestId: string
+            applicationType: TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_*
             backend.user: TYPO3\CMS\Backend\FrontendBackendUserAuthentication
+            currentContentObject: TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+            extbase: TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters
+            frontend.cache.collector: TYPO3\CMS\Frontend\Cache\CacheCollector
+            frontend.cache.instruction: TYPO3\CMS\Frontend\Cache\CacheInstruction
+            frontend.controller: TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+            frontend.page.information: TYPO3\CMS\Frontend\Page\PageInformation
+            frontend.typoscript: TYPO3\CMS\Core\TypoScript\FrontendTypoScript
             frontend.user: TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
             language: TYPO3\CMS\Core\Site\Entity\SiteLanguage
             module: TYPO3\CMS\Backend\Module\ModuleInterface
             moduleData: TYPO3\CMS\Backend\Module\ModuleData
+            nonce: TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce
             normalizedParams: TYPO3\CMS\Core\Http\NormalizedParams
-            site: TYPO3\CMS\Core\Site\Entity\Site
-            applicationType: TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_*
             routing: TYPO3\CMS\Core\Routing\SiteRouteResult|TYPO3\CMS\Core\Routing\PageArguments
-            currentContentObject: TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-            frontend.controller: TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-            frontend.page.information: TYPO3\CMS\Frontend\Page\PageInformation
-            frontend.typoscript: TYPO3\CMS\Core\TypoScript\FrontendTypoScript
-            extbase: TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters
-            frontend.cache.instruction: TYPO3\CMS\Frontend\Cache\CacheInstruction
+            site: TYPO3\CMS\Core\Site\Entity\Site
+            target: string
+            typo3.testing.context: TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext
         siteGetAttributeMapping:
             base: string
             baseVariants: list
