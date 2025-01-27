@@ -126,6 +126,7 @@ parameters:
             languages: list
             rootPageId: int
             routeEnhancers: array
+            settings: array
             websiteTitle: string
     stubFiles:
         - stubs/DomainObjectInterface.stub
