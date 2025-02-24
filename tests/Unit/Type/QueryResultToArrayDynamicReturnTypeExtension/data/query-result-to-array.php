@@ -135,6 +135,12 @@ class MyController extends ActionController
 			'list<SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\QueryResultToArrayDynamicReturnTypeExtension\FrontendUserGroup>',
 			$myObjects
 		);
+
+		$key = $queryResult->key();
+		assertType(
+			'int',
+			$key
+		);
 	}
 
 }
