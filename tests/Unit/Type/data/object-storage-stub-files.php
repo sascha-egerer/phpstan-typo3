@@ -29,6 +29,7 @@ class MyModel extends AbstractEntity
 		}
 
 		assertType(self::class . '|null', $objectStorage->offsetGet(0));
+		assertType(self::class . '|null', $objectStorage->offsetGet('0'));
 		assertType(self::class . '|null', $objectStorage->current());
 
 		// We ignore errors in the next line as this will produce an
