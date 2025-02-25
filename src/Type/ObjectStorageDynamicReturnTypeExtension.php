@@ -43,11 +43,13 @@ class ObjectStorageDynamicReturnTypeExtension implements DynamicMethodReturnType
 		$argumentType = $scope->getType($firstArgument->value);
 
 		if ((new StringType())->isSuperTypeOf($argumentType)->yes()) {
-			return null;
+			return $methodReflection->getVariants()[0]->getReturnType();
 		}
+
 		if ((new IntegerType())->isSuperTypeOf($argumentType)->yes()) {
-			return null;
+			return $methodReflection->getVariants()[0]->getReturnType();
 		}
+
 		return new MixedType();
 	}
 
