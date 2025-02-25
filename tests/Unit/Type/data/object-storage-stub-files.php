@@ -41,15 +41,11 @@ class MyModel extends AbstractEntity
 		assertType(self::class . '|null', $this->testStorage->offsetGet(0));
 		assertType(self::class . '|null', $this->testStorage->offsetGet('0'));
 		assertType(self::class . '|null', $this->testStorage->current());
-
-		// We ignore errors in the next line as this will produce an
-		// "Offset 0 does not exist on TYPO3\CMS\Extbase\Persistence\ObjectStorage<ObjectStorage\My\Test\Extension\Domain\Model\MyModel>
-		// due to the weird implementation of ArrayAccess in ObjectStorage::offsetGet()
-		// @phpstan-ignore-next-line
 		assertType(self::class . '|null', $this->testStorage[0]);
 
 		$myModel = new self();
 
+		assertType('mixed', $this->testStorage->offsetGet($this->testStorage->current()));
 		assertType('mixed', $this->testStorage->offsetGet($myModel));
 	}
 

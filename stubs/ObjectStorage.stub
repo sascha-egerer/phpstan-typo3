@@ -10,8 +10,8 @@ namespace TYPO3\CMS\Extbase\Persistence;
 class ObjectStorage implements \Iterator, \ArrayAccess
 {
     /**
-     * @param TEntity|int|string $value
-     * @return ($value is int ? TEntity|null : mixed)
+     * @param TEntity|string|int $value
+     * @phpstan-return TEntity|null
      */
-    public function offsetGet($value);
+    public function offsetGet(mixed $value);
 }
