@@ -15,6 +15,12 @@ final class MathUtilityType
 		assertType('int<0, 100>', $forceIntegerInRange);
 	}
 
+	public function forceIntegerInRangeWithFloatAndWithMinAndMaxValueDefined(float $theFloat): void
+	{
+		$theFloat = MathUtility::forceIntegerInRange($theFloat, 1, 100);
+		assertType('int<1, 100>', $theFloat);
+	}
+
 	public function forceIntegerInRangeWithoutMaxValueSpecified(int $theInt): void
 	{
 		$forceIntegerInRange = MathUtility::forceIntegerInRange($theInt, 0);
