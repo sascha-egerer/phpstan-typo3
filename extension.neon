@@ -130,7 +130,6 @@ parameters:
             websiteTitle: string
     stubFiles:
         - stubs/DomainObjectInterface.stub
-        - stubs/ObjectMonitoringInterface.stub
         - stubs/ObjectStorage.stub
         - stubs/QueryInterface.stub
         - stubs/QueryResultInterface.stub
