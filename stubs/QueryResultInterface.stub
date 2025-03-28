@@ -2,7 +2,7 @@
 namespace TYPO3\CMS\Extbase\Persistence;
 
 /**
- * @template TKey
+ * @template TKey of int
  * @template TValue of object
  * @extends \Iterator<TKey, TValue>
  * @extends \ArrayAccess<TKey, TValue>
