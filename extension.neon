@@ -108,7 +108,7 @@ parameters:
             backend.user: TYPO3\CMS\Backend\FrontendBackendUserAuthentication
             currentContentObject: TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
             extbase: TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters
-            frontend.cache.collector: TYPO3\CMS\Frontend\Cache\CacheCollector
+            frontend.cache.collector: TYPO3\CMS\Core\Cache\CacheDataCollector
             frontend.cache.instruction: TYPO3\CMS\Frontend\Cache\CacheInstruction
             frontend.controller: TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
             frontend.page.information: TYPO3\CMS\Frontend\Page\PageInformation
