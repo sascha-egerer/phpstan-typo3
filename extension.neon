@@ -119,6 +119,7 @@ parameters:
             moduleData: TYPO3\CMS\Backend\Module\ModuleData
             nonce: TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce
             normalizedParams: TYPO3\CMS\Core\Http\NormalizedParams
+            originalRequest: Psr\Http\Message\ServerRequestInterface
             routing: TYPO3\CMS\Core\Routing\SiteRouteResult|TYPO3\CMS\Core\Routing\PageArguments
             site: TYPO3\CMS\Core\Site\Entity\Site
             target: string
