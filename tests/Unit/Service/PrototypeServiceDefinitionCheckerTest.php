@@ -7,9 +7,8 @@ use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Testing\PHPStanTestCase;
 use SaschaEgerer\PhpstanTypo3\Service\PrototypeServiceDefinitionChecker;
 use SaschaEgerer\PhpstanTypo3\Service\ServiceDefinition;
-use SaschaEgerer\PhpstanTypo3\Tests\Unit\Fixtures\NonPrototypeClass;
-use SaschaEgerer\PhpstanTypo3\Tests\Unit\Fixtures\PrototypeClass;
-use SaschaEgerer\PhpstanTypo3\Tests\Unit\Fixtures\PrototypeClassWithoutConstructor;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
+use TYPO3\CMS\Core\Site\Entity\Site;
 
 final class PrototypeServiceDefinitionCheckerTest extends PHPStanTestCase
 {
@@ -19,8 +18,10 @@ final class PrototypeServiceDefinitionCheckerTest extends PHPStanTestCase
 	public static function provideNonPrototypes(): \Generator
 	{
 		$builderFactory = new BuilderFactory();
-		$prototypeClass = $builderFactory->classConstFetch(PrototypeClass::class, 'class');
-		$nonPrototypeClass = $builderFactory->classConstFetch(NonPrototypeClass::class, 'class');
+		// stdClass has no required constructor arguments (it's a prototype candidate)
+		$prototypeClass = $builderFactory->classConstFetch(\stdClass::class, 'class');
+		// Site has required constructor arguments (not a prototype candidate)
+		$nonPrototypeClass = $builderFactory->classConstFetch(Site::class, 'class');
 
 		yield 'Service definition has tags' => [
 			$builderFactory->staticCall('Foo', 'foo', [$prototypeClass]),
@@ -41,8 +42,10 @@ final class PrototypeServiceDefinitionCheckerTest extends PHPStanTestCase
 	public static function providePrototypes(): \Generator
 	{
 		$builderFactory = new BuilderFactory();
-		$prototypeClass = $builderFactory->classConstFetch(PrototypeClass::class, 'class');
-		$prototypeClassWithoutConstructor = $builderFactory->classConstFetch(PrototypeClassWithoutConstructor::class, 'class');
+		// stdClass - a built-in PHP class with no constructor that PHPStan knows about
+		$prototypeClass = $builderFactory->classConstFetch(\stdClass::class, 'class');
+		// NullSite - a TYPO3 class with no required constructor arguments
+		$prototypeClassWithoutConstructor = $builderFactory->classConstFetch(NullSite::class, 'class');
 
 		yield 'Service definition has no tags, no method calls and class has no required constructor arguments' => [
 			$builderFactory->staticCall('Foo', 'foo', [$prototypeClass]),
