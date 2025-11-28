@@ -15,11 +15,11 @@
 		"php": "^8.2",
 		"ext-simplexml": "*",
 		"phpstan/phpstan": "^2.1",
-		"typo3/cms-core": "^13.4.3",
-		"typo3/cms-extbase": "^13.4.3",
+		"typo3/cms-core": "^14.0",
+		"typo3/cms-extbase": "^14.0",
 		"bnf/phpstan-psr-container": "^1.0",
 		"composer/semver": "^3.4",
-		"ssch/typo3-debug-dump-pass": "^0.0.2"
+		"ssch/typo3-debug-dump-pass": "dev-main"
 	},
 	"require-dev": {
 		"consistence-community/coding-standard": "^3.11",
@@ -41,7 +41,18 @@
 		},
 		"files": [
 			"tests/Unit/Type/data/repository-stub-files.php",
-			"tests/Unit/Type/QueryResultToArrayDynamicReturnTypeExtension/data/query-result-to-array.php"
+			"tests/Unit/Type/data/object-storage-stub-files.php",
+			"tests/Unit/Type/data/query-factory-stub-files.php",
+			"tests/Unit/Type/data/custom-query-type.php",
+			"tests/Unit/Type/data/context-get-aspect-return-types.php",
+			"tests/Unit/Type/data/request-get-attribute-return-types.php",
+			"tests/Unit/Type/data/site-get-attribute-return-types.php",
+			"tests/Unit/Type/QueryResultToArrayDynamicReturnTypeExtension/data/query-result-to-array.php",
+			"tests/Unit/Type/MathUtilityTypeSpecifyingExtension/data/MathUtilityType.php",
+			"tests/Unit/Type/DateTimeAspectGetDynamicReturnTypeExtension/data/datetime-aspect-get-return-types.php",
+			"tests/Unit/Type/UserAspectGetDynamicReturnTypeExtension/data/user-aspect-get-return-types.php",
+			"tests/Unit/Type/GeneralUtilityGetIndpEnvDynamicReturnTypeExtension/data/GeneralUtilityGetIndpEnv.php",
+			"tests/Unit/Type/PropertyMapperReturnTypeExtension/data/property-converter-types.php"
 		]
 	},
 	"extra": {
@@ -57,5 +68,18 @@
 			"typo3/class-alias-loader": true,
 			"typo3/cms-composer-installers": true
 		}
+	},
+	"scripts": {
+		"ci": [
+			"@lint",
+			"@cs",
+			"@phpstan",
+			"@phpunit"
+		],
+		"lint": "parallel-lint src tests",
+		"cs": "phpcs",
+		"cs:fix": "phpcbf",
+		"phpstan": "phpstan --memory-limit=-1",
+		"phpunit": "phpunit --colors=always --configuration tests/phpunit.xml"
 	}
 }
