@@ -81,6 +81,7 @@ final class MathUtilityTypeSpecifyingExtension implements StaticMethodTypeSpecif
 
 	private function specifyTypesForForceIntegerInRange(StaticCall $node, Scope $scope): SpecifiedTypes
 	{
+		// @phpstan-ignore-next-line
 		$parentNode = $node->getAttribute('parent');
 
 		if (!$parentNode instanceof Assign) {
@@ -161,6 +162,7 @@ final class MathUtilityTypeSpecifyingExtension implements StaticMethodTypeSpecif
 
 	private function specifyTypesForConvertToPositiveInteger(StaticCall $node, Scope $scope): SpecifiedTypes
 	{
+		// @phpstan-ignore-next-line
 		$parentNode = $node->getAttribute('parent');
 
 		if (!$parentNode instanceof Assign) {
