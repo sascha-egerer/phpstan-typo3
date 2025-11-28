@@ -64,8 +64,8 @@ jobs:
       - name: "PHPStan"
         run: "composer phpstan"
 
-  tests:
-    name: "Tests (PHP ${{ matrix.php-version }}${{ matrix.composer-flags }})"
+  phpunit:
+    name: "PHPUnit (PHP ${{ matrix.php-version }}${{ matrix.composer-flags }})"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -102,5 +102,5 @@ jobs:
       - name: "Install specific TYPO3 version"
         run: "composer update --no-interaction --no-progress --with typo3/cms-core:${{ matrix.typo3-version }}${{ matrix.composer-flags }}"
 
-      - name: "Tests"
-        run: "composer test"
+      - name: "PHPUnit"
+        run: "composer phpunit"
