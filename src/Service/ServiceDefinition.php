@@ -4,42 +4,16 @@ namespace SaschaEgerer\PhpstanTypo3\Service;
 
 final class ServiceDefinition
 {
-
-	private string $id;
-
-	private ?string $class;
-
-	private bool $public;
-
-	private bool $synthetic;
-
-	private ?string $alias;
-
-	private bool $hasConstructorArguments;
-
-	private bool $hasMethodCalls;
-
-	private bool $hasTags;
-
 	public function __construct(
-		string $id,
-		?string $class,
-		bool $public,
-		bool $synthetic,
-		?string $alias,
-		bool $hasConstructorArguments,
-		bool $hasMethodCalls,
-		bool $hasTags
-	)
-	{
-		$this->id = $id;
-		$this->class = $class;
-		$this->public = $public;
-		$this->synthetic = $synthetic;
-		$this->alias = $alias;
-		$this->hasConstructorArguments = $hasConstructorArguments;
-		$this->hasMethodCalls = $hasMethodCalls;
-		$this->hasTags = $hasTags;
+		private readonly string $id,
+		private readonly ?string $class,
+		private readonly bool $public,
+		private readonly bool $synthetic,
+		private readonly ?string $alias,
+		private readonly bool $hasConstructorArguments,
+		private readonly bool $hasMethodCalls,
+		private readonly bool $hasTags
+	) {
 	}
 
 	public function getId(): string
