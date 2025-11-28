@@ -122,6 +122,22 @@ The following stubs are still required:
 
 ## Remaining Configuration
 
+### Current Context API Aspect Mappings
+
+```neon
+contextApiGetAspectMapping:
+    backend.user: TYPO3\CMS\Core\Context\UserAspect
+    date: TYPO3\CMS\Core\Context\DateTimeAspect
+    fileProcessing: TYPO3\CMS\Core\Context\FileProcessingAspect
+    frontend.preview: TYPO3\CMS\Core\Context\PreviewAspect
+    frontend.user: TYPO3\CMS\Core\Context\UserAspect
+    language: TYPO3\CMS\Core\Context\LanguageAspect
+    security: TYPO3\CMS\Core\Context\SecurityAspect
+    typoscript: TYPO3\CMS\Core\Context\TypoScriptAspect
+    visibility: TYPO3\CMS\Core\Context\VisibilityAspect
+    workspace: TYPO3\CMS\Core\Context\WorkspaceAspect
+```
+
 ### Current Request Attribute Mappings
 
 ```neon
@@ -145,6 +161,20 @@ requestGetAttributeMapping:
     site: TYPO3\CMS\Core\Site\Entity\Site
     target: string
     typo3.testing.context: TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext
+```
+
+### Current Site Attribute Mappings
+
+```neon
+siteGetAttributeMapping:
+    base: string
+    baseVariants: list
+    errorHandling: list
+    languages: list
+    rootPageId: int
+    routeEnhancers: array
+    settings: array
+    websiteTitle: string
 ```
 
 ### Early Terminating Methods

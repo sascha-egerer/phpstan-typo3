@@ -20,12 +20,16 @@ This extension provides the following features (!!! not an exhaustive list !!!):
 
 **Dynamic Return Type Extensions**
 * Provides correct return type for `\TYPO3\CMS\Core\Context\Context->getAspect()`.
+* Provides correct return type for `\TYPO3\CMS\Core\Context\DateTimeAspect->get()`.
+* Provides correct return type for `\TYPO3\CMS\Core\Context\UserAspect->get()`.
 * Provides correct return type for `\TYPO3\CMS\Extbase\Property\PropertyMapper->convert()`.
-* Provides correct return type for `\TYPO3\CMS\Core\Utility\MathUtility` methods like isIntegerInRange.
-* Provides correct return type for `\TYPO3\CMS\Extbase\Persistence\Generic\Query->execute()`.
+* Provides correct return type for `\TYPO3\CMS\Core\Utility\MathUtility` methods like `isIntegerInRange`.
+* Provides correct return type for `\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()`.
 * Provides correct return type for `\TYPO3\CMS\Extbase\Persistence\QueryInterface->execute()`.
+* Provides correct return type for `\TYPO3\CMS\Extbase\Persistence\ObjectStorage` methods.
 * Provides correct return type for `\TYPO3\CMS\Core\Site\Entity\Site->getAttribute()`.
 * Provides correct return type for `\Psr\Http\Message\ServerRequestInterface->getAttribute()`.
+* Provides correct return type for `\TYPO3\CMS\Extbase\Validation\ValidatorResolver->createValidator()`.
 * Uses under the hood [bnf/phpstan-psr-container](https://github.com/bnf/phpstan-psr-container)
 
 All these dynamic return type extensions are necessary to teach PHPStan what type will be returned by the specific method call.
@@ -52,10 +56,12 @@ PHPStan will tell you that the if condition is superfluous, because the variable
 </details>
 
 **Framework specific rules**
-* Provides rule for `\TYPO3\CMS\Core\Context\Context->getAspect()`.
-* Provides rule for `\Psr\Http\Message\ServerRequestInterface->getAttribute()`.
-* Provides rule for `\TYPO3\CMS\Core\Site\Entity\Site->getAttribute()`.
-* Provides rule for `\TYPO3\CMS\Extbase\Validation\ValidatorResolver->createValidator()`.
+* Validates `\TYPO3\CMS\Core\Context\Context->getAspect()` aspect names.
+* Validates `\Psr\Http\Message\ServerRequestInterface->getAttribute()` attribute names.
+* Validates `\TYPO3\CMS\Core\Site\Entity\Site->getAttribute()` attribute names.
+* Validates `\TYPO3\CMS\Extbase\Validation\ValidatorResolver->createValidator()` required options.
+* Detects private service access via `\Psr\Container\ContainerInterface->get()`.
+* Detects private service access via `\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()`.
 
 <details>
 <summary>Show me a practical use case.</summary>
