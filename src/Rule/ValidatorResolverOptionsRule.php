@@ -1,5 +1,29 @@
 <?php declare(strict_types = 1);
 
+/*
+ * Copyright notice
+ *
+ * (c) Amedick Sommer GmbH <info@amedick-sommer.de>
+ *
+ * All rights reserved
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The GNU General Public License can be found at
+ * https://www.gnu.org/licenses/gpl-3.0.html.
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
+
 namespace SaschaEgerer\PhpstanTypo3\Rule;
 
 use PhpParser\Node;
@@ -182,11 +206,16 @@ final class ValidatorResolverOptionsRule implements Rule
 		$collectedSupportedOptions = [];
 		$collectedRequiredOptions = [];
 
-		if (!$supportedOptions instanceof PhpPropertyReflection) {
+		$nativeReflection = method_exists($supportedOptions, 'getNativeReflection')
+			? $supportedOptions->getNativeReflection()
+			: null;
+
+		// Ensure $nativeReflection is an object before calling method
+		if (!is_object($nativeReflection) || !method_exists($nativeReflection, 'getDefaultValueExpression')) {
 			return ValidatorOptionsConfiguration::empty();
 		}
 
-		$defaultValues = $supportedOptions->getNativeReflection()->getDefaultValueExpression();
+		$defaultValues = $nativeReflection->getDefaultValueExpression();
 
 		if (!$defaultValues instanceof Array_) {
 			return ValidatorOptionsConfiguration::empty();
@@ -233,7 +262,7 @@ final class ValidatorResolverOptionsRule implements Rule
 
 	private function resolveOptionKeyValue(
 		ArrayItem $defaultValue,
-		PhpPropertyReflection $supportedOptions,
+		PropertyReflection $supportedOptions,
 		Scope $scope
 	): ?string
 	{
@@ -242,6 +271,8 @@ final class ValidatorResolverOptionsRule implements Rule
 		}
 
 		if ($defaultValue->key instanceof ClassConstFetch && $defaultValue->key->name instanceof Identifier) {
+			// Not covered by PHPStan's backward compatibility promise, see: https://phpstan.org/developing-extensions/backward-compatibility-promise
+			// @phpstan-ignore-next-line
 			$keyType = $this->initializerExprTypeResolver->getClassConstFetchType(
 				$defaultValue->key->class,
 				$defaultValue->key->name->toString(),
