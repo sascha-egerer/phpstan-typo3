@@ -24,9 +24,9 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess
 
     /**
      * Returns the current storage entry.
-     * @return TEntity|null
+     * @return TEntity
      */
-    public function current(): ?object;
+    public function current(): object;
 
     /**
      * Checks if the storage contains a specific object.
