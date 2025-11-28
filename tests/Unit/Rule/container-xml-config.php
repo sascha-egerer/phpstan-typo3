@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 /**
  * This file is included by PHPStan NEON configuration to provide dynamic paths.
@@ -11,9 +9,9 @@ declare(strict_types=1);
 $containerXmlPath = dirname(__DIR__) . '/Fixtures/container.xml';
 
 return [
-    'parameters' => [
-        'typo3' => [
-            'containerXmlPath' => $containerXmlPath,
-        ],
-    ],
+	'parameters' => [
+		'typo3' => [
+			'containerXmlPath' => $containerXmlPath,
+		],
+	],
 ];
