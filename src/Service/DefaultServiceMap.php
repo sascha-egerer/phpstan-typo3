@@ -8,16 +8,11 @@ use SaschaEgerer\PhpstanTypo3\Contract\ServiceMap;
 
 final class DefaultServiceMap implements ServiceMap
 {
-
-	/** @var ServiceDefinition[] */
-	private array $serviceDefinitions;
-
 	/**
 	 * @param ServiceDefinition[] $serviceDefinitions
 	 */
-	public function __construct(array $serviceDefinitions)
+	public function __construct(private array $serviceDefinitions)
 	{
-		$this->serviceDefinitions = $serviceDefinitions;
 	}
 
 	public function getServiceDefinitions(): array
