@@ -31,9 +31,9 @@
 		"phpunit/phpunit": "^11.5"
 	},
 	"repositories": {
-		"phpstan-typo3": {
+		"typo3-debug-dump-pass": {
 			"type": "git",
-			"url": "https://github.com/chrissonntag/phpstan-typo3.git"
+			"url": "https://github.com/chrissonntag/typo3-debug-dump-pass.git"
 		}
 	},
 	"autoload": {
