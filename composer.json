@@ -19,7 +19,7 @@
 		"typo3/cms-extbase": "^14.0",
 		"bnf/phpstan-psr-container": "^1.0",
 		"composer/semver": "^3.4",
-		"ssch/typo3-debug-dump-pass": "dev-main"
+		"ssch/typo3-debug-dump-pass": "dev-feature/typo3-14-compatibility"
 	},
 	"require-dev": {
 		"consistence-community/coding-standard": "^3.11",
@@ -29,6 +29,12 @@
 		"phpstan/phpstan-strict-rules": "^2.0",
 		"phpstan/phpstan-phpunit": "^2.0.3",
 		"phpunit/phpunit": "^11.5"
+	},
+	"repositories": {
+		"phpstan-typo3": {
+			"type": "git",
+			"url": "https://github.com/chrissonntag/phpstan-typo3.git"
+		}
 	},
 	"autoload": {
 		"psr-4": {
