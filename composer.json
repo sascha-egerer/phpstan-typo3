@@ -85,7 +85,7 @@
 		"lint": "parallel-lint src tests",
 		"cs": "phpcs",
 		"cs:fix": "phpcbf",
-		"phpstan": "phpstan --memory-limit=-1",
+		"phpstan": "phpstan analyse --no-progress --memory-limit=-1 --configuration tests/phpstan.neon",
 		"phpunit": "phpunit --colors=always --configuration tests/phpunit.xml"
 	}
 }
