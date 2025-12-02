@@ -4,6 +4,7 @@ namespace SaschaEgerer\PhpstanTypo3\Service;
 
 final class ServiceDefinition
 {
+
 	public function __construct(
 		private readonly string $id,
 		private readonly ?string $class,
@@ -13,7 +14,8 @@ final class ServiceDefinition
 		private readonly bool $hasConstructorArguments,
 		private readonly bool $hasMethodCalls,
 		private readonly bool $hasTags
-	) {
+	)
+	{
 	}
 
 	public function getId(): string

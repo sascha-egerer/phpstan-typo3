@@ -8,6 +8,7 @@ use SaschaEgerer\PhpstanTypo3\Contract\ServiceMap;
 
 final class DefaultServiceMap implements ServiceMap
 {
+
 	/**
 	 * @param ServiceDefinition[] $serviceDefinitions
 	 */

@@ -37,7 +37,6 @@ use PhpParser\Node\Identifier;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\InitializerExprTypeResolver;
-use PHPStan\Reflection\Php\PhpPropertyReflection;
 use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
