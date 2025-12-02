@@ -11,6 +11,20 @@ parameters:
     paths:
          - ../src
          - ../tests
+    scanFiles:
+        - Unit/Type/data/repository-stub-files.php
+        - Unit/Type/data/object-storage-stub-files.php
+        - Unit/Type/data/query-factory-stub-files.php
+        - Unit/Type/data/custom-query-type.php
+        - Unit/Type/data/context-get-aspect-return-types.php
+        - Unit/Type/data/request-get-attribute-return-types.php
+        - Unit/Type/data/site-get-attribute-return-types.php
+        - Unit/Type/QueryResultToArrayDynamicReturnTypeExtension/data/query-result-to-array.php
+        - Unit/Type/MathUtilityTypeSpecifyingExtension/data/MathUtilityType.php
+        - Unit/Type/DateTimeAspectGetDynamicReturnTypeExtension/data/datetime-aspect-get-return-types.php
+        - Unit/Type/UserAspectGetDynamicReturnTypeExtension/data/user-aspect-get-return-types.php
+        - Unit/Type/GeneralUtilityGetIndpEnvDynamicReturnTypeExtension/data/GeneralUtilityGetIndpEnv.php
+        - Unit/Type/PropertyMapperReturnTypeExtension/data/property-converter-types.php
     reportUnmatchedIgnoredErrors: false
     excludePaths:
          - '*tests/*/Fixtures/*'
