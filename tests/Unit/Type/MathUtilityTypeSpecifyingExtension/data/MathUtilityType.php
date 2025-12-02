@@ -67,15 +67,6 @@ final class MathUtilityType
 		assertType('int<min, 200>', $f);
 	}
 
-	public function convertToPositiveInteger($a, $b = -1): void
-	{
-		$positiveInteger1 = MathUtility::convertToPositiveInteger($a);
-		$positiveInteger2 = MathUtility::convertToPositiveInteger($b);
-
-		assertType('int<0, max>', $positiveInteger1);
-		assertType('int<0, max>', $positiveInteger2);
-	}
-
 	public function canBeInterpretedAsInteger($a, int $b, float $c, string $d): void
 	{
 		if (MathUtility::canBeInterpretedAsInteger($a)) {

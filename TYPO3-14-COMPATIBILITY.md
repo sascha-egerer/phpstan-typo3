@@ -198,11 +198,28 @@ earlyTerminatingMethodCalls:
 
 ---
 
+## MathUtility Changes
+
+### Removed: `convertToPositiveInteger`
+
+The `MathUtility::convertToPositiveInteger()` method was removed in TYPO3 14.
+The corresponding type specifying extension logic and tests have been removed.
+
+```php
+// No longer available in TYPO3 14:
+MathUtility::convertToPositiveInteger($value);
+```
+
+**Migration:** Use `max(0, (int)$value)` or implement your own helper method.
+
+---
+
 ## TYPO3 14 Breaking Changes Reference
 
 | Changelog | Affected Component |
 |-----------|-------------------|
 | Breaking-105377 | `FrontendBackendUserAuthentication`, magic repository methods |
+| Breaking-105377 | `MathUtility::convertToPositiveInteger()` removed |
 | Breaking-106056 | `ValidatorInterface` (requires `setRequest()`/`getRequest()`) |
 | Breaking-107229 | Annotations replaced by Attributes |
 | Breaking-107831 | `TypoScriptFrontendController` removed |
