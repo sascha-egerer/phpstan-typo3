@@ -10,7 +10,7 @@ final class NullServiceDefinitionChecker implements ServiceDefinitionChecker
 
 	public function isPrototype(ServiceDefinition $serviceDefinition, Node $node): bool
 	{
-		return (bool) '';
+		return false;
 	}
 
 }
