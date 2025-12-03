@@ -20,12 +20,16 @@ This extension provides the following features (!!! not an exhaustive list !!!):
 
 **Dynamic Return Type Extensions**
 * Provides correct return type for `\TYPO3\CMS\Core\Context\Context->getAspect()`.
+* Provides correct return type for `\TYPO3\CMS\Core\Context\DateTimeAspect->get()`.
+* Provides correct return type for `\TYPO3\CMS\Core\Context\UserAspect->get()`.
 * Provides correct return type for `\TYPO3\CMS\Extbase\Property\PropertyMapper->convert()`.
-* Provides correct return type for `\TYPO3\CMS\Core\Utility\MathUtility` methods like isIntegerInRange.
-* Provides correct return type for `\TYPO3\CMS\Extbase\Persistence\Generic\Query->execute()`.
+* Provides correct return type for `\TYPO3\CMS\Core\Utility\MathUtility` methods like `isIntegerInRange`.
+* Provides correct return type for `\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()`.
 * Provides correct return type for `\TYPO3\CMS\Extbase\Persistence\QueryInterface->execute()`.
+* Provides correct return type for `\TYPO3\CMS\Extbase\Persistence\ObjectStorage` methods.
 * Provides correct return type for `\TYPO3\CMS\Core\Site\Entity\Site->getAttribute()`.
 * Provides correct return type for `\Psr\Http\Message\ServerRequestInterface->getAttribute()`.
+* Provides correct return type for `\TYPO3\CMS\Extbase\Validation\ValidatorResolver->createValidator()`.
 * Uses under the hood [bnf/phpstan-psr-container](https://github.com/bnf/phpstan-psr-container)
 
 All these dynamic return type extensions are necessary to teach PHPStan what type will be returned by the specific method call.
@@ -52,10 +56,12 @@ PHPStan will tell you that the if condition is superfluous, because the variable
 </details>
 
 **Framework specific rules**
-* Provides rule for `\TYPO3\CMS\Core\Context\Context->getAspect()`.
-* Provides rule for `\Psr\Http\Message\ServerRequestInterface->getAttribute()`.
-* Provides rule for `\TYPO3\CMS\Core\Site\Entity\Site->getAttribute()`.
-* Provides rule for `\TYPO3\CMS\Extbase\Validation\ValidatorResolver->createValidator()`.
+* Validates `\TYPO3\CMS\Core\Context\Context->getAspect()` aspect names.
+* Validates `\Psr\Http\Message\ServerRequestInterface->getAttribute()` attribute names.
+* Validates `\TYPO3\CMS\Core\Site\Entity\Site->getAttribute()` attribute names.
+* Validates `\TYPO3\CMS\Extbase\Validation\ValidatorResolver->createValidator()` required options.
+* Detects private service access via `\Psr\Container\ContainerInterface->get()`.
+* Detects private service access via `\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()`.
 
 <details>
 <summary>Show me a practical use case.</summary>
@@ -160,4 +166,37 @@ parameters:
     typo3:
         containerXmlPath: var/cache/development/App_KernelDevelopmentDebugContainer.xml
 ```
+
+## Development
+
+### Running Tests and Quality Checks
+
+The following composer scripts are available for development:
+
+| Command | Description |
+|---------|-------------|
+| `composer ci` | Run all quality checks (lint, cs, phpstan, phpunit) |
+| `composer lint` | Run PHP syntax linting using parallel-lint |
+| `composer cs` | Run code style checks using PHP_CodeSniffer |
+| `composer cs:fix` | Fix code style issues using PHP Code Beautifier |
+| `composer phpstan` | Run static analysis using PHPStan |
+| `composer phpunit` | Run PHPUnit tests |
+
+### Alternative: Using Phing
+
+You can also run all checks using Phing:
+
+```Shell
+vendor/bin/phing
+```
+
+Individual Phing targets:
+
+| Target | Description |
+|--------|-------------|
+| `vendor/bin/phing lint` | Run PHP syntax linting |
+| `vendor/bin/phing cs` | Run code style checks |
+| `vendor/bin/phing cs-fix` | Fix code style issues |
+| `vendor/bin/phing phpstan` | Run static analysis |
+| `vendor/bin/phing phpunit` | Run PHPUnit tests |
 

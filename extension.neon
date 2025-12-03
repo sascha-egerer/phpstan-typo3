@@ -105,12 +105,10 @@ parameters:
         requestGetAttributeMapping:
             adminPanelRequestId: string
             applicationType: TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_*
-            backend.user: TYPO3\CMS\Backend\FrontendBackendUserAuthentication
             currentContentObject: TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
             extbase: TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters
             frontend.cache.collector: TYPO3\CMS\Core\Cache\CacheDataCollector
             frontend.cache.instruction: TYPO3\CMS\Frontend\Cache\CacheInstruction
-            frontend.controller: TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
             frontend.page.information: TYPO3\CMS\Frontend\Page\PageInformation
             frontend.typoscript: TYPO3\CMS\Core\TypoScript\FrontendTypoScript
             frontend.user: TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
@@ -134,12 +132,9 @@ parameters:
             settings: array
             websiteTitle: string
     stubFiles:
-        - stubs/DomainObjectInterface.stub
         - stubs/ObjectStorage.stub
         - stubs/QueryInterface.stub
-        - stubs/QueryResultInterface.stub
         - stubs/Repository.stub
-        - stubs/RepositoryInterface.stub
     dynamicConstantNames:
         - TYPO3_MODE
         - TYPO3_REQUESTTYPE
@@ -160,27 +155,13 @@ parameters:
             - forward
             - forwardToReferringRequest
             - throwStatus
-        TYPO3\CMS\Extbase\Mvc\Controller\AbstractController:
-            - redirectToUri
-            - redirect
-            - forward
-            - throwStatus
         TYPO3\CMS\Core\Utility\HttpUtility:
             - redirect
             - setResponseCodeAndExit
         TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher:
             - redirectToUri
-        TYPO3\CMS\Extbase\Mvc\Controller\CommandController:
-            - forward
-            - quit
         TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility:
             - sendZipFileToBrowserAndDelete
-        TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController:
-            - pageUnavailableAndExit
-            - pageNotFoundAndExit
-            - pageErrorHandler
-        TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList:
-            - pageErrorHandler
 parametersSchema:
     typo3: structure([
         containerXmlPath: schema(string(), nullable())

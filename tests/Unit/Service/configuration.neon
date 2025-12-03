@@ -1,0 +1,5 @@
+parameters:
+    scanFiles:
+        - ../Fixtures/PrototypeClass.php
+        - ../Fixtures/PrototypeClassWithoutConstructor.php
+        - ../Fixtures/NonPrototypeClass.php

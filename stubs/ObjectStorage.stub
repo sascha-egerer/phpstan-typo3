@@ -2,16 +2,72 @@
 namespace TYPO3\CMS\Extbase\Persistence;
 
 /**
+ * The storage for objects. It ensures the uniqueness of an object in the storage.
  * @template TEntity of object
  * @implements \ArrayAccess<string, TEntity>
  * @implements \Iterator<string, TEntity>
  * @phpstan-type ObjectStorageInternal array{obj: TEntity, inf: mixed}
  */
-class ObjectStorage implements \Iterator, \ArrayAccess
+class ObjectStorage implements \Countable, \Iterator, \ArrayAccess
 {
     /**
      * @param TEntity|string|int $value
      * @phpstan-return TEntity|null
      */
     public function offsetGet(mixed $value);
+
+    /**
+     * Returns the number of objects in the storage.
+     * @return 0|positive-int
+     */
+    public function count(): int;
+
+    /**
+     * Returns the current storage entry.
+     * @return TEntity
+     */
+    public function current(): object;
+
+    /**
+     * Checks if the storage contains a specific object.
+     * @param TEntity $object
+     */
+    public function contains(object $object): bool;
+
+    /**
+     * Adds an object in the storage.
+     * @param TEntity $object
+     * @param mixed $information
+     */
+    public function attach(object $object, mixed $information = null): void;
+
+    /**
+     * Removes an object from the storage.
+     * @param TEntity $object
+     */
+    public function detach(object $object): void;
+
+    /**
+     * Returns this object storage as an array.
+     * @return list<TEntity>
+     */
+    public function toArray(): array;
+
+    /**
+     * Alias of toArray.
+     * @return list<TEntity>
+     */
+    public function getArray(): array;
+
+    /**
+     * Adds all object-information pairs from a different storage.
+     * @param ObjectStorage<TEntity> $storage
+     */
+    public function addAll(ObjectStorage $storage): void;
+
+    /**
+     * Removes objects contained in another storage from the current storage.
+     * @param ObjectStorage<TEntity> $storage
+     */
+    public function removeAll(ObjectStorage $storage): void;
 }
