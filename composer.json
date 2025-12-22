@@ -59,10 +59,10 @@
 	},
 	"scripts": {
 		"test": [
-			"@phpunit",
-			"@phpstan",
-			"@php-cs",
-			"@php-lint"
+			"@test:phpunit",
+			"@test:phpstan",
+			"@test:php-cs",
+			"@test:php-lint"
 		],
 		"test:phpunit": "phpunit --colors=always tests/",
 		"test:phpstan": "phpstan --memory-limit=2G",
