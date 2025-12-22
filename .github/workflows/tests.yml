@@ -44,6 +44,18 @@ jobs:
       - name: "Install specific TYPO3 version"
         run: "composer update --no-interaction --no-progress --with typo3/cms-core:${{ matrix.typo3-version }} ${{ matrix.composer-flags }}"
 
-      - name: "Tests"
+      - name: "Run PHP lint"
         run: |
-          vendor/bin/phing
+          composer test:php-lint
+
+      - name: "Run php-cs"
+        run: |
+          composer test:php-cs
+
+      - name: "Run phpstan"
+        run: |
+          composer test:phpstan
+
+      - name: "Run phpunit"
+        run: |
+          composer test:phpunit

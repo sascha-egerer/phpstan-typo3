@@ -25,7 +25,6 @@
 		"consistence-community/coding-standard": "^3.11",
 		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
 		"php-parallel-lint/php-parallel-lint": "^1.4",
-		"phing/phing": "^2.17",
 		"phpstan/phpstan-strict-rules": "^2.0",
 		"phpstan/phpstan-phpunit": "^2.0.3",
 		"phpunit/phpunit": "^11.5"
@@ -57,5 +56,21 @@
 			"typo3/class-alias-loader": true,
 			"typo3/cms-composer-installers": true
 		}
+	},
+	"scripts": {
+		"test": [
+			"@test:phpunit",
+			"@test:phpstan",
+			"@test:php-cs",
+			"@test:php-lint"
+		],
+		"test:phpunit": "phpunit --colors=always tests/",
+		"test:phpstan": "phpstan --memory-limit=2G",
+		"test:php-cs": "phpcs",
+		"test:php-lint": "parallel-lint src tests",
+		"fix": [
+			"@fix:php-cs"
+		],
+		"fix:php-cs": "phpcbf"
 	}
 }
