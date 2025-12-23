@@ -110,14 +110,18 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 	 */
 	private function createTags(SimpleXMLElement $def): array
 	{
-		if (!property_exists($def, 'tag') || $def->tag === null) {
+		if (!isset($def->tag)) {
 			return [];
 		}
 
 		$tagNames = [];
 
 		foreach ($def->tag as $tag) {
-			$tagNames[] = (string) $tag->attributes()?->name;
+			$name = (string) $tag->attributes()?->name;
+			if ($name === '') {
+				continue;
+			}
+			$tagNames[] = $name;
 		}
 
 		return $tagNames;
