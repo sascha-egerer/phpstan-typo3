@@ -53,8 +53,7 @@ class RequestAttributeValidationRule implements Rule
 
 		if (
 			interface_exists(ServerRequestInterface::class)
-			&& (!$declaringClass->implementsInterface(ServerRequestInterface::class)
-			&& $declaringClass->getName() !== ServerRequestInterface::class)
+			&& (!$declaringClass->implementsInterface(ServerRequestInterface::class) && $declaringClass->getName() !== ServerRequestInterface::class)
 		) {
 			return [];
 		}

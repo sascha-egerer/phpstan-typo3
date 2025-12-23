@@ -70,9 +70,9 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 				($attributesArray['public'] ?? null) === 'true',
 				($attributesArray['synthetic'] ?? null) === 'true',
 				isset($attributesArray['alias']) ? (string) $attributesArray['alias'] : null,
-				isset($def->argument),
-				isset($def->call),
-				isset($def->tag),
+				property_exists($def, 'argument') && $def->argument !== null,
+				property_exists($def, 'call') && $def->call !== null,
+				property_exists($def, 'tag') && $def->tag !== null,
 			);
 
 			if ($serviceDefinition->getAlias() !== null) {
@@ -83,10 +83,7 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 		}
 		foreach ($aliases as $serviceDefinition) {
 			$alias = $serviceDefinition->getAlias();
-			if ($alias === null) {
-				continue;
-			}
-			if (!isset($serviceDefinitions[$alias])) {
+			if ($alias === null || !isset($serviceDefinitions[$alias])) {
 				continue;
 			}
 			$id = $serviceDefinition->getId();
@@ -110,7 +107,7 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 	 */
 	private function createTags(SimpleXMLElement $def): array
 	{
-		if (!isset($def->tag)) {
+		if (!property_exists($def, 'tag') || $def->tag === null) {
 			return [];
 		}
 
