@@ -17,14 +17,11 @@ class SiteGetAttributeDynamicReturnTypeExtensionTest extends TypeInferenceTestCa
 		yield from self::gatherAssertTypes(__DIR__ . '/data/site-get-attribute-return-types.php');
 	}
 
-	/**
-	 * @param mixed ...$args
-	 */
 	#[DataProvider('dataFileAsserts')]
 	public function testFileAsserts(
 		string $assertType,
 		string $file,
-		...$args
+		mixed ...$args
 	): void
 	{
 		$this->assertFileAsserts($assertType, $file, ...$args);

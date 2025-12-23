@@ -16,14 +16,11 @@ final class MathUtilityTypeSpecifyingExtensionTest extends TypeInferenceTestCase
 		yield from self::gatherAssertTypes(__DIR__ . '/data/MathUtilityType.php');
 	}
 
-	/**
-	 * @param mixed ...$args
-	 */
 	#[DataProvider('dataFileAsserts')]
 	public function testFileAsserts(
 		string $assertType,
 		string $file,
-		...$args
+		mixed ...$args
 	): void
 	{
 		$this->assertFileAsserts($assertType, $file, ...$args);

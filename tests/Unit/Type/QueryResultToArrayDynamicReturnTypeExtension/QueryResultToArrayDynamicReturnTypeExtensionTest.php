@@ -16,14 +16,11 @@ final class QueryResultToArrayDynamicReturnTypeExtensionTest extends TypeInferen
 		yield from self::gatherAssertTypes(__DIR__ . '/data/query-result-to-array.php');
 	}
 
-	/**
-	 * @param mixed ...$args
-	 */
 	#[DataProvider('dataFileAsserts')]
 	public function testFileAsserts(
 		string $assertType,
 		string $file,
-		...$args
+		mixed ...$args
 	): void
 	{
 		$this->assertFileAsserts($assertType, $file, ...$args);

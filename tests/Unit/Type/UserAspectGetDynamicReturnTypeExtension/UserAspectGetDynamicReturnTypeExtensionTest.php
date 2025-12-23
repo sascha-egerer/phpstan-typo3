@@ -17,14 +17,11 @@ final class UserAspectGetDynamicReturnTypeExtensionTest extends TypeInferenceTes
 		yield from self::gatherAssertTypes(__DIR__ . '/data/user-aspect-get-return-types.php');
 	}
 
-	/**
-	 * @param mixed ...$args
-	 */
 	#[DataProvider('dataFileAsserts')]
 	public function testFileAsserts(
 		string $assertType,
 		string $file,
-		...$args
+		mixed ...$args
 	): void
 	{
 		$this->assertFileAsserts($assertType, $file, ...$args);

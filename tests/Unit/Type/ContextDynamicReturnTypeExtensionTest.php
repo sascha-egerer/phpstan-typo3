@@ -17,14 +17,11 @@ class ContextDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
 		yield from self::gatherAssertTypes(__DIR__ . '/data/context-get-aspect-return-types.php');
 	}
 
-	/**
-	 * @param mixed ...$args
-	 */
 	#[DataProvider('dataFileAsserts')]
 	public function testFileAsserts(
 		string $assertType,
 		string $file,
-		...$args
+		mixed ...$args
 	): void
 	{
 		$this->assertFileAsserts($assertType, $file, ...$args);

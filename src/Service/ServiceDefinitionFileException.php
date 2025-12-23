@@ -12,6 +12,13 @@ final class ServiceDefinitionFileException extends \InvalidArgumentException
 		return new self($message);
 	}
 
+	public static function notReadable(string $file): self
+	{
+		$message = sprintf('File "%s" could not be read', $file);
+
+		return new self($message);
+	}
+
 	public static function parseError(string $file): self
 	{
 		$message = sprintf('File "%s" could not be parsed correctly', $file);

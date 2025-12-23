@@ -23,13 +23,19 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 		}
 
 		if (!file_exists($this->containerXmlPath)) {
-			throw ServiceDefinitionFileException::notFound($this->containerXmlPath);
+			throw \SaschaEgerer\PhpstanTypo3\Service\ServiceDefinitionFileException::notFound($this->containerXmlPath);
 		}
 
-		$xml = @simplexml_load_string(file_get_contents($this->containerXmlPath));
+		$containerXml = file_get_contents($this->containerXmlPath);
+
+		if ($containerXml === false) {
+			throw \SaschaEgerer\PhpstanTypo3\Service\ServiceDefinitionFileException::notReadable($this->containerXmlPath);
+		}
+
+		$xml = @simplexml_load_string($containerXml);
 
 		if ($xml === false) {
-			throw ServiceDefinitionFileException::parseError($this->containerXmlPath);
+			throw \SaschaEgerer\PhpstanTypo3\Service\ServiceDefinitionFileException::parseError($this->containerXmlPath);
 		}
 
 		/** @var ServiceDefinition[] $serviceDefinitions */
@@ -42,7 +48,7 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 				continue;
 			}
 
-			$attributesArray = ((array)$attrs)['@attributes'] ?? [];
+			$attributesArray = ((array) $attrs)['@attributes'] ?? [];
 
 			if (!is_scalar($attributesArray['id'] ?? null)) {
 				continue;
