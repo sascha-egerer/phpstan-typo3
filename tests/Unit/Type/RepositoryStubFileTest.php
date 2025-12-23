@@ -3,6 +3,7 @@
 namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Type;
 
 use PHPStan\Testing\TypeInferenceTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class RepositoryStubFileTest extends TypeInferenceTestCase
 {
@@ -15,17 +16,11 @@ class RepositoryStubFileTest extends TypeInferenceTestCase
 		yield from self::gatherAssertTypes(__DIR__ . '/data/repository-stub-files.php');
 	}
 
-	/**
-	 * @dataProvider dataFileAsserts
-	 *
-	 * @param string $assertType
-	 * @param string $file
-	 * @param mixed ...$args
-	 */
+	#[DataProvider('dataFileAsserts')]
 	public function testFileAsserts(
 		string $assertType,
 		string $file,
-		...$args
+		mixed ...$args
 	): void
 	{
 		$this->assertFileAsserts($assertType, $file, ...$args);

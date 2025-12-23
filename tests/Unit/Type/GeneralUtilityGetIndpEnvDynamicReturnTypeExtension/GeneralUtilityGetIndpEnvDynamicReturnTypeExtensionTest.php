@@ -3,6 +3,7 @@
 namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\GeneralUtilityGetIndpEnvDynamicReturnTypeExtension;
 
 use PHPStan\Testing\TypeInferenceTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class GeneralUtilityGetIndpEnvDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
 {
@@ -14,17 +15,11 @@ final class GeneralUtilityGetIndpEnvDynamicReturnTypeExtensionTest extends TypeI
 	{
 		yield from self::gatherAssertTypes(__DIR__ . '/data/GeneralUtilityGetIndpEnv.php');
 	}
-
-	/**
-	 * @dataProvider dataFileAsserts
-	 * @param string $assertType
-	 * @param string $file
-	 * @param mixed ...$args
-	 */
+	#[DataProvider('dataFileAsserts')]
 	public function testFileAsserts(
 		string $assertType,
 		string $file,
-		...$args
+		mixed ...$args
 	): void
 	{
 		$this->assertFileAsserts($assertType, $file, ...$args);

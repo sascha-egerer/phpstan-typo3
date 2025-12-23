@@ -7,8 +7,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 final class UseSiteWithUndefinedAttribute
 {
 
-	/** @var Site */
-	private $site;
+	private Site $site;
 
 	public function __construct(Site $site)
 	{
