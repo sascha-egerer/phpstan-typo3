@@ -3,6 +3,7 @@
 namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\UserAspectGetDynamicReturnTypeExtension;
 
 use PHPStan\Testing\TypeInferenceTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class UserAspectGetDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
 {
@@ -17,11 +18,9 @@ final class UserAspectGetDynamicReturnTypeExtensionTest extends TypeInferenceTes
 	}
 
 	/**
-	 * @dataProvider dataFileAsserts
-	 * @param string $assertType
-	 * @param string $file
 	 * @param mixed ...$args
 	 */
+	#[DataProvider('dataFileAsserts')]
 	public function testFileAsserts(
 		string $assertType,
 		string $file,

@@ -3,6 +3,7 @@
 namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Type;
 
 use PHPStan\Testing\TypeInferenceTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class QueryFactoryStubFileTest extends TypeInferenceTestCase
 {
@@ -16,12 +17,9 @@ class QueryFactoryStubFileTest extends TypeInferenceTestCase
 	}
 
 	/**
-	 * @dataProvider dataFileAsserts
-	 *
-	 * @param string $assertType
-	 * @param string $file
 	 * @param mixed ...$args
 	 */
+	#[DataProvider('dataFileAsserts')]
 	public function testFileAsserts(
 		string $assertType,
 		string $file,

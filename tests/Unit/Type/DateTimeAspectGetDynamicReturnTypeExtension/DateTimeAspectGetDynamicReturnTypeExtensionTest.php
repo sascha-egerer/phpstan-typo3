@@ -3,6 +3,7 @@
 namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\DateTimeAspectGetDynamicReturnTypeExtension;
 
 use PHPStan\Testing\TypeInferenceTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class DateTimeAspectGetDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
 {
@@ -17,11 +18,9 @@ final class DateTimeAspectGetDynamicReturnTypeExtensionTest extends TypeInferenc
 	}
 
 	/**
-	 * @dataProvider dataFileAsserts
-	 * @param string $assertType
-	 * @param string $file
 	 * @param mixed ...$args
 	 */
+	#[DataProvider('dataFileAsserts')]
 	public function testFileAsserts(
 		string $assertType,
 		string $file,

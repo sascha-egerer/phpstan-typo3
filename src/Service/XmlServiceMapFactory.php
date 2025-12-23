@@ -23,13 +23,13 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 		}
 
 		if (!file_exists($this->containerXmlPath)) {
-			throw \SaschaEgerer\PhpstanTypo3\Service\ServiceDefinitionFileException::notFound($this->containerXmlPath);
+			throw ServiceDefinitionFileException::notFound($this->containerXmlPath);
 		}
 
-		$xml = @simplexml_load_file($this->containerXmlPath);
+		$xml = @simplexml_load_string(file_get_contents($this->containerXmlPath));
 
 		if ($xml === false) {
-			throw \SaschaEgerer\PhpstanTypo3\Service\ServiceDefinitionFileException::parseError($this->containerXmlPath);
+			throw ServiceDefinitionFileException::parseError($this->containerXmlPath);
 		}
 
 		/** @var ServiceDefinition[] $serviceDefinitions */
@@ -37,9 +37,18 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 		/** @var ServiceDefinition[] $aliases */
 		$aliases = [];
 		foreach ($xml->services->service as $def) {
-			/** @var SimpleXMLElement $attrs */
 			$attrs = $def->attributes();
-			if (!isset($attrs->id)) {
+			if ($attrs === null) {
+				continue;
+			}
+
+			$attributesArray = ((array)$attrs)['@attributes'] ?? [];
+
+			if (!is_scalar($attributesArray['id'] ?? null)) {
+				continue;
+			}
+			$id = (string) $attributesArray['id'];
+			if ($id === '') {
 				continue;
 			}
 
@@ -50,11 +59,11 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 			}
 
 			$serviceDefinition = new ServiceDefinition(
-				strpos((string) $attrs->id, '.') === 0 ? substr((string) $attrs->id, 1) : (string) $attrs->id,
-				isset($attrs->class) ? (string) $attrs->class : null,
-				isset($attrs->public) && (string) $attrs->public === 'true',
-				isset($attrs->synthetic) && (string) $attrs->synthetic === 'true',
-				isset($attrs->alias) ? (string) $attrs->alias : null,
+				ltrim($id, '.'),
+				isset($attributesArray['class']) ? (string) $attributesArray['class'] : null,
+				($attributesArray['public'] ?? null) === 'true',
+				($attributesArray['synthetic'] ?? null) === 'true',
+				isset($attributesArray['alias']) ? (string) $attributesArray['alias'] : null,
 				isset($def->argument),
 				isset($def->call),
 				isset($def->tag),
@@ -68,7 +77,10 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 		}
 		foreach ($aliases as $serviceDefinition) {
 			$alias = $serviceDefinition->getAlias();
-			if ($alias !== null && !isset($serviceDefinitions[$alias])) {
+			if ($alias === null) {
+				continue;
+			}
+			if (!isset($serviceDefinitions[$alias])) {
 				continue;
 			}
 			$id = $serviceDefinition->getId();
@@ -90,20 +102,16 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 	/**
 	 * @return string[]
 	 */
-	private function createTags(?SimpleXMLElement $def): array
+	private function createTags(SimpleXMLElement $def): array
 	{
-		if (!isset($def->tag)) {
+		if (!property_exists($def, 'tag') || $def->tag === null) {
 			return [];
 		}
 
 		$tagNames = [];
 
 		foreach ($def->tag as $tag) {
-			$attributes = $tag->attributes();
-			if (!isset($attributes->name)) {
-				continue;
-			}
-			$tagNames[] = (string) $attributes->name;
+			$tagNames[] = (string) $tag->attributes()?->name;
 		}
 
 		return $tagNames;

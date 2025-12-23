@@ -30,8 +30,7 @@ final class MathUtilityTypeSpecifyingExtension implements StaticMethodTypeSpecif
 	private const METHOD_CAN_BE_INTERPRETED_AS_FLOAT = 'canBeInterpretedAsFloat';
 	private const METHOD_IS_INTEGER_IN_RANGE = 'isIntegerInRange';
 
-	/** @var TypeSpecifier */
-	private $typeSpecifier;
+	private ?TypeSpecifier $typeSpecifier = null;
 
 	public function setTypeSpecifier(TypeSpecifier $typeSpecifier): void
 	{

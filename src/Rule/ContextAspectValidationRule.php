@@ -8,6 +8,7 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
+use PHPStan\Reflection\ExtendedMethodReflection;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use TYPO3\CMS\Core\Context\Context;
@@ -45,7 +46,7 @@ class ContextAspectValidationRule implements Rule
 
 		$methodReflection = $scope->getMethodReflection($scope->getType($node->var), $node->name->toString());
 
-		if ($methodReflection === null) {
+		if (!$methodReflection instanceof ExtendedMethodReflection) {
 			return [];
 		}
 

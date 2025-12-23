@@ -36,7 +36,7 @@ final class PrivateServiceAnalyzer
 
 		$serviceDefinition = $this->serviceMap->getServiceDefinitionById($serviceId);
 
-		if ($serviceDefinition === null || $serviceDefinition->isPublic()) {
+		if (!$serviceDefinition instanceof \SaschaEgerer\PhpstanTypo3\Service\ServiceDefinition || $serviceDefinition->isPublic()) {
 			return [];
 		}
 

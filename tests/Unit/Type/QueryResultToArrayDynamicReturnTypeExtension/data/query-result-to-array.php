@@ -47,7 +47,7 @@ class FrontendUserGroupCustomFindAllWithoutModelTypeRepository extends Repositor
 	public function findAll(): QueryResultInterface // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
 	{
 		$queryResult = null; // phpcs:ignore SlevomatCodingStandard.Variables.UselessVariable.UselessVariable
-		/** @var QueryResult<> $queryResult */
+		/** @var QueryResult<FrontendUserGroup> $queryResult */
 		return $queryResult;
 	}
 
