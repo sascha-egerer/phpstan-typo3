@@ -12,22 +12,22 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - typo3-version: "^13.4"
+          - typo3-version: "^14.0"
             php-version: "8.2"
             composer-flags: ""
-          - typo3-version: "^13.4"
+          - typo3-version: "^14.0"
             php-version: "8.2"
             composer-flags: " --prefer-lowest"
-          - typo3-version: "^13.4"
+          - typo3-version: "^14.0"
             php-version: "8.3"
             composer-flags: ""
-          - typo3-version: "^13.4"
+          - typo3-version: "^14.0"
             php-version: "8.3"
             composer-flags: " --prefer-lowest"
-          - typo3-version: "^13.4"
+          - typo3-version: "^14.0"
             php-version: "8.4"
             composer-flags: ""
-          - typo3-version: "^13.4"
+          - typo3-version: "^14.0"
             php-version: "8.4"
             composer-flags: " --prefer-lowest"
 

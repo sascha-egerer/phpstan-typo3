@@ -13,7 +13,6 @@ use PhpParser\Node\Identifier;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\InitializerExprTypeResolver;
-use PHPStan\Reflection\Php\PhpPropertyReflection;
 use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
@@ -180,11 +179,16 @@ final class ValidatorResolverOptionsRule implements Rule
 		$collectedSupportedOptions = [];
 		$collectedRequiredOptions = [];
 
-		if (!$supportedOptions instanceof PhpPropertyReflection) {
+		$nativeReflection = method_exists($supportedOptions, 'getNativeReflection')
+			? $supportedOptions->getNativeReflection()
+			: null;
+
+		// Ensure $nativeReflection is an object before calling method
+		if (!is_object($nativeReflection) || !method_exists($nativeReflection, 'getDefaultValueExpression')) {
 			return ValidatorOptionsConfiguration::empty();
 		}
 
-		$defaultValues = $supportedOptions->getNativeReflection()->getDefaultValueExpression();
+		$defaultValues = $nativeReflection->getDefaultValueExpression();
 
 		if (!$defaultValues instanceof Array_) {
 			return ValidatorOptionsConfiguration::empty();
@@ -231,7 +235,7 @@ final class ValidatorResolverOptionsRule implements Rule
 
 	private function resolveOptionKeyValue(
 		ArrayItem $defaultValue,
-		PhpPropertyReflection $supportedOptions,
+		PropertyReflection $supportedOptions,
 		Scope $scope
 	): ?string
 	{
@@ -240,6 +244,8 @@ final class ValidatorResolverOptionsRule implements Rule
 		}
 
 		if ($defaultValue->key instanceof ClassConstFetch && $defaultValue->key->name instanceof Identifier) {
+			// Not covered by PHPStan's backward compatibility promise, see: https://phpstan.org/developing-extensions/backward-compatibility-promise
+			// @phpstan-ignore-next-line
 			$keyType = $this->initializerExprTypeResolver->getClassConstFetchType(
 				$defaultValue->key->class,
 				$defaultValue->key->name->toString(),
