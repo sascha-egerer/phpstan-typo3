@@ -40,6 +40,7 @@ class GeneralUtilityGetIndpEnvDynamicReturnTypeExtension implements DynamicStati
 		if ($argumentType->getConstantStrings() === []) {
 			return null;
 		}
+
 		$value = $argumentType->getConstantStrings()[0]->getValue();
 
 		if ($value === '_ARRAY') {

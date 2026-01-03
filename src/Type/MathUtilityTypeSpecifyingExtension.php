@@ -26,11 +26,14 @@ final class MathUtilityTypeSpecifyingExtension implements StaticMethodTypeSpecif
 
 	private const METHOD_FORCE_INTEGER_IN_RANGE = 'forceIntegerInRange';
 	private const METHOD_CONVERT_TO_POSITIVE_INTEGER = 'convertToPositiveInteger';
+
 	private const METHOD_CAN_BE_INTERPRETED_AS_INTEGER = 'canBeInterpretedAsInteger';
+
 	private const METHOD_CAN_BE_INTERPRETED_AS_FLOAT = 'canBeInterpretedAsFloat';
+
 	private const METHOD_IS_INTEGER_IN_RANGE = 'isIntegerInRange';
 
-	private TypeSpecifier $typeSpecifier;
+	private ?TypeSpecifier $typeSpecifier = null;
 
 	public function setTypeSpecifier(TypeSpecifier $typeSpecifier): void
 	{

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
+use Rector\CodeQuality\Rector\Isset_\IssetOnPropertyObjectToPropertyExistsRector;
 use Rector\Config\RectorConfig;
 
 return RectorConfig::configure()
 	->withPaths([
 		__DIR__ . '/src',
-		__DIR__ . '/tests',
 	])
 	->withPHPStanConfigs([
 		__DIR__ . '/phpstan.neon',
@@ -18,9 +18,11 @@ return RectorConfig::configure()
 		codingStyle: true,
 		typeDeclarations: true,
 		privatization: true,
-		naming: true,
 		instanceOf: true,
 		earlyReturn: true,
 		rectorPreset: true,
 		phpunitCodeQuality: true,
-	);
+	)
+	->withSkip([
+		IssetOnPropertyObjectToPropertyExistsRector::class
+	]);

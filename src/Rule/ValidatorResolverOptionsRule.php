@@ -100,7 +100,7 @@ final class ValidatorResolverOptionsRule implements Rule
 
 		try {
 			$supportedOptions = $validatorClassReflection->getProperty('supportedOptions', $scope);
-		} catch (\PHPStan\Reflection\MissingPropertyFromReflectionException $e) {
+		} catch (\PHPStan\Reflection\MissingPropertyFromReflectionException $missingPropertyFromReflectionException) {
 			return [];
 		}
 

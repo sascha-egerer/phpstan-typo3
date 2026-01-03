@@ -74,6 +74,7 @@ final class PrototypeServiceDefinitionChecker implements ServiceDefinitionChecke
 				if ($parameter->isOptional()) {
 					continue;
 				}
+
 				$hasRequiredParameter = true;
 			}
 		}
