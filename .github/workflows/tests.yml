@@ -1,94 +1,36 @@
 name: Tests
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
-  lint:
-    name: "Lint (PHP ${{ matrix.php-version }})"
+  tests:
+    name: "Tests"
+
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ["8.2", "8.3", "8.4"]
-    steps:
-      - name: "Checkout"
-        uses: "actions/checkout@v4"
 
-      - name: "Install PHP"
-        uses: "shivammathur/setup-php@v2"
-        with:
-          coverage: "none"
-          php-version: "${{ matrix.php-version }}"
-
-      - name: "Install dependencies"
-        run: "composer install --no-interaction --no-progress"
-
-      - name: "Lint"
-        run: "composer lint"
-
-  code-style:
-    name: "Code Style"
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Checkout"
-        uses: "actions/checkout@v4"
-
-      - name: "Install PHP"
-        uses: "shivammathur/setup-php@v2"
-        with:
-          coverage: "none"
-          php-version: "8.4"
-
-      - name: "Install dependencies"
-        run: "composer install --no-interaction --no-progress"
-
-      - name: "Code Style"
-        run: "composer cs"
-
-  phpstan:
-    name: "PHPStan"
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Checkout"
-        uses: "actions/checkout@v4"
-
-      - name: "Install PHP"
-        uses: "shivammathur/setup-php@v2"
-        with:
-          coverage: "none"
-          php-version: "8.4"
-
-      - name: "Install dependencies"
-        run: "composer install --no-interaction --no-progress"
-
-      - name: "PHPStan"
-        run: "composer phpstan"
-
-  phpunit:
-    name: "PHPUnit (PHP ${{ matrix.php-version }}${{ matrix.composer-flags }})"
-    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         include:
-          - typo3-version: "^14.0"
+          - typo3-version: "^13.4"
             php-version: "8.2"
             composer-flags: ""
-          - typo3-version: "^14.0"
+          - typo3-version: "^13.4"
             php-version: "8.2"
             composer-flags: " --prefer-lowest"
-          - typo3-version: "^14.0"
+          - typo3-version: "^13.4"
             php-version: "8.3"
             composer-flags: ""
-          - typo3-version: "^14.0"
+          - typo3-version: "^13.4"
             php-version: "8.3"
             composer-flags: " --prefer-lowest"
-          - typo3-version: "^14.0"
+          - typo3-version: "^13.4"
             php-version: "8.4"
             composer-flags: ""
-          - typo3-version: "^14.0"
+          - typo3-version: "^13.4"
             php-version: "8.4"
             composer-flags: " --prefer-lowest"
+
     steps:
       - name: "Checkout"
         uses: "actions/checkout@v4"
@@ -100,7 +42,20 @@ jobs:
           php-version: "${{ matrix.php-version }}"
 
       - name: "Install specific TYPO3 version"
-        run: "composer update --no-interaction --no-progress --with typo3/cms-core:${{ matrix.typo3-version }}${{ matrix.composer-flags }}"
+        run: "composer update --no-interaction --no-progress --with typo3/cms-core:${{ matrix.typo3-version }} ${{ matrix.composer-flags }}"
 
-      - name: "PHPUnit"
-        run: "composer phpunit"
+      - name: "Run PHP lint"
+        run: |
+          composer test:php-lint
+
+      - name: "Run php-cs"
+        run: |
+          composer test:php-cs
+
+      - name: "Run phpstan"
+        run: |
+          composer test:phpstan
+
+      - name: "Run phpunit"
+        run: |
+          composer test:phpunit
