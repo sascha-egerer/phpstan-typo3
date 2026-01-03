@@ -11,15 +11,12 @@ use PHPStan\Rules\RuleErrorBuilder;
 use SaschaEgerer\PhpstanTypo3\Contract\ServiceDefinitionChecker;
 use SaschaEgerer\PhpstanTypo3\Contract\ServiceMap;
 
-final class PrivateServiceAnalyzer
+final readonly class PrivateServiceAnalyzer
 {
 
-	private ServiceMap $serviceMap;
-
-	public function __construct(ServiceMap $symfonyServiceMap)
-	{
-		$this->serviceMap = $symfonyServiceMap;
-	}
+	public function __construct(private ServiceMap $serviceMap)
+    {
+    }
 
 	/**
 	 * @param MethodCall|StaticCall $node

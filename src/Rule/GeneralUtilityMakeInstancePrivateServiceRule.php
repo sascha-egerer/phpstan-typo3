@@ -13,18 +13,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * @implements Rule<StaticCall>
  */
-final class GeneralUtilityMakeInstancePrivateServiceRule implements Rule
+final readonly class GeneralUtilityMakeInstancePrivateServiceRule implements Rule
 {
 
-	private PrivateServiceAnalyzer $privateServiceAnalyzer;
-
-	private PrototypeServiceDefinitionChecker $prototypeServiceDefinitionChecker;
-
-	public function __construct(PrivateServiceAnalyzer $privateServiceAnalyzer, PrototypeServiceDefinitionChecker $prototypeServiceDefinitionChecker)
-	{
-		$this->privateServiceAnalyzer = $privateServiceAnalyzer;
-		$this->prototypeServiceDefinitionChecker = $prototypeServiceDefinitionChecker;
-	}
+	public function __construct(private PrivateServiceAnalyzer $privateServiceAnalyzer, private PrototypeServiceDefinitionChecker $prototypeServiceDefinitionChecker)
+    {
+    }
 
 	public function getNodeType(): string
 	{

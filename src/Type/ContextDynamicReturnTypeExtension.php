@@ -14,19 +14,12 @@ use TYPO3\CMS\Core\Context\Context;
 class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
-	/** @var array<string, string> */
-	private array $contextApiGetAspectMapping;
-
-	private TypeStringResolver $typeStringResolver;
-
 	/**
 	 * @param array<string, string> $contextApiGetAspectMapping
 	 */
-	public function __construct(array $contextApiGetAspectMapping, TypeStringResolver $typeStringResolver)
-	{
-		$this->contextApiGetAspectMapping = $contextApiGetAspectMapping;
-		$this->typeStringResolver = $typeStringResolver;
-	}
+	public function __construct(private array $contextApiGetAspectMapping, private readonly TypeStringResolver $typeStringResolver)
+    {
+    }
 
 	public function getClass(): string
 	{
@@ -34,7 +27,7 @@ class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 	}
 
 	public function isMethodSupported(
-		MethodReflection $methodReflection
+		MethodReflection $methodReflection,
 	): bool
 	{
 		return $methodReflection->getName() === 'getAspect';
@@ -43,7 +36,7 @@ class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 	public function getTypeFromMethodCall(
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
-		Scope $scope
+		Scope $scope,
 	): Type
 	{
 		$argument = $methodCall->getArgs()[0] ?? null;

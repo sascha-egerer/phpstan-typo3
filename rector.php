@@ -9,6 +9,7 @@ return RectorConfig::configure()
 	->withPaths([
 		__DIR__ . '/src',
 	])
+	->withPhpSets(php82: true)
 	->withPHPStanConfigs([
 		__DIR__ . '/phpstan.neon',
 	])
