@@ -7,6 +7,7 @@ use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Type\ObjectType;
+use Psr\Container\ContainerInterface;
 use SaschaEgerer\PhpstanTypo3\Service\NullServiceDefinitionChecker;
 use SaschaEgerer\PhpstanTypo3\Service\PrivateServiceAnalyzer;
 
@@ -59,7 +60,7 @@ final readonly class ContainerInterfacePrivateServiceRule implements Rule
 
 		$argType = $scope->getType($node->var);
 
-		$isPsrContainerType = (new ObjectType(\Psr\Container\ContainerInterface::class))->isSuperTypeOf($argType);
+		$isPsrContainerType = (new ObjectType(ContainerInterface::class))->isSuperTypeOf($argType);
 		$isTestCaseType = (new ObjectType('TYPO3\TestingFramework\Core\Functional\FunctionalTestCase'))->isSuperTypeOf($argType);
 
 		if ($isTestCaseType->yes()) {
