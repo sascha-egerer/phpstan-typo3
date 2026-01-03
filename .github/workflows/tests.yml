@@ -59,3 +59,7 @@ jobs:
       - name: "Run phpunit"
         run: |
           composer test:phpunit
+
+      - name: "Run rector"
+        run: |
+          composer test:rector
