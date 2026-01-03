@@ -76,16 +76,19 @@
 		}
 	},
 	"scripts": {
-		"ci": [
-			"@lint",
-			"@cs",
-			"@phpstan",
-			"@phpunit"
+		"test": [
+			"@test:phpunit",
+			"@test:phpstan",
+			"@test:php-cs",
+			"@test:php-lint"
 		],
-		"lint": "parallel-lint src tests",
-		"cs": "phpcs",
-		"cs:fix": "phpcbf",
-		"phpstan": "phpstan analyse --no-progress --memory-limit=-1 --configuration tests/phpstan.neon",
-		"phpunit": "phpunit --colors=always --configuration tests/phpunit.xml"
+		"test:phpunit": "phpunit --colors=always tests/",
+		"test:phpstan": "phpstan --memory-limit=2G",
+		"test:php-cs": "phpcs",
+		"test:php-lint": "parallel-lint src tests",
+		"fix": [
+			"@fix:php-cs"
+		],
+		"fix:php-cs": "phpcbf"
 	}
 }
