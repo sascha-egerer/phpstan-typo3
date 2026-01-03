@@ -34,7 +34,7 @@ final class MathUtilityTypeSpecifyingExtension implements StaticMethodTypeSpecif
 
 	private const METHOD_IS_INTEGER_IN_RANGE = 'isIntegerInRange';
 
-	private ?\PHPStan\Analyser\TypeSpecifier $typeSpecifier = null;
+	private \PHPStan\Analyser\TypeSpecifier $typeSpecifier;
 
 	public function setTypeSpecifier(TypeSpecifier $typeSpecifier): void
 	{
