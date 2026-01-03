@@ -1,0 +1,34 @@
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - extension.neon
+    - tests/Unit/Type/data/context-get-aspect-return-types.neon
+    - tests/Unit/Type/data/request-get-attribute-return-types.neon
+    - tests/Unit/Type/data/site-get-attribute-return-types.neon
+
+parameters:
+    level: 8
+    paths:
+         - src
+         - tests
+    reportUnmatchedIgnoredErrors: false
+    excludePaths:
+         - '*tests/*/Fixtures/*'
+         - '*tests/*/Fixture/*'
+         - '*tests/*/Source/*'
+         - '*tests/*/data/*'
+    ignoreErrors:
+        -
+            message: "#^Calling PHPStan\\\\Reflection\\\\InitializerExprTypeResolver\\:\\:getClassConstFetchType\\(\\) is not covered by backward compatibility promise\\. The method might change in a minor PHPStan version\\.$#"
+            count: 1
+            path: src/Rule/ValidatorResolverOptionsRule.php
+        -
+            message: '#^Although PHPStan\\Reflection\\Php\\PhpPropertyReflection is covered by backward compatibility promise, this instanceof assumption might break because it''s not guaranteed to always stay the same\.$#'
+            identifier: phpstanApi.instanceofAssumption
+            count: 1
+            path: src/Rule/ValidatorResolverOptionsRule.php
+        -
+            message: '#^Node attribute ''parent'' is no longer available\.$#'
+            identifier: phpParser.nodeConnectingAttribute
+            count: 2
+            path: src/Type/MathUtilityTypeSpecifyingExtension.php
