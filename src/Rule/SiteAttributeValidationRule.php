@@ -44,7 +44,7 @@ class SiteAttributeValidationRule implements Rule
 		}
 
 		$methodReflection = $scope->getMethodReflection($scope->getType($node->var), $node->name->toString());
-		if ($methodReflection === null || $methodReflection->getName() !== 'getAttribute') {
+		if (!$methodReflection instanceof \PHPStan\Reflection\ExtendedMethodReflection || $methodReflection->getName() !== 'getAttribute') {
 			return [];
 		}
 

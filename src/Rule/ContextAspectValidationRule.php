@@ -45,7 +45,7 @@ class ContextAspectValidationRule implements Rule
 
 		$methodReflection = $scope->getMethodReflection($scope->getType($node->var), $node->name->toString());
 
-		if ($methodReflection === null) {
+		if (!$methodReflection instanceof \PHPStan\Reflection\ExtendedMethodReflection) {
 			return [];
 		}
 

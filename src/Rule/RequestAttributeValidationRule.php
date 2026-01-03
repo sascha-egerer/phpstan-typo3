@@ -44,17 +44,14 @@ class RequestAttributeValidationRule implements Rule
 		}
 
 		$methodReflection = $scope->getMethodReflection($scope->getType($node->var), $node->name->toString());
-		if ($methodReflection === null || $methodReflection->getName() !== 'getAttribute') {
+		if (!$methodReflection instanceof \PHPStan\Reflection\ExtendedMethodReflection || $methodReflection->getName() !== 'getAttribute') {
 			return [];
 		}
 
 		$declaringClass = $methodReflection->getDeclaringClass();
 
-		if (interface_exists(ServerRequestInterface::class)) {
-			if (!$declaringClass->implementsInterface(ServerRequestInterface::class)
-				&& $declaringClass->getName() !== ServerRequestInterface::class) {
-				return [];
-			}
+		if (interface_exists(ServerRequestInterface::class) && (!$declaringClass->implementsInterface(ServerRequestInterface::class) && $declaringClass->getName() !== ServerRequestInterface::class)) {
+			return [];
 		}
 
 		$argument = $node->getArgs()[0] ?? null;

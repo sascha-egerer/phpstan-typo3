@@ -100,7 +100,7 @@ final class ValidatorResolverOptionsRule implements Rule
 
 		try {
 			$supportedOptions = $validatorClassReflection->getProperty('supportedOptions', $scope);
-		} catch (\PHPStan\Reflection\MissingPropertyFromReflectionException $e) {
+		} catch (\PHPStan\Reflection\MissingPropertyFromReflectionException $missingPropertyFromReflectionException) {
 			return [];
 		}
 
@@ -113,13 +113,11 @@ final class ValidatorResolverOptionsRule implements Rule
 
 		$errors = [];
 
-		if ($neededRequiredOptions !== []) {
-			foreach ($neededRequiredOptions as $neededRequiredOption) {
+		foreach ($neededRequiredOptions as $neededRequiredOption) {
 				$errorMessage = sprintf('Required validation option not set: %s', $neededRequiredOption);
 				$errors[] = RuleErrorBuilder::message($errorMessage)
 					->identifier('phpstanTypo3.validatorResolverOptions.requiredValidatorOptionNotSet')
 					->build();
-			}
 		}
 
 		if ($unsupportedOptions !== []) {
@@ -237,7 +235,7 @@ final class ValidatorResolverOptionsRule implements Rule
 		Scope $scope
 	): ?string
 	{
-		if ($defaultValue->key === null) {
+		if (!$defaultValue->key instanceof \PhpParser\Node\Expr) {
 			return null;
 		}
 
