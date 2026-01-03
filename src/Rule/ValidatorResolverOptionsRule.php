@@ -13,6 +13,7 @@ use PhpParser\Node\Identifier;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\InitializerExprTypeResolver;
+use PHPStan\Reflection\MissingPropertyFromReflectionException;
 use PHPStan\Reflection\Php\PhpPropertyReflection;
 use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Rules\Rule;
@@ -21,6 +22,7 @@ use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use SaschaEgerer\PhpstanTypo3\Rule\ValueObject\ValidatorOptionsConfiguration;
 use SaschaEgerer\PhpstanTypo3\Service\ValidatorClassNameResolver;
+use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 
@@ -59,7 +61,7 @@ final readonly class ValidatorResolverOptionsRule implements Rule
 
 		try {
 			$validatorClassName = $this->validatorClassNameResolver->resolve($validatorType);
-		} catch (\TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException) {
+		} catch (NoSuchValidatorException) {
 			if ($validatorType->getConstantStrings() !== []) {
 				$validatorClassName = $validatorType->getConstantStrings()[0]->getValue();
 				$message = sprintf('Could not create validator for "%s"', $validatorClassName);
@@ -91,7 +93,7 @@ final readonly class ValidatorResolverOptionsRule implements Rule
 
 		try {
 			$supportedOptions = $validatorClassReflection->getProperty('supportedOptions', $scope);
-		} catch (\PHPStan\Reflection\MissingPropertyFromReflectionException) {
+		} catch (MissingPropertyFromReflectionException) {
 			return [];
 		}
 
@@ -226,7 +228,7 @@ final readonly class ValidatorResolverOptionsRule implements Rule
 		Scope $scope,
 	): ?string
 	{
-		if (!$defaultValue->key instanceof \PhpParser\Node\Expr) {
+		if (!$defaultValue->key instanceof Expr) {
 			return null;
 		}
 

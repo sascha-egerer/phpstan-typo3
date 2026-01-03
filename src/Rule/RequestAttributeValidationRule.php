@@ -8,6 +8,7 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
+use PHPStan\Reflection\ExtendedMethodReflection;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use Psr\Http\Message\ServerRequestInterface;
@@ -40,7 +41,7 @@ class RequestAttributeValidationRule implements Rule
 		}
 
 		$methodReflection = $scope->getMethodReflection($scope->getType($node->var), $node->name->toString());
-		if (!$methodReflection instanceof \PHPStan\Reflection\ExtendedMethodReflection || $methodReflection->getName() !== 'getAttribute') {
+		if (!$methodReflection instanceof ExtendedMethodReflection || $methodReflection->getName() !== 'getAttribute') {
 			return [];
 		}
 
