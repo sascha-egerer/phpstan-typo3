@@ -132,6 +132,7 @@ parameters:
             settings: array
             websiteTitle: string
     stubFiles:
+        - stubs/DomainObjectInterface.stub
         - stubs/ObjectStorage.stub
         - stubs/QueryInterface.stub
         - stubs/Repository.stub
