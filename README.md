@@ -175,28 +175,9 @@ The following composer scripts are available for development:
 
 | Command | Description |
 |---------|-------------|
-| `composer ci` | Run all quality checks (lint, cs, phpstan, phpunit) |
-| `composer lint` | Run PHP syntax linting using parallel-lint |
-| `composer cs` | Run code style checks using PHP_CodeSniffer |
-| `composer cs:fix` | Fix code style issues using PHP Code Beautifier |
-| `composer phpstan` | Run static analysis using PHPStan |
-| `composer phpunit` | Run PHPUnit tests |
-
-### Alternative: Using Phing
-
-You can also run all checks using Phing:
-
-```Shell
-vendor/bin/phing
-```
-
-Individual Phing targets:
-
-| Target | Description |
-|--------|-------------|
-| `vendor/bin/phing lint` | Run PHP syntax linting |
-| `vendor/bin/phing cs` | Run code style checks |
-| `vendor/bin/phing cs-fix` | Fix code style issues |
-| `vendor/bin/phing phpstan` | Run static analysis |
-| `vendor/bin/phing phpunit` | Run PHPUnit tests |
-
+| `composer test` | Run all quality checks (lint, cs, phpstan, phpunit) |
+| `composer test:php-lint` | Run PHP syntax linting using parallel-lint |
+| `composer test:php-cs` | Run code style checks using PHP_CodeSniffer |
+| `composer test:phpstan` | Run static analysis using PHPStan |
+| `composer test:phpunit` | Run PHPUnit tests |
+| `composer fix:php-cs` | Fix code style issues using PHP Code Beautifier |
