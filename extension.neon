@@ -137,6 +137,7 @@ parameters:
         - stubs/QueryInterface.stub
         - stubs/QueryResultInterface.stub
         - stubs/Repository.stub
+        - stubs/RepositoryInterface.stub
     dynamicConstantNames:
         - TYPO3_MODE
         - TYPO3_REQUESTTYPE
