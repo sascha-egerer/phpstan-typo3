@@ -2,24 +2,16 @@
 
 namespace SaschaEgerer\PhpstanTypo3\Rule\ValueObject;
 
-final class ValidatorOptionsConfiguration
+final readonly class ValidatorOptionsConfiguration
 {
-
-	/** @var string[] */
-	private array $supportedOptions;
-
-	/** @var string[] */
-	private array $requiredOptions;
 
 	/**
 	 * @param string[] $supportedOptions
 	 * @param string[] $requiredOptions
 	 */
-	public function __construct(array $supportedOptions, array $requiredOptions)
-	{
-		$this->supportedOptions = $supportedOptions;
-		$this->requiredOptions = $requiredOptions;
-	}
+	public function __construct(private array $supportedOptions, private array $requiredOptions)
+    {
+    }
 
 	public static function empty(): self
 	{

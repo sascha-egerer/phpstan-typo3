@@ -19,16 +19,12 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 class SiteAttributeValidationRule implements Rule
 {
 
-	/** @var array<string, string> */
-	private array $siteGetAttributeMapping;
-
 	/**
 	 * @param array<string, string> $siteGetAttributeMapping
 	 */
-	public function __construct(array $siteGetAttributeMapping)
-	{
-		$this->siteGetAttributeMapping = $siteGetAttributeMapping;
-	}
+	public function __construct(private array $siteGetAttributeMapping)
+    {
+    }
 
 	public function getNodeType(): string
 	{

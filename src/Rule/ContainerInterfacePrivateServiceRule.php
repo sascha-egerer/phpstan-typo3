@@ -13,15 +13,12 @@ use SaschaEgerer\PhpstanTypo3\Service\PrivateServiceAnalyzer;
 /**
  * @implements Rule<MethodCall>
  */
-final class ContainerInterfacePrivateServiceRule implements Rule
+final readonly class ContainerInterfacePrivateServiceRule implements Rule
 {
 
-	private PrivateServiceAnalyzer $privateServiceAnalyzer;
-
-	public function __construct(PrivateServiceAnalyzer $privateServiceAnalyzer)
-	{
-		$this->privateServiceAnalyzer = $privateServiceAnalyzer;
-	}
+	public function __construct(private PrivateServiceAnalyzer $privateServiceAnalyzer)
+    {
+    }
 
 	public function getNodeType(): string
 	{

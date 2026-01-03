@@ -8,15 +8,12 @@ use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Reflection\ReflectionProvider;
 use SaschaEgerer\PhpstanTypo3\Contract\ServiceDefinitionChecker;
 
-final class PrototypeServiceDefinitionChecker implements ServiceDefinitionChecker
+final readonly class PrototypeServiceDefinitionChecker implements ServiceDefinitionChecker
 {
 
-	private ReflectionProvider $reflectionProvider;
-
-	public function __construct(ReflectionProvider $reflectionProvider)
-	{
-		$this->reflectionProvider = $reflectionProvider;
-	}
+	public function __construct(private ReflectionProvider $reflectionProvider)
+    {
+    }
 
 	public function isPrototype(ServiceDefinition $serviceDefinition, Node $node): bool
 	{

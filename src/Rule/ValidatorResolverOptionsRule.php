@@ -27,21 +27,12 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 /**
  * @implements Rule<MethodCall>
  */
-final class ValidatorResolverOptionsRule implements Rule
+final readonly class ValidatorResolverOptionsRule implements Rule
 {
 
-	private InitializerExprTypeResolver $initializerExprTypeResolver;
-
-	private ValidatorClassNameResolver $validatorClassNameResolver;
-
-	public function __construct(
-		InitializerExprTypeResolver $initializerExprTypeResolver,
-		ValidatorClassNameResolver $validatorClassNameResolver
-	)
-	{
-		$this->initializerExprTypeResolver = $initializerExprTypeResolver;
-		$this->validatorClassNameResolver = $validatorClassNameResolver;
-	}
+	public function __construct(private InitializerExprTypeResolver $initializerExprTypeResolver, private ValidatorClassNameResolver $validatorClassNameResolver)
+    {
+    }
 
 	public function getNodeType(): string
 	{
@@ -100,7 +91,7 @@ final class ValidatorResolverOptionsRule implements Rule
 
 		try {
 			$supportedOptions = $validatorClassReflection->getProperty('supportedOptions', $scope);
-		} catch (\PHPStan\Reflection\MissingPropertyFromReflectionException $missingPropertyFromReflectionException) {
+		} catch (\PHPStan\Reflection\MissingPropertyFromReflectionException) {
 			return [];
 		}
 
@@ -174,7 +165,7 @@ final class ValidatorResolverOptionsRule implements Rule
 
 	private function extractValidatorOptionsConfiguration(
 		PropertyReflection $supportedOptions,
-		Scope $scope
+		Scope $scope,
 	): ValidatorOptionsConfiguration
 	{
 		$collectedSupportedOptions = [];
@@ -232,7 +223,7 @@ final class ValidatorResolverOptionsRule implements Rule
 	private function resolveOptionKeyValue(
 		ArrayItem $defaultValue,
 		PhpPropertyReflection $supportedOptions,
-		Scope $scope
+		Scope $scope,
 	): ?string
 	{
 		if (!$defaultValue->key instanceof \PhpParser\Node\Expr) {
@@ -244,9 +235,7 @@ final class ValidatorResolverOptionsRule implements Rule
 				$defaultValue->key->class,
 				$defaultValue->key->name->toString(),
 				$supportedOptions->getDeclaringClass()->getName(),
-				static function (Expr $expr) use ($scope): Type {
-					return $scope->getType($expr);
-				}
+				$scope->getType(...)
 			);
 
 			if ($keyType->getConstantStrings() !== []) {

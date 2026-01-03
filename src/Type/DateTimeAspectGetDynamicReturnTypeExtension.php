@@ -30,7 +30,7 @@ class DateTimeAspectGetDynamicReturnTypeExtension implements DynamicMethodReturn
 	public function getTypeFromMethodCall(
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
-		Scope $scope
+		Scope $scope,
 	): ?Type
 	{
 		$firstArgument = $methodCall->args[0];

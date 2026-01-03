@@ -22,7 +22,7 @@ class ObjectStorageDynamicReturnTypeExtension implements DynamicMethodReturnType
 	}
 
 	public function isMethodSupported(
-		MethodReflection $methodReflection
+		MethodReflection $methodReflection,
 	): bool
 	{
 		return $methodReflection->getName() === 'offsetGet';
@@ -31,7 +31,7 @@ class ObjectStorageDynamicReturnTypeExtension implements DynamicMethodReturnType
 	public function getTypeFromMethodCall(
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
-		Scope $scope
+		Scope $scope,
 	): ?Type
 	{
 		$firstArgument = $methodCall->args[0] ?? null;
