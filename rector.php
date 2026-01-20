@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Rector\CodeQuality\Rector\Isset_\IssetOnPropertyObjectToPropertyExistsRector;
 use Rector\Config\RectorConfig;
+use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitSelfCallRector;
+use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
 
 return RectorConfig::configure()
 	->withPaths([
@@ -25,11 +27,15 @@ return RectorConfig::configure()
 		rectorPreset: true,
 		phpunitCodeQuality: true,
 	)
+	->withRules([
+		PreferPHPUnitSelfCallRector::class,
+	])
 	->withSkip([
 		// tests
 		'*/data/*',
 		'*/Fixture/*',
 		'*/Fixtures/*',
 		// rules
-		IssetOnPropertyObjectToPropertyExistsRector::class
+		IssetOnPropertyObjectToPropertyExistsRector::class,
+		PreferPHPUnitThisCallRector::class
 	]);
