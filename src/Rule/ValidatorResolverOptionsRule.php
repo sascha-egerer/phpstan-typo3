@@ -107,10 +107,10 @@ final readonly class ValidatorResolverOptionsRule implements Rule
 		$errors = [];
 
 		foreach ($neededRequiredOptions as $neededRequiredOption) {
-				$errorMessage = sprintf('Required validation option not set: %s', $neededRequiredOption);
-				$errors[] = RuleErrorBuilder::message($errorMessage)
-					->identifier('phpstanTypo3.validatorResolverOptions.requiredValidatorOptionNotSet')
-					->build();
+			$errorMessage = sprintf('Required validation option not set: %s', $neededRequiredOption);
+			$errors[] = RuleErrorBuilder::message($errorMessage)
+				->identifier('phpstanTypo3.validatorResolverOptions.requiredValidatorOptionNotSet')
+				->build();
 		}
 
 		if ($unsupportedOptions !== []) {
