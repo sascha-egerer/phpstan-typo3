@@ -15,6 +15,7 @@ final class GeneralUtilityGetIndpEnvDynamicReturnTypeExtensionTest extends TypeI
 	{
 		yield from self::gatherAssertTypes(__DIR__ . '/data/GeneralUtilityGetIndpEnv.php');
 	}
+
 	#[DataProvider('dataFileAsserts')]
 	public function testFileAsserts(
 		string $assertType,

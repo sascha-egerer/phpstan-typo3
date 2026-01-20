@@ -16,6 +16,7 @@ final class DateTimeAspectGetDynamicReturnTypeExtensionTest extends TypeInferenc
 	{
 		yield from self::gatherAssertTypes(__DIR__ . '/data/datetime-aspect-get-return-types.php');
 	}
+
 	#[DataProvider('dataFileAsserts')]
 	public function testFileAsserts(
 		string $assertType,

@@ -5,7 +5,7 @@ namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Type;
 use PHPStan\Testing\TypeInferenceTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class RequestGetAttributeDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
+final class RequestGetAttributeDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
 {
 
 	/**

@@ -8,6 +8,7 @@ use Rector\Config\RectorConfig;
 return RectorConfig::configure()
 	->withPaths([
 		__DIR__ . '/src',
+		__DIR__ . '/tests',
 	])
 	->withPhpSets(php82: true)
 	->withPHPStanConfigs([
@@ -25,5 +26,10 @@ return RectorConfig::configure()
 		phpunitCodeQuality: true,
 	)
 	->withSkip([
+		// tests
+		'*/data/*',
+		'*/Fixture/*',
+		'*/Fixtures/*',
+		// rules
 		IssetOnPropertyObjectToPropertyExistsRector::class
 	]);
