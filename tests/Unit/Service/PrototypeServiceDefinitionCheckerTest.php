@@ -64,7 +64,7 @@ final class PrototypeServiceDefinitionCheckerTest extends PHPStanTestCase
 	 */
 	public function testIsPrototypeIsTrue(StaticCall $node, ServiceDefinition $serviceDefinition): void
 	{
-		$this->assertTrue($this->subject->isPrototype($serviceDefinition, $node));
+		self::assertTrue($this->subject->isPrototype($serviceDefinition, $node));
 	}
 
 	/**
@@ -72,7 +72,7 @@ final class PrototypeServiceDefinitionCheckerTest extends PHPStanTestCase
 	 */
 	public function testIsPrototypeIsFalse(StaticCall $node, ServiceDefinition $serviceDefinition): void
 	{
-		$this->assertFalse($this->subject->isPrototype($serviceDefinition, $node));
+		self::assertFalse($this->subject->isPrototype($serviceDefinition, $node));
 	}
 
 	public static function getAdditionalConfigFiles(): array

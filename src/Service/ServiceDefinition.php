@@ -13,7 +13,7 @@ final readonly class ServiceDefinition
 		private ?string $alias,
 		private bool $hasConstructorArguments,
 		private bool $hasMethodCalls,
-		private bool $hasTags
+		private bool $hasTags,
 	) {}
 
 	public function getId(): string

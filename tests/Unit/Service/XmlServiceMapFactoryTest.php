@@ -11,7 +11,7 @@ final class XmlServiceMapFactoryTest extends TestCase
 
 	public function testThatServiceDefinitionsAreEmptyWhenContainerXmlPathIsNull(): void
 	{
-		$this->assertSame([], $this->createServiceMap(null)->getServiceDefinitions());
+		self::assertSame([], $this->createServiceMap(null)->getServiceDefinitions());
 	}
 
 	public function testThatAnExceptionIsThrownWhenFileDoesNotExist(): void
@@ -32,15 +32,15 @@ final class XmlServiceMapFactoryTest extends TestCase
 	{
 		$serviceMap = $this->createServiceMap(__DIR__ . '/../Fixtures/container.xml');
 
-		$this->assertCount(8, $serviceMap->getServiceDefinitions());
+		self::assertCount(8, $serviceMap->getServiceDefinitions());
 
-		$this->assertNotInstanceOf(\SaschaEgerer\PhpstanTypo3\Service\ServiceDefinition::class, $serviceMap->getServiceDefinitionById('foo'));
+		self::assertNotInstanceOf(\SaschaEgerer\PhpstanTypo3\Service\ServiceDefinition::class, $serviceMap->getServiceDefinitionById('foo'));
 
 		$serviceDefinition = $serviceMap->getServiceDefinitionById('public');
-		$this->assertInstanceOf(\SaschaEgerer\PhpstanTypo3\Service\ServiceDefinition::class, $serviceDefinition);
+		self::assertInstanceOf(\SaschaEgerer\PhpstanTypo3\Service\ServiceDefinition::class, $serviceDefinition);
 
 		$serviceDefinitionExcluded = $serviceMap->getServiceDefinitionById('excluded');
-		$this->assertNotInstanceOf(\SaschaEgerer\PhpstanTypo3\Service\ServiceDefinition::class, $serviceDefinitionExcluded);
+		self::assertNotInstanceOf(\SaschaEgerer\PhpstanTypo3\Service\ServiceDefinition::class, $serviceDefinitionExcluded);
 	}
 
 	private function createServiceMap(?string $containerXmlPath): ServiceMap
