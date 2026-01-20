@@ -48,6 +48,10 @@ jobs:
         run: |
           composer test:php-lint
 
+      - name: "Run rector"
+        run: |
+          composer test:rector
+
       - name: "Run php-cs"
         run: |
           composer test:php-cs
@@ -59,7 +63,3 @@ jobs:
       - name: "Run phpunit"
         run: |
           composer test:phpunit
-
-      - name: "Run rector"
-        run: |
-          composer test:rector
