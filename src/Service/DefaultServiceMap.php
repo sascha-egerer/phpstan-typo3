@@ -13,8 +13,8 @@ final class DefaultServiceMap implements ServiceMap
 	 * @param ServiceDefinition[] $serviceDefinitions
 	 */
 	public function __construct(private array $serviceDefinitions)
-    {
-    }
+	{
+	}
 
 	public function getServiceDefinitions(): array
 	{

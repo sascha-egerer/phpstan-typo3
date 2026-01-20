@@ -15,8 +15,8 @@ final readonly class PrivateServiceAnalyzer
 {
 
 	public function __construct(private ServiceMap $serviceMap)
-    {
-    }
+	{
+	}
 
 	/**
 	 * @param MethodCall|StaticCall $node

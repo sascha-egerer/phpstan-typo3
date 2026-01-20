@@ -23,8 +23,8 @@ class RequestAttributeValidationRule implements Rule
 	 * @param array<string, string> $requestGetAttributeMapping
 	 */
 	public function __construct(private array $requestGetAttributeMapping)
-    {
-    }
+	{
+	}
 
 	public function getNodeType(): string
 	{

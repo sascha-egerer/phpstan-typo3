@@ -17,8 +17,8 @@ final readonly class GeneralUtilityMakeInstancePrivateServiceRule implements Rul
 {
 
 	public function __construct(private PrivateServiceAnalyzer $privateServiceAnalyzer, private PrototypeServiceDefinitionChecker $prototypeServiceDefinitionChecker)
-    {
-    }
+	{
+	}
 
 	public function getNodeType(): string
 	{

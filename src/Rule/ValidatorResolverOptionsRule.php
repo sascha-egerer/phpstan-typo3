@@ -33,8 +33,8 @@ final readonly class ValidatorResolverOptionsRule implements Rule
 {
 
 	public function __construct(private InitializerExprTypeResolver $initializerExprTypeResolver, private ValidatorClassNameResolver $validatorClassNameResolver)
-    {
-    }
+	{
+	}
 
 	public function getNodeType(): string
 	{

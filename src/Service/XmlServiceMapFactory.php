@@ -10,8 +10,8 @@ final readonly class XmlServiceMapFactory implements ServiceMapFactory
 {
 
 	public function __construct(private ?string $containerXmlPath)
-    {
-    }
+	{
+	}
 
 	public function create(): ServiceMap
 	{
@@ -50,6 +50,7 @@ final readonly class XmlServiceMapFactory implements ServiceMapFactory
 			if (!is_scalar($attributesArray['id'] ?? null)) {
 				continue;
 			}
+
 			$id = (string) $attributesArray['id'];
 			if ($id === '') {
 				continue;
@@ -81,7 +82,11 @@ final readonly class XmlServiceMapFactory implements ServiceMapFactory
 
 		foreach ($aliases as $serviceDefinition) {
 			$alias = $serviceDefinition->getAlias();
-			if ($alias === null || !isset($serviceDefinitions[$alias])) {
+			if ($alias === null) {
+				continue;
+			}
+
+			if (!isset($serviceDefinitions[$alias])) {
 				continue;
 			}
 
@@ -117,6 +122,7 @@ final readonly class XmlServiceMapFactory implements ServiceMapFactory
 			if ($name === '') {
 				continue;
 			}
+
 			$tagNames[] = $name;
 		}
 

@@ -18,8 +18,8 @@ final readonly class ContainerInterfacePrivateServiceRule implements Rule
 {
 
 	public function __construct(private PrivateServiceAnalyzer $privateServiceAnalyzer)
-    {
-    }
+	{
+	}
 
 	public function getNodeType(): string
 	{

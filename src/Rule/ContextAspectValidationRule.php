@@ -23,8 +23,8 @@ class ContextAspectValidationRule implements Rule
 	 * @param array<string, string> $contextApiGetAspectMapping
 	 */
 	public function __construct(private array $contextApiGetAspectMapping)
-    {
-    }
+	{
+	}
 
 	public function getNodeType(): string
 	{

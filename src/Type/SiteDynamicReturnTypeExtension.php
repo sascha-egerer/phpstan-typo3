@@ -18,8 +18,8 @@ class SiteDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 	 * @param array<string, string> $siteGetAttributeMapping
 	 */
 	public function __construct(private array $siteGetAttributeMapping, private readonly TypeStringResolver $typeStringResolver)
-    {
-    }
+	{
+	}
 
 	public function getClass(): string
 	{

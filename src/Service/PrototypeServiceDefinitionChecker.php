@@ -12,8 +12,8 @@ final readonly class PrototypeServiceDefinitionChecker implements ServiceDefinit
 {
 
 	public function __construct(private ReflectionProvider $reflectionProvider)
-    {
-    }
+	{
+	}
 
 	public function isPrototype(ServiceDefinition $serviceDefinition, Node $node): bool
 	{

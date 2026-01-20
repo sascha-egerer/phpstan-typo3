@@ -18,8 +18,8 @@ class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 	 * @param array<string, string> $contextApiGetAspectMapping
 	 */
 	public function __construct(private array $contextApiGetAspectMapping, private readonly TypeStringResolver $typeStringResolver)
-    {
-    }
+	{
+	}
 
 	public function getClass(): string
 	{

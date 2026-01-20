@@ -10,8 +10,8 @@ final readonly class ValidatorOptionsConfiguration
 	 * @param string[] $requiredOptions
 	 */
 	public function __construct(private array $supportedOptions, private array $requiredOptions)
-    {
-    }
+	{
+	}
 
 	public static function empty(): self
 	{

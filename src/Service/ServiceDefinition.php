@@ -6,8 +6,8 @@ final readonly class ServiceDefinition
 {
 
 	public function __construct(private string $id, private ?string $class, private bool $public, private bool $synthetic, private ?string $alias, private bool $hasConstructorArguments, private bool $hasMethodCalls, private bool $hasTags)
-    {
-    }
+	{
+	}
 
 	public function getId(): string
 	{

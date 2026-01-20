@@ -19,8 +19,8 @@ class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 	 * @param array<string, string> $requestGetAttributeMapping
 	 */
 	public function __construct(private array $requestGetAttributeMapping, private readonly TypeStringResolver $typeStringResolver)
-    {
-    }
+	{
+	}
 
 	public function getClass(): string
 	{

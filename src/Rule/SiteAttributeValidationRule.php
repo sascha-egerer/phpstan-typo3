@@ -23,8 +23,8 @@ class SiteAttributeValidationRule implements Rule
 	 * @param array<string, string> $siteGetAttributeMapping
 	 */
 	public function __construct(private array $siteGetAttributeMapping)
-    {
-    }
+	{
+	}
 
 	public function getNodeType(): string
 	{

@@ -24,8 +24,8 @@ final readonly class PropertyMapperReturnTypeExtension implements DynamicMethodR
 {
 
 	public function __construct(private ReflectionProvider $reflectionProvider)
-    {
-    }
+	{
+	}
 
 	public function getClass(): string
 	{
