@@ -23,7 +23,7 @@ final class SiteAttributeValidationRuleTest extends RuleTestCase
 			[__DIR__ . '/Fixture/UseSiteWithUndefinedAttribute.php'],
 			[
 				[
-					'There is no site attribute "foo" configured so we can\'t figure out the exact type to return when calling TYPO3\CMS\Core\Site\Entity\Site::getAttribute',
+					'There is no site attribute "foo" configured so we can\'t figure out the exact type to return when calling ' . \TYPO3\CMS\Core\Site\Entity\Site::class . '::getAttribute',
 					19,
 					'You should add custom site attribute to the typo3.siteGetAttributeMapping setting.',
 				],

@@ -5,7 +5,7 @@ namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Type;
 use PHPStan\Testing\TypeInferenceTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class SiteGetAttributeDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
+final class SiteGetAttributeDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
 {
 
 	/**
@@ -21,7 +21,7 @@ class SiteGetAttributeDynamicReturnTypeExtensionTest extends TypeInferenceTestCa
 	public function testFileAsserts(
 		string $assertType,
 		string $file,
-		mixed ...$args
+		mixed ...$args,
 	): void
 	{
 		$this->assertFileAsserts($assertType, $file, ...$args);

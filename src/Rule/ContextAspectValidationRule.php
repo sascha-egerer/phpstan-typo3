@@ -19,15 +19,11 @@ use TYPO3\CMS\Core\Context\Context;
 class ContextAspectValidationRule implements Rule
 {
 
-	/** @var array<string, string> */
-	private array $contextApiGetAspectMapping;
-
 	/**
 	 * @param array<string, string> $contextApiGetAspectMapping
 	 */
-	public function __construct(array $contextApiGetAspectMapping)
+	public function __construct(private array $contextApiGetAspectMapping)
 	{
-		$this->contextApiGetAspectMapping = $contextApiGetAspectMapping;
 	}
 
 	public function getNodeType(): string

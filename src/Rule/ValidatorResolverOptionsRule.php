@@ -13,6 +13,7 @@ use PhpParser\Node\Identifier;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\InitializerExprTypeResolver;
+use PHPStan\Reflection\MissingPropertyFromReflectionException;
 use PHPStan\Reflection\Php\PhpPropertyReflection;
 use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Rules\Rule;
@@ -21,26 +22,18 @@ use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use SaschaEgerer\PhpstanTypo3\Rule\ValueObject\ValidatorOptionsConfiguration;
 use SaschaEgerer\PhpstanTypo3\Service\ValidatorClassNameResolver;
+use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 
 /**
  * @implements Rule<MethodCall>
  */
-final class ValidatorResolverOptionsRule implements Rule
+final readonly class ValidatorResolverOptionsRule implements Rule
 {
 
-	private InitializerExprTypeResolver $initializerExprTypeResolver;
-
-	private ValidatorClassNameResolver $validatorClassNameResolver;
-
-	public function __construct(
-		InitializerExprTypeResolver $initializerExprTypeResolver,
-		ValidatorClassNameResolver $validatorClassNameResolver
-	)
+	public function __construct(private InitializerExprTypeResolver $initializerExprTypeResolver, private ValidatorClassNameResolver $validatorClassNameResolver)
 	{
-		$this->initializerExprTypeResolver = $initializerExprTypeResolver;
-		$this->validatorClassNameResolver = $validatorClassNameResolver;
 	}
 
 	public function getNodeType(): string
@@ -68,7 +61,7 @@ final class ValidatorResolverOptionsRule implements Rule
 
 		try {
 			$validatorClassName = $this->validatorClassNameResolver->resolve($validatorType);
-		} catch (\TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException) {
+		} catch (NoSuchValidatorException) {
 			if ($validatorType->getConstantStrings() !== []) {
 				$validatorClassName = $validatorType->getConstantStrings()[0]->getValue();
 				$message = sprintf('Could not create validator for "%s"', $validatorClassName);
@@ -100,7 +93,7 @@ final class ValidatorResolverOptionsRule implements Rule
 
 		try {
 			$supportedOptions = $validatorClassReflection->getProperty('supportedOptions', $scope);
-		} catch (\PHPStan\Reflection\MissingPropertyFromReflectionException $e) {
+		} catch (MissingPropertyFromReflectionException) {
 			return [];
 		}
 
@@ -114,10 +107,10 @@ final class ValidatorResolverOptionsRule implements Rule
 		$errors = [];
 
 		foreach ($neededRequiredOptions as $neededRequiredOption) {
-				$errorMessage = sprintf('Required validation option not set: %s', $neededRequiredOption);
-				$errors[] = RuleErrorBuilder::message($errorMessage)
-					->identifier('phpstanTypo3.validatorResolverOptions.requiredValidatorOptionNotSet')
-					->build();
+			$errorMessage = sprintf('Required validation option not set: %s', $neededRequiredOption);
+			$errors[] = RuleErrorBuilder::message($errorMessage)
+				->identifier('phpstanTypo3.validatorResolverOptions.requiredValidatorOptionNotSet')
+				->build();
 		}
 
 		if ($unsupportedOptions !== []) {
@@ -174,7 +167,7 @@ final class ValidatorResolverOptionsRule implements Rule
 
 	private function extractValidatorOptionsConfiguration(
 		PropertyReflection $supportedOptions,
-		Scope $scope
+		Scope $scope,
 	): ValidatorOptionsConfiguration
 	{
 		$collectedSupportedOptions = [];
@@ -232,10 +225,10 @@ final class ValidatorResolverOptionsRule implements Rule
 	private function resolveOptionKeyValue(
 		ArrayItem $defaultValue,
 		PhpPropertyReflection $supportedOptions,
-		Scope $scope
+		Scope $scope,
 	): ?string
 	{
-		if (!$defaultValue->key instanceof \PhpParser\Node\Expr) {
+		if (!$defaultValue->key instanceof Expr) {
 			return null;
 		}
 
@@ -244,9 +237,7 @@ final class ValidatorResolverOptionsRule implements Rule
 				$defaultValue->key->class,
 				$defaultValue->key->name->toString(),
 				$supportedOptions->getDeclaringClass()->getName(),
-				static function (Expr $expr) use ($scope): Type {
-					return $scope->getType($expr);
-				}
+				$scope->getType(...)
 			);
 
 			if ($keyType->getConstantStrings() !== []) {

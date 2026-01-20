@@ -14,18 +14,11 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 class SiteDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
-	/** @var array<string, string> */
-	private array $siteGetAttributeMapping;
-
-	private TypeStringResolver $typeStringResolver;
-
 	/**
 	 * @param array<string, string> $siteGetAttributeMapping
 	 */
-	public function __construct(array $siteGetAttributeMapping, TypeStringResolver $typeStringResolver)
+	public function __construct(private array $siteGetAttributeMapping, private readonly TypeStringResolver $typeStringResolver)
 	{
-		$this->siteGetAttributeMapping = $siteGetAttributeMapping;
-		$this->typeStringResolver = $typeStringResolver;
 	}
 
 	public function getClass(): string
@@ -36,7 +29,7 @@ class SiteDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 	public function getTypeFromMethodCall(
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
-		Scope $scope
+		Scope $scope,
 	): Type
 	{
 		$argument = $methodCall->getArgs()[0] ?? null;
@@ -53,7 +46,7 @@ class SiteDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 	}
 
 	public function isMethodSupported(
-		MethodReflection $methodReflection
+		MethodReflection $methodReflection,
 	): bool
 	{
 		return $methodReflection->getName() === 'getAttribute';

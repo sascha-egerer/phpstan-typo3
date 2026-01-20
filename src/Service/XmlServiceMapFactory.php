@@ -6,14 +6,11 @@ use SaschaEgerer\PhpstanTypo3\Contract\ServiceMap;
 use SaschaEgerer\PhpstanTypo3\Contract\ServiceMapFactory;
 use SimpleXMLElement;
 
-final class XmlServiceMapFactory implements ServiceMapFactory
+final readonly class XmlServiceMapFactory implements ServiceMapFactory
 {
 
-	private ?string $containerXmlPath;
-
-	public function __construct(?string $containerXmlPath)
+	public function __construct(private ?string $containerXmlPath)
 	{
-		$this->containerXmlPath = $containerXmlPath;
 	}
 
 	public function create(): ServiceMap
@@ -53,6 +50,7 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 			if (!is_scalar($attributesArray['id'] ?? null)) {
 				continue;
 			}
+
 			$id = (string) $attributesArray['id'];
 			if ($id === '') {
 				continue;
@@ -65,14 +63,14 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 			}
 
 			$serviceDefinition = new ServiceDefinition(
-				ltrim($id, '.'),
-				isset($attributesArray['class']) ? (string) $attributesArray['class'] : null,
-				($attributesArray['public'] ?? null) === 'true',
-				($attributesArray['synthetic'] ?? null) === 'true',
-				isset($attributesArray['alias']) ? (string) $attributesArray['alias'] : null,
-				property_exists($def, 'argument') && $def->argument !== null,
-				property_exists($def, 'call') && $def->call !== null,
-				property_exists($def, 'tag') && $def->tag !== null,
+				str_starts_with((string) $attrs->id, '.') ? substr((string) $attrs->id, 1) : (string) $attrs->id,
+				isset($attrs->class) ? (string) $attrs->class : null,
+				isset($attrs->public) && (string) $attrs->public === 'true',
+				isset($attrs->synthetic) && (string) $attrs->synthetic === 'true',
+				isset($attrs->alias) ? (string) $attrs->alias : null,
+				isset($def->argument),
+				isset($def->call),
+				isset($def->tag),
 			);
 
 			if ($serviceDefinition->getAlias() !== null) {
@@ -81,11 +79,17 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 				$serviceDefinitions[$serviceDefinition->getId()] = $serviceDefinition;
 			}
 		}
+
 		foreach ($aliases as $serviceDefinition) {
 			$alias = $serviceDefinition->getAlias();
-			if ($alias === null || !isset($serviceDefinitions[$alias])) {
+			if ($alias === null) {
 				continue;
 			}
+
+			if (!isset($serviceDefinitions[$alias])) {
+				continue;
+			}
+
 			$id = $serviceDefinition->getId();
 			$serviceDefinitions[$id] = new ServiceDefinition(
 				$id,
@@ -118,6 +122,7 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 			if ($name === '') {
 				continue;
 			}
+
 			$tagNames[] = $name;
 		}
 

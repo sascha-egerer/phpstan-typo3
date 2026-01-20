@@ -19,15 +19,11 @@ use Psr\Http\Message\ServerRequestInterface;
 class RequestAttributeValidationRule implements Rule
 {
 
-	/** @var array<string, string> */
-	private array $requestGetAttributeMapping;
-
 	/**
 	 * @param array<string, string> $requestGetAttributeMapping
 	 */
-	public function __construct(array $requestGetAttributeMapping)
+	public function __construct(private array $requestGetAttributeMapping)
 	{
-		$this->requestGetAttributeMapping = $requestGetAttributeMapping;
 	}
 
 	public function getNodeType(): string

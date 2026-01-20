@@ -15,18 +15,11 @@ use Psr\Http\Message\ServerRequestInterface;
 class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
-	/** @var array<string, string> */
-	private array $requestGetAttributeMapping;
-
-	private TypeStringResolver $typeStringResolver;
-
 	/**
 	 * @param array<string, string> $requestGetAttributeMapping
 	 */
-	public function __construct(array $requestGetAttributeMapping, TypeStringResolver $typeStringResolver)
+	public function __construct(private array $requestGetAttributeMapping, private readonly TypeStringResolver $typeStringResolver)
 	{
-		$this->requestGetAttributeMapping = $requestGetAttributeMapping;
-		$this->typeStringResolver = $typeStringResolver;
 	}
 
 	public function getClass(): string
@@ -43,7 +36,7 @@ class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 	public function getTypeFromMethodCall(
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
-		Scope $scope
+		Scope $scope,
 	): Type
 	{
 		$argument = $methodCall->getArgs()[0] ?? null;
@@ -73,7 +66,7 @@ class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
 	}
 
 	public function isMethodSupported(
-		MethodReflection $methodReflection
+		MethodReflection $methodReflection,
 	): bool
 	{
 		return $methodReflection->getName() === 'getAttribute';

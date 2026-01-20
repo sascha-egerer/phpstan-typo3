@@ -27,7 +27,9 @@
 		"php-parallel-lint/php-parallel-lint": "^1.4",
 		"phpstan/phpstan-strict-rules": "^2.0",
 		"phpstan/phpstan-phpunit": "^2.0.3",
-		"phpunit/phpunit": "^11.5"
+		"phpunit/phpunit": "^11.5",
+		"rector/rector": "^2.1",
+		"rector/type-perfect": "^2.1"
 	},
 	"autoload": {
 		"psr-4": {
@@ -68,9 +70,12 @@
 		"test:phpstan": "phpstan --memory-limit=2G",
 		"test:php-cs": "phpcs",
 		"test:php-lint": "parallel-lint src tests",
+		"test:rector": "rector --dry-run",
 		"fix": [
+			"@fix:rector",
 			"@fix:php-cs"
 		],
+		"fix:rector": "rector",
 		"fix:php-cs": "phpcbf"
 	}
 }

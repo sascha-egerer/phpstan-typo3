@@ -19,12 +19,12 @@ final class ContextAspectValidationRuleTest extends RuleTestCase
 			[__DIR__ . '/Fixture/UseContextApiWithUndefinedAspect.php'],
 			[
 				[
-					'There is no aspect "foo" configured so we can\'t figure out the exact type to return when calling TYPO3\CMS\Core\Context\Context::getAspect',
+					'There is no aspect "foo" configured so we can\'t figure out the exact type to return when calling ' . \TYPO3\CMS\Core\Context\Context::class . '::getAspect',
 					13,
 					'You should add custom aspects to the typo3.contextApiGetAspectMapping setting.',
 				],
 				[
-					'There is no aspect "dates" configured so we can\'t figure out the exact type to return when calling TYPO3\CMS\Core\Context\Context::getPropertyFromAspect',
+					'There is no aspect "dates" configured so we can\'t figure out the exact type to return when calling ' . \TYPO3\CMS\Core\Context\Context::class . '::getPropertyFromAspect',
 					16,
 					'You should add custom aspects to the typo3.contextApiGetAspectMapping setting.',
 				],

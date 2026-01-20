@@ -11,14 +11,11 @@ use PHPStan\Rules\RuleErrorBuilder;
 use SaschaEgerer\PhpstanTypo3\Contract\ServiceDefinitionChecker;
 use SaschaEgerer\PhpstanTypo3\Contract\ServiceMap;
 
-final class PrivateServiceAnalyzer
+final readonly class PrivateServiceAnalyzer
 {
 
-	private ServiceMap $serviceMap;
-
-	public function __construct(ServiceMap $symfonyServiceMap)
+	public function __construct(private ServiceMap $serviceMap)
 	{
-		$this->serviceMap = $symfonyServiceMap;
 	}
 
 	/**
@@ -36,7 +33,7 @@ final class PrivateServiceAnalyzer
 
 		$serviceDefinition = $this->serviceMap->getServiceDefinitionById($serviceId);
 
-		if (!$serviceDefinition instanceof \SaschaEgerer\PhpstanTypo3\Service\ServiceDefinition || $serviceDefinition->isPublic()) {
+		if (!$serviceDefinition instanceof ServiceDefinition || $serviceDefinition->isPublic()) {
 			return [];
 		}
 

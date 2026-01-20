@@ -20,14 +20,11 @@ use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 
-final class PropertyMapperReturnTypeExtension implements DynamicMethodReturnTypeExtension
+final readonly class PropertyMapperReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
-	private ReflectionProvider $reflectionProvider;
-
-	public function __construct(ReflectionProvider $reflectionProvider)
+	public function __construct(private ReflectionProvider $reflectionProvider)
 	{
-		$this->reflectionProvider = $reflectionProvider;
 	}
 
 	public function getClass(): string
@@ -43,7 +40,7 @@ final class PropertyMapperReturnTypeExtension implements DynamicMethodReturnType
 	public function getTypeFromMethodCall(
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
-		Scope $scope
+		Scope $scope,
 	): ?Type
 	{
 		$targetTypeArgument = $methodCall->getArgs()[1] ?? null;
