@@ -15,7 +15,7 @@ return RectorConfig::configure()
         __DIR__ . '/src',
         __DIR__ . '/tests',
     ])
-    ->withImportNames(removeUnusedImports: true)
+    ->withImportNames(importShortClasses: false, removeUnusedImports: true)
     ->withPhpSets(php82: true)
     ->withPHPStanConfigs([
         __DIR__ . '/phpstan.neon',
