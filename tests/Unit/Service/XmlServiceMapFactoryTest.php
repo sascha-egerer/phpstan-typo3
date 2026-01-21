@@ -6,6 +6,8 @@ namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Service;
 
 use PHPUnit\Framework\TestCase;
 use SaschaEgerer\PhpstanTypo3\Contract\ServiceMap;
+use SaschaEgerer\PhpstanTypo3\Service\ServiceDefinition;
+use SaschaEgerer\PhpstanTypo3\Service\ServiceDefinitionFileException;
 use SaschaEgerer\PhpstanTypo3\Service\XmlServiceMapFactory;
 
 final class XmlServiceMapFactoryTest extends TestCase
@@ -17,14 +19,14 @@ final class XmlServiceMapFactoryTest extends TestCase
 
     public function testThatAnExceptionIsThrownWhenFileDoesNotExist(): void
     {
-        $this->expectException(\SaschaEgerer\PhpstanTypo3\Service\ServiceDefinitionFileException::class);
+        $this->expectException(ServiceDefinitionFileException::class);
 
         $this->createServiceMap(__DIR__ . '/foo.xml');
     }
 
     public function testThatAnExceptionIsThrownWhenFileCannotBeParsed(): void
     {
-        $this->expectException(\SaschaEgerer\PhpstanTypo3\Service\ServiceDefinitionFileException::class);
+        $this->expectException(ServiceDefinitionFileException::class);
 
         $this->createServiceMap(__DIR__ . '/../Fixtures/container_with_errors.xml');
     }
@@ -35,13 +37,13 @@ final class XmlServiceMapFactoryTest extends TestCase
 
         self::assertCount(8, $serviceMap->getServiceDefinitions());
 
-        self::assertNotInstanceOf(\SaschaEgerer\PhpstanTypo3\Service\ServiceDefinition::class, $serviceMap->getServiceDefinitionById('foo'));
+        self::assertNotInstanceOf(ServiceDefinition::class, $serviceMap->getServiceDefinitionById('foo'));
 
         $serviceDefinition = $serviceMap->getServiceDefinitionById('public');
-        self::assertInstanceOf(\SaschaEgerer\PhpstanTypo3\Service\ServiceDefinition::class, $serviceDefinition);
+        self::assertInstanceOf(ServiceDefinition::class, $serviceDefinition);
 
         $serviceDefinitionExcluded = $serviceMap->getServiceDefinitionById('excluded');
-        self::assertNotInstanceOf(\SaschaEgerer\PhpstanTypo3\Service\ServiceDefinition::class, $serviceDefinitionExcluded);
+        self::assertNotInstanceOf(ServiceDefinition::class, $serviceDefinitionExcluded);
     }
 
     private function createServiceMap(?string $containerXmlPath): ServiceMap

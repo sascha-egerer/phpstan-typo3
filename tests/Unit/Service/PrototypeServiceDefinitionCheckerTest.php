@@ -7,6 +7,7 @@ namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Service;
 use PhpParser\BuilderFactory;
 use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Testing\PHPStanTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use SaschaEgerer\PhpstanTypo3\Service\PrototypeServiceDefinitionChecker;
 use SaschaEgerer\PhpstanTypo3\Service\ServiceDefinition;
 use SaschaEgerer\PhpstanTypo3\Tests\Unit\Fixtures\NonPrototypeClass;
@@ -60,17 +61,13 @@ final class PrototypeServiceDefinitionCheckerTest extends PHPStanTestCase
         $this->subject = self::getContainer()->getByType(PrototypeServiceDefinitionChecker::class);
     }
 
-    /**
-     * @dataProvider providePrototypes
-     */
+    #[DataProvider('providePrototypes')]
     public function testIsPrototypeIsTrue(StaticCall $node, ServiceDefinition $serviceDefinition): void
     {
         self::assertTrue($this->subject->isPrototype($serviceDefinition, $node));
     }
 
-    /**
-     * @dataProvider provideNonPrototypes
-     */
+    #[DataProvider('provideNonPrototypes')]
     public function testIsPrototypeIsFalse(StaticCall $node, ServiceDefinition $serviceDefinition): void
     {
         self::assertFalse($this->subject->isPrototype($serviceDefinition, $node));
