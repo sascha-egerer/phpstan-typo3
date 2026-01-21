@@ -27,7 +27,8 @@
 		"phpstan/phpstan-phpunit": "^2.0.3",
 		"phpunit/phpunit": "^11.5",
 		"rector/rector": "^2.1",
-		"rector/type-perfect": "^2.1"
+		"rector/type-perfect": "^2.1",
+		"friendsofphp/php-cs-fixer": "^3.90"
 	},
 	"autoload": {
 		"psr-4": {
@@ -64,11 +65,14 @@
 		],
 		"test:phpunit": "phpunit --colors=always tests/",
 		"test:phpstan": "phpstan --memory-limit=2G",
+		"test:php-cs-fixer": "php-cs-fixer check --diff",
 		"test:php-lint": "parallel-lint src tests",
 		"test:rector": "rector --dry-run",
 		"fix": [
-			"@fix:rector"
+			"@fix:rector",
+			"@fix:php-cs-fixer"
 		],
-		"fix:rector": "rector"
+		"fix:rector": "rector",
+		"fix:php-cs-fixer": "php-cs-fixer"
 	}
 }
