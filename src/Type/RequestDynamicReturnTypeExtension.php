@@ -9,6 +9,7 @@ use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\PhpDoc\TypeStringResolver;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
@@ -24,7 +25,7 @@ class RequestDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtens
     public function getClass(): string
     {
         if (!interface_exists(ServerRequestInterface::class)) {
-            throw new \PHPStan\ShouldNotHappenException(
+            throw new ShouldNotHappenException(
                 'The package "psr/http-message" is not installed, but should be.'
             );
         }

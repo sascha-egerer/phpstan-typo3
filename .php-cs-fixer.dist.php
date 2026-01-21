@@ -2,11 +2,15 @@
 
 declare(strict_types=1);
 
-return (new \PhpCsFixer\Config())
+use PhpCsFixer\Config;
+use PhpCsFixer\Finder;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
+
+return (new Config())
     ->setCacheFile(__DIR__ . '/var/.php-cs-fixer.cache')
-    ->setParallelConfig(\PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
+    ->setParallelConfig(ParallelConfigFactory::detect())
     ->setFinder(
-        (new \PhpCsFixer\Finder())
+        (new Finder())
             ->in([__DIR__])
             ->ignoreVCSIgnored(true)
             ->ignoreDotFiles(false)

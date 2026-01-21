@@ -6,6 +6,8 @@ namespace SaschaEgerer\PhpstanTypo3\Rule;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Name\FullyQualified;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use SaschaEgerer\PhpstanTypo3\Service\PrivateServiceAnalyzer;
@@ -40,7 +42,7 @@ final readonly class GeneralUtilityMakeInstancePrivateServiceRule implements Rul
 
     private function shouldSkip(StaticCall $node): bool
     {
-        if (!$node->name instanceof Node\Identifier) {
+        if (!$node->name instanceof Identifier) {
             return true;
         }
 
@@ -60,7 +62,7 @@ final readonly class GeneralUtilityMakeInstancePrivateServiceRule implements Rul
             return true;
         }
 
-        if (!$node->class instanceof Node\Name\FullyQualified) {
+        if (!$node->class instanceof FullyQualified) {
             return true;
         }
 

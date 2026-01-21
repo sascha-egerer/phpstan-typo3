@@ -9,9 +9,13 @@ use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
 
 return RectorConfig::configure()
     ->withPaths([
+        __DIR__ . '/.php-cs-fixer.dist.php',
+        __DIR__ . '/phpstan.bootstrap.php',
+        __DIR__ . '/rector.php',
         __DIR__ . '/src',
         __DIR__ . '/tests',
     ])
+    ->withImportNames(removeUnusedImports: true)
     ->withPhpSets(php82: true)
     ->withPHPStanConfigs([
         __DIR__ . '/phpstan.neon',

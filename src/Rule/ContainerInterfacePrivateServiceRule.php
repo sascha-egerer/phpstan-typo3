@@ -6,6 +6,7 @@ namespace SaschaEgerer\PhpstanTypo3\Rule;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Identifier;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Type\ObjectType;
@@ -41,7 +42,7 @@ final readonly class ContainerInterfacePrivateServiceRule implements Rule
 
     private function shouldSkip(MethodCall $node, Scope $scope): bool
     {
-        if (!$node->name instanceof Node\Identifier) {
+        if (!$node->name instanceof Identifier) {
             return true;
         }
 

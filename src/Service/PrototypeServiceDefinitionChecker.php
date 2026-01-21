@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace SaschaEgerer\PhpstanTypo3\Service;
 
 use PhpParser\Node;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Name;
 use PHPStan\Reflection\ReflectionProvider;
 use SaschaEgerer\PhpstanTypo3\Contract\ServiceDefinitionChecker;
 
@@ -25,7 +27,7 @@ final readonly class PrototypeServiceDefinitionChecker implements ServiceDefinit
             return null;
         }
 
-        if (!$node->args[0] instanceof Node\Arg) {
+        if (!$node->args[0] instanceof Arg) {
             return null;
         }
 
@@ -44,7 +46,7 @@ final readonly class PrototypeServiceDefinitionChecker implements ServiceDefinit
             return false;
         }
 
-        if (!$firstArgument->class instanceof Node\Name) {
+        if (!$firstArgument->class instanceof Name) {
             return false;
         }
 

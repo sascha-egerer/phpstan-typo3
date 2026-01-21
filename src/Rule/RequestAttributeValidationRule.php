@@ -31,7 +31,7 @@ class RequestAttributeValidationRule implements Rule
     }
 
     /**
-     * @param Node\Expr\MethodCall $node
+     * @param MethodCall $node
      */
     public function processNode(Node $node, Scope $scope): array
     {

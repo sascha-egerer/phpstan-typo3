@@ -18,19 +18,19 @@ final readonly class XmlServiceMapFactory implements ServiceMapFactory
         }
 
         if (!file_exists($this->containerXmlPath)) {
-            throw \SaschaEgerer\PhpstanTypo3\Service\ServiceDefinitionFileException::notFound($this->containerXmlPath);
+            throw ServiceDefinitionFileException::notFound($this->containerXmlPath);
         }
 
         $containerXml = file_get_contents($this->containerXmlPath);
 
         if ($containerXml === false) {
-            throw \SaschaEgerer\PhpstanTypo3\Service\ServiceDefinitionFileException::notReadable($this->containerXmlPath);
+            throw ServiceDefinitionFileException::notReadable($this->containerXmlPath);
         }
 
         $xml = @simplexml_load_string($containerXml);
 
         if ($xml === false) {
-            throw \SaschaEgerer\PhpstanTypo3\Service\ServiceDefinitionFileException::parseError($this->containerXmlPath);
+            throw ServiceDefinitionFileException::parseError($this->containerXmlPath);
         }
 
         /** @var ServiceDefinition[] $serviceDefinitions */
