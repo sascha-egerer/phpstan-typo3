@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Type;
 
@@ -7,32 +9,30 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 final class RequestGetAttributeDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
 {
+    /**
+     * @return iterable<mixed>
+     */
+    public static function dataFileAsserts(): iterable
+    {
+        // path to a file with actual asserts of expected types:
+        yield from self::gatherAssertTypes(__DIR__ . '/data/request-get-attribute-return-types.php');
+    }
 
-	/**
-	 * @return iterable<mixed>
-	 */
-	public static function dataFileAsserts(): iterable
-	{
-		// path to a file with actual asserts of expected types:
-		yield from self::gatherAssertTypes(__DIR__ . '/data/request-get-attribute-return-types.php');
-	}
+    #[DataProvider('dataFileAsserts')]
+    public function testFileAsserts(
+        string $assertType,
+        string $file,
+        mixed ...$args,
+    ): void {
+        $this->assertFileAsserts($assertType, $file, ...$args);
+    }
 
-	#[DataProvider('dataFileAsserts')]
-	public function testFileAsserts(
-		string $assertType,
-		string $file,
-		mixed ...$args,
-	): void
-	{
-		$this->assertFileAsserts($assertType, $file, ...$args);
-	}
-
-	public static function getAdditionalConfigFiles(): array
-	{
-		return [
-			__DIR__ . '/../../../extension.neon',
-			__DIR__ . '/data/request-get-attribute-return-types.neon',
-		];
-	}
+    public static function getAdditionalConfigFiles(): array
+    {
+        return [
+            __DIR__ . '/../../../extension.neon',
+            __DIR__ . '/data/request-get-attribute-return-types.neon',
+        ];
+    }
 
 }

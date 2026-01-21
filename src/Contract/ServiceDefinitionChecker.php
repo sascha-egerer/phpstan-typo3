@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Contract;
 
@@ -8,10 +10,9 @@ use SaschaEgerer\PhpstanTypo3\Service\ServiceDefinition;
 
 interface ServiceDefinitionChecker
 {
-
-	/**
-	 * @param Node\Expr\MethodCall|StaticCall $node
-	 */
-	public function isPrototype(ServiceDefinition $serviceDefinition, Node $node): bool;
+    /**
+     * @param Node\Expr\MethodCall|StaticCall $node
+     */
+    public function isPrototype(ServiceDefinition $serviceDefinition, Node $node): bool;
 
 }

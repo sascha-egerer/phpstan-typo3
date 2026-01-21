@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Rule;
 
@@ -15,57 +17,54 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final readonly class GeneralUtilityMakeInstancePrivateServiceRule implements Rule
 {
+    public function __construct(private PrivateServiceAnalyzer $privateServiceAnalyzer, private PrototypeServiceDefinitionChecker $prototypeServiceDefinitionChecker) {}
 
-	public function __construct(private PrivateServiceAnalyzer $privateServiceAnalyzer, private PrototypeServiceDefinitionChecker $prototypeServiceDefinitionChecker)
-	{
-	}
+    public function getNodeType(): string
+    {
+        return StaticCall::class;
+    }
 
-	public function getNodeType(): string
-	{
-		return StaticCall::class;
-	}
+    public function processNode(Node $node, Scope $scope): array
+    {
+        if ($this->shouldSkip($node)) {
+            return [];
+        }
 
-	public function processNode(Node $node, Scope $scope): array
-	{
-		if ($this->shouldSkip($node)) {
-			return [];
-		}
+        return $this->privateServiceAnalyzer->analyze(
+            $node,
+            $scope,
+            $this->prototypeServiceDefinitionChecker,
+            'phpstanTypo3.generalUtilityMakeInstancePrivateService'
+        );
+    }
 
-		return $this->privateServiceAnalyzer->analyze(
-			$node,
-			$scope,
-			$this->prototypeServiceDefinitionChecker,
-			'phpstanTypo3.generalUtilityMakeInstancePrivateService'
-		);
-	}
+    private function shouldSkip(StaticCall $node): bool
+    {
+        if (!$node->name instanceof Node\Identifier) {
+            return true;
+        }
 
-	private function shouldSkip(StaticCall $node): bool
-	{
-		if (!$node->name instanceof Node\Identifier) {
-			return true;
-		}
+        $methodCallArguments = $node->getArgs();
 
-		$methodCallArguments = $node->getArgs();
+        if (!isset($methodCallArguments[0])) {
+            return true;
+        }
 
-		if (!isset($methodCallArguments[0])) {
-			return true;
-		}
+        $methodCallName = $node->name->name;
 
-		$methodCallName = $node->name->name;
+        if ($methodCallName !== 'makeInstance') {
+            return true;
+        }
 
-		if ($methodCallName !== 'makeInstance') {
-			return true;
-		}
+        if (count($methodCallArguments) > 1) {
+            return true;
+        }
 
-		if (count($methodCallArguments) > 1) {
-			return true;
-		}
+        if (!$node->class instanceof Node\Name\FullyQualified) {
+            return true;
+        }
 
-		if (!$node->class instanceof Node\Name\FullyQualified) {
-			return true;
-		}
-
-		return $node->class->toString() !== GeneralUtility::class;
-	}
+        return $node->class->toString() !== GeneralUtility::class;
+    }
 
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Type;
 
@@ -15,41 +17,38 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 
 class ValidatorResolverDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
+    public function getClass(): string
+    {
+        return ValidatorResolver::class;
+    }
 
-	public function getClass(): string
-	{
-		return ValidatorResolver::class;
-	}
+    public function isMethodSupported(
+        MethodReflection $methodReflection,
+    ): bool {
+        return $methodReflection->getName() === 'createValidator';
+    }
 
-	public function isMethodSupported(
-		MethodReflection $methodReflection,
-	): bool
-	{
-		return $methodReflection->getName() === 'createValidator';
-	}
+    public function getTypeFromMethodCall(
+        MethodReflection $methodReflection,
+        MethodCall $methodCall,
+        Scope $scope,
+    ): Type {
+        $argument = $methodCall->getArgs()[0] ?? null;
 
-	public function getTypeFromMethodCall(
-		MethodReflection $methodReflection,
-		MethodCall $methodCall,
-		Scope $scope,
-	): Type
-	{
-		$argument = $methodCall->getArgs()[0] ?? null;
+        if ($argument === null) {
+            return $methodReflection->getVariants()[0]->getReturnType();
+        }
 
-		if ($argument === null) {
-			return $methodReflection->getVariants()[0]->getReturnType();
-		}
+        $argumentValue = $argument->value;
 
-		$argumentValue = $argument->value;
+        if (!($argumentValue instanceof ClassConstFetch)) {
+            return $methodReflection->getVariants()[0]->getReturnType();
+        }
 
-		if (!($argumentValue instanceof ClassConstFetch)) {
-			return $methodReflection->getVariants()[0]->getReturnType();
-		}
+        /** @var Name $class */
+        $class = $argumentValue->class;
 
-		/** @var Name $class */
-		$class = $argumentValue->class;
-
-		return TypeCombinator::addNull(new ObjectType((string) $class));
-	}
+        return TypeCombinator::addNull(new ObjectType((string)$class));
+    }
 
 }

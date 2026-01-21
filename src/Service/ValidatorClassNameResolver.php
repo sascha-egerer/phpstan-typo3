@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Service;
 
@@ -7,17 +9,16 @@ use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 
 final class ValidatorClassNameResolver
 {
+    /**
+     * @throws NoSuchValidatorException
+     */
+    public function resolve(Type $type): ?string
+    {
+        if ($type->getConstantStrings() === []) {
+            return null;
+        }
 
-	/**
-	 * @throws NoSuchValidatorException
-	 */
-	public function resolve(Type $type): ?string
-	{
-		if ($type->getConstantStrings() === []) {
-			return null;
-		}
-
-		return \TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver::resolve($type->getConstantStrings()[0]->getValue());
-	}
+        return \TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver::resolve($type->getConstantStrings()[0]->getValue());
+    }
 
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Rule\ValidatorResolverOptionsRule;
 
@@ -11,75 +13,74 @@ use SaschaEgerer\PhpstanTypo3\Rule\ValidatorResolverOptionsRule;
  */
 final class ValidatorResolverOptionsRuleTest extends RuleTestCase
 {
+    /**
+     * @dataProvider provideDataWithErrors
+     *
+     * @param list<array{0: string, 1: int, 2?: string}> $expectedErrorMessagesWithLines
+     */
+    public function testRuleWithErrors(string $filePath, array $expectedErrorMessagesWithLines): void
+    {
+        $this->analyse([$filePath], $expectedErrorMessagesWithLines);
+    }
 
-	/**
-	 * @dataProvider provideDataWithErrors
-	 *
-	 * @param list<array{0: string, 1: int, 2?: string}> $expectedErrorMessagesWithLines
-	 */
-	public function testRuleWithErrors(string $filePath, array $expectedErrorMessagesWithLines): void
-	{
-		$this->analyse([$filePath], $expectedErrorMessagesWithLines);
-	}
+    public function testRuleWithoutErrors(): void
+    {
+        $this->analyse([__DIR__ . '/Fixture/CreateValidatorWithCorrectOptions.php'], []);
+    }
 
-	public function testRuleWithoutErrors(): void
-	{
-		$this->analyse([__DIR__ . '/Fixture/CreateValidatorWithCorrectOptions.php'], []);
-	}
+    public static function provideDataWithErrors(): \Iterator
+    {
+        yield [
+            __DIR__ . '/Fixture/CreateValidatorWithUnresolvableType.php',
+            [
+                [
+                    'Could not create validator for "Foo"',
+                    13,
+                ],
+            ],
+        ];
 
-	public static function provideDataWithErrors(): \Iterator
-	{
-		yield [
-			__DIR__ . '/Fixture/CreateValidatorWithUnresolvableType.php',
-			[
-				[
-					'Could not create validator for "Foo"',
-					13,
-				],
-			],
-		];
+        yield [
+            __DIR__ . '/Fixture/CreateValidatorWithMissingRequiredOption.php',
+            [
+                [
+                    'Required validation option not set: regularExpression',
+                    14,
+                ],
+                [
+                    'Required validation option not set: regularExpression',
+                    19,
+                ],
+            ],
+        ];
 
-		yield [
-			__DIR__ . '/Fixture/CreateValidatorWithMissingRequiredOption.php',
-			[
-				[
-					'Required validation option not set: regularExpression',
-					14,
-				],
-				[
-					'Required validation option not set: regularExpression',
-					19,
-				],
-			],
-		];
+        yield [
+            __DIR__ . '/Fixture/CreateValidatorWithNonExistingOption.php',
+            [
+                [
+                    'Unsupported validation option(s) found: non-existing-option',
+                    14,
+                ],
+                [
+                    'Unsupported validation option(s) found: foo',
+                    22,
+                ],
+                [
+                    'Unsupported validation option(s) found: minmum',
+                    26,
+                ],
+            ],
+        ];
+    }
 
-		yield [
-			__DIR__ . '/Fixture/CreateValidatorWithNonExistingOption.php',
-			[
-				[
-					'Unsupported validation option(s) found: non-existing-option',
-					14,
-				],
-				[
-					'Unsupported validation option(s) found: foo',
-					22,
-				],
-				[
-					'Unsupported validation option(s) found: minmum',
-					26,
-				],
-			],
-		];
-	}
+    public static function getAdditionalConfigFiles(): array
+    {
+        return [__DIR__ . '/../../../../extension.neon'];
+    }
 
-	public static function getAdditionalConfigFiles(): array
-	{
-		return [__DIR__ . '/../../../../extension.neon'];
-	}
-
-	protected function getRule(): Rule
-	{
-		return self::getContainer()->getByType(ValidatorResolverOptionsRule::class);
-	}
+    protected function getRule(): Rule
+    {
+        return self::getContainer()->getByType(ValidatorResolverOptionsRule::class);
+    }
 
 }
