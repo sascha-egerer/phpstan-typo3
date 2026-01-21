@@ -22,7 +22,7 @@ final class GeneralUtilityMakeInstancePrivateServiceRuleTest extends RuleTestCas
             [
                 [
                     'Service "private" is private.',
-                    12,
+                    13,
                 ],
             ]
         );

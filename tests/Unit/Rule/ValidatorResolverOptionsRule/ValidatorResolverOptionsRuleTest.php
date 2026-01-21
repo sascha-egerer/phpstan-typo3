@@ -35,7 +35,7 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
             [
                 [
                     'Could not create validator for "Foo"',
-                    13,
+                    14,
                 ],
             ],
         ];
@@ -45,11 +45,11 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
             [
                 [
                     'Required validation option not set: regularExpression',
-                    14,
+                    15,
                 ],
                 [
                     'Required validation option not set: regularExpression',
-                    19,
+                    20,
                 ],
             ],
         ];
@@ -59,15 +59,15 @@ final class ValidatorResolverOptionsRuleTest extends RuleTestCase
             [
                 [
                     'Unsupported validation option(s) found: non-existing-option',
-                    14,
+                    15,
                 ],
                 [
                     'Unsupported validation option(s) found: foo',
-                    22,
+                    23,
                 ],
                 [
                     'Unsupported validation option(s) found: minmum',
-                    26,
+                    27,
                 ],
             ],
         ];

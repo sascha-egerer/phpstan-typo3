@@ -21,12 +21,12 @@ final class ContextAspectValidationRuleTest extends RuleTestCase
             [
                 [
                     'There is no aspect "foo" configured so we can\'t figure out the exact type to return when calling ' . \TYPO3\CMS\Core\Context\Context::class . '::getAspect',
-                    13,
+                    14,
                     'You should add custom aspects to the typo3.contextApiGetAspectMapping setting.',
                 ],
                 [
                     'There is no aspect "dates" configured so we can\'t figure out the exact type to return when calling ' . \TYPO3\CMS\Core\Context\Context::class . '::getPropertyFromAspect',
-                    16,
+                    17,
                     'You should add custom aspects to the typo3.contextApiGetAspectMapping setting.',
                 ],
             ]

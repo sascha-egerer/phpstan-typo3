@@ -21,7 +21,7 @@ final class RequestAttributeValidationRuleTest extends RuleTestCase
             [
                 [
                     'There is no request attribute "foo" configured so we can\'t figure out the exact type to return when calling ' . \Psr\Http\Message\ServerRequestInterface::class . '::getAttribute',
-                    12,
+                    13,
                     'You should add custom request attribute to the typo3.requestGetAttributeMapping setting.',
                 ],
             ]

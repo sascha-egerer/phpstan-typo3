@@ -22,7 +22,7 @@ final class ContainerInterfacePrivateServiceRuleTest extends RuleTestCase
             [
                 [
                     'Service "private" is private.',
-                    19,
+                    20,
                 ],
             ]
         );
