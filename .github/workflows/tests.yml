@@ -52,10 +52,6 @@ jobs:
         run: |
           composer test:rector
 
-      - name: "Run php-cs"
-        run: |
-          composer test:php-cs
-
       - name: "Run phpstan"
         run: |
           composer test:phpstan

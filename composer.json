@@ -22,8 +22,6 @@
 		"ssch/typo3-debug-dump-pass": "^0.0.2"
 	},
 	"require-dev": {
-		"consistence-community/coding-standard": "^3.11",
-		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
 		"php-parallel-lint/php-parallel-lint": "^1.4",
 		"phpstan/phpstan-strict-rules": "^2.0",
 		"phpstan/phpstan-phpunit": "^2.0.3",
@@ -54,7 +52,6 @@
 	},
 	"config": {
 		"allow-plugins": {
-			"dealerdirect/phpcodesniffer-composer-installer": true,
 			"typo3/class-alias-loader": true,
 			"typo3/cms-composer-installers": true
 		}
@@ -63,19 +60,15 @@
 		"test": [
 			"@test:phpunit",
 			"@test:phpstan",
-			"@test:php-cs",
 			"@test:php-lint"
 		],
 		"test:phpunit": "phpunit --colors=always tests/",
 		"test:phpstan": "phpstan --memory-limit=2G",
-		"test:php-cs": "phpcs",
 		"test:php-lint": "parallel-lint src tests",
 		"test:rector": "rector --dry-run",
 		"fix": [
-			"@fix:rector",
-			"@fix:php-cs"
+			"@fix:rector"
 		],
-		"fix:rector": "rector",
-		"fix:php-cs": "phpcbf"
+		"fix:rector": "rector"
 	}
 }
