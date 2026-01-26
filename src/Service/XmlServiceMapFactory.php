@@ -1,132 +1,130 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Service;
 
 use SaschaEgerer\PhpstanTypo3\Contract\ServiceMap;
 use SaschaEgerer\PhpstanTypo3\Contract\ServiceMapFactory;
-use SimpleXMLElement;
 
 final readonly class XmlServiceMapFactory implements ServiceMapFactory
 {
+    public function __construct(private ?string $containerXmlPath) {}
 
-	public function __construct(private ?string $containerXmlPath)
-	{
-	}
+    public function create(): ServiceMap
+    {
+        if ($this->containerXmlPath === null) {
+            return new FakeServiceMap();
+        }
 
-	public function create(): ServiceMap
-	{
-		if ($this->containerXmlPath === null) {
-			return new FakeServiceMap();
-		}
+        if (!file_exists($this->containerXmlPath)) {
+            throw ServiceDefinitionFileException::notFound($this->containerXmlPath);
+        }
 
-		if (!file_exists($this->containerXmlPath)) {
-			throw \SaschaEgerer\PhpstanTypo3\Service\ServiceDefinitionFileException::notFound($this->containerXmlPath);
-		}
+        $containerXml = file_get_contents($this->containerXmlPath);
 
-		$containerXml = file_get_contents($this->containerXmlPath);
+        if ($containerXml === false) {
+            throw ServiceDefinitionFileException::notReadable($this->containerXmlPath);
+        }
 
-		if ($containerXml === false) {
-			throw \SaschaEgerer\PhpstanTypo3\Service\ServiceDefinitionFileException::notReadable($this->containerXmlPath);
-		}
+        $xml = @simplexml_load_string($containerXml);
 
-		$xml = @simplexml_load_string($containerXml);
+        if ($xml === false) {
+            throw ServiceDefinitionFileException::parseError($this->containerXmlPath);
+        }
 
-		if ($xml === false) {
-			throw \SaschaEgerer\PhpstanTypo3\Service\ServiceDefinitionFileException::parseError($this->containerXmlPath);
-		}
+        /** @var ServiceDefinition[] $serviceDefinitions */
+        $serviceDefinitions = [];
+        /** @var ServiceDefinition[] $aliases */
+        $aliases = [];
+        foreach ($xml->services->service as $def) {
+            $attrs = $def->attributes();
+            if ($attrs === null) {
+                continue;
+            }
 
-		/** @var ServiceDefinition[] $serviceDefinitions */
-		$serviceDefinitions = [];
-		/** @var ServiceDefinition[] $aliases */
-		$aliases = [];
-		foreach ($xml->services->service as $def) {
-			$attrs = $def->attributes();
-			if ($attrs === null) {
-				continue;
-			}
+            $attributesArray = ((array)$attrs)['@attributes'] ?? [];
 
-			$attributesArray = ((array) $attrs)['@attributes'] ?? [];
+            if (!is_scalar($attributesArray['id'] ?? null)) {
+                continue;
+            }
 
-			if (!is_scalar($attributesArray['id'] ?? null)) {
-				continue;
-			}
+            $id = (string)$attributesArray['id'];
+            if ($id === '') {
+                continue;
+            }
 
-			$id = (string) $attributesArray['id'];
-			if ($id === '') {
-				continue;
-			}
+            $tags = $this->createTags($def);
 
-			$tags = $this->createTags($def);
+            if (in_array('container.excluded', $tags, true)) {
+                continue;
+            }
 
-			if (in_array('container.excluded', $tags, true)) {
-				continue;
-			}
+            $serviceDefinition = new ServiceDefinition(
+                str_starts_with((string)$attrs->id, '.') ? substr((string)$attrs->id, 1) : (string)$attrs->id,
+                isset($attrs->class) ? (string)$attrs->class : null,
+                isset($attrs->public) && (string)$attrs->public === 'true',
+                isset($attrs->synthetic) && (string)$attrs->synthetic === 'true',
+                isset($attrs->alias) ? (string)$attrs->alias : null,
+                isset($def->argument),
+                isset($def->call),
+                isset($def->tag),
+            );
 
-			$serviceDefinition = new ServiceDefinition(
-				str_starts_with((string) $attrs->id, '.') ? substr((string) $attrs->id, 1) : (string) $attrs->id,
-				isset($attrs->class) ? (string) $attrs->class : null,
-				isset($attrs->public) && (string) $attrs->public === 'true',
-				isset($attrs->synthetic) && (string) $attrs->synthetic === 'true',
-				isset($attrs->alias) ? (string) $attrs->alias : null,
-				isset($def->argument),
-				isset($def->call),
-				isset($def->tag),
-			);
+            if ($serviceDefinition->getAlias() !== null) {
+                $aliases[] = $serviceDefinition;
+            } else {
+                $serviceDefinitions[$serviceDefinition->getId()] = $serviceDefinition;
+            }
+        }
 
-			if ($serviceDefinition->getAlias() !== null) {
-				$aliases[] = $serviceDefinition;
-			} else {
-				$serviceDefinitions[$serviceDefinition->getId()] = $serviceDefinition;
-			}
-		}
+        foreach ($aliases as $serviceDefinition) {
+            $alias = $serviceDefinition->getAlias();
+            if ($alias === null) {
+                continue;
+            }
 
-		foreach ($aliases as $serviceDefinition) {
-			$alias = $serviceDefinition->getAlias();
-			if ($alias === null) {
-				continue;
-			}
+            if (!isset($serviceDefinitions[$alias])) {
+                continue;
+            }
 
-			if (!isset($serviceDefinitions[$alias])) {
-				continue;
-			}
+            $id = $serviceDefinition->getId();
+            $serviceDefinitions[$id] = new ServiceDefinition(
+                $id,
+                $serviceDefinitions[$alias]->getClass(),
+                $serviceDefinition->isPublic(),
+                $serviceDefinition->isSynthetic(),
+                $alias,
+                $serviceDefinition->isHasConstructorArguments(),
+                $serviceDefinition->isHasMethodCalls(),
+                $serviceDefinition->isHasTags()
+            );
+        }
 
-			$id = $serviceDefinition->getId();
-			$serviceDefinitions[$id] = new ServiceDefinition(
-				$id,
-				$serviceDefinitions[$alias]->getClass(),
-				$serviceDefinition->isPublic(),
-				$serviceDefinition->isSynthetic(),
-				$alias,
-				$serviceDefinition->isHasConstructorArguments(),
-				$serviceDefinition->isHasMethodCalls(),
-				$serviceDefinition->isHasTags()
-			);
-		}
+        return new DefaultServiceMap($serviceDefinitions);
+    }
 
-		return new DefaultServiceMap($serviceDefinitions);
-	}
+    /**
+     * @return string[]
+     */
+    private function createTags(\SimpleXMLElement $def): array
+    {
+        if (!property_exists($def, 'tag') || $def->tag === null) {
+            return [];
+        }
 
-	/**
-	 * @return string[]
-	 */
-	private function createTags(SimpleXMLElement $def): array
-	{
-		if (!property_exists($def, 'tag') || $def->tag === null) {
-			return [];
-		}
+        $tagNames = [];
 
-		$tagNames = [];
+        foreach ($def->tag as $tag) {
+            $name = (string)$tag->attributes()?->name;
+            if ($name === '') {
+                continue;
+            }
 
-		foreach ($def->tag as $tag) {
-			$name = (string) $tag->attributes()?->name;
-			if ($name === '') {
-				continue;
-			}
+            $tagNames[] = $name;
+        }
 
-			$tagNames[] = $name;
-		}
-
-		return $tagNames;
-	}
+        return $tagNames;
+    }
 
 }

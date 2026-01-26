@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Rule\ContextAspectValidationRule\Fixture;
 
@@ -7,13 +9,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 final class UseContextApiWithUndefinedAspect
 {
+    public function someMethod(): void
+    {
+        $foo = GeneralUtility::makeInstance(Context::class)->getAspect('foo');
+        $foo->get('bar');
 
-	public function someMethod(): void
-	{
-		$foo = GeneralUtility::makeInstance(Context::class)->getAspect('foo');
-		$foo->get('bar');
-
-		GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('dates', 'foo');
-	}
+        GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('dates', 'foo');
+    }
 
 }

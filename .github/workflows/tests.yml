@@ -52,9 +52,9 @@ jobs:
         run: |
           composer test:rector
 
-      - name: "Run php-cs"
+      - name: "Run php-cs-fixer"
         run: |
-          composer test:php-cs
+          composer test:php-cs-fixer
 
       - name: "Run phpstan"
         run: |

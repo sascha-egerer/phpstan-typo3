@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace ContextGetAspectReturnTypes;
 
@@ -15,17 +17,16 @@ use function PHPStan\Testing\assertType;
 // phpcs:ignore Squiz.Classes.ClassFileName.NoMatch
 class MyContext
 {
-
-	public function getAspectTests(Context $context): void
-	{
-		assertType(TypoScriptAspect::class, $context->getAspect('typoscript'));
-		assertType(DateTimeAspect::class, $context->getAspect('date'));
-		assertType(VisibilityAspect::class, $context->getAspect('visibility'));
-		assertType(UserAspect::class, $context->getAspect('backend.user'));
-		assertType(UserAspect::class, $context->getAspect('frontend.user'));
-		assertType(WorkspaceAspect::class, $context->getAspect('workspace'));
-		assertType(LanguageAspect::class, $context->getAspect('language'));
-		assertType('Foo\Bar|TYPO3\CMS\Core\Context\DateTimeAspect', $context->getAspect('myCustomAspect'));
-	}
+    public function getAspectTests(Context $context): void
+    {
+        assertType(TypoScriptAspect::class, $context->getAspect('typoscript'));
+        assertType(DateTimeAspect::class, $context->getAspect('date'));
+        assertType(VisibilityAspect::class, $context->getAspect('visibility'));
+        assertType(UserAspect::class, $context->getAspect('backend.user'));
+        assertType(UserAspect::class, $context->getAspect('frontend.user'));
+        assertType(WorkspaceAspect::class, $context->getAspect('workspace'));
+        assertType(LanguageAspect::class, $context->getAspect('language'));
+        assertType('Foo\Bar|TYPO3\CMS\Core\Context\DateTimeAspect', $context->getAspect('myCustomAspect'));
+    }
 
 }
