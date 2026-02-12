@@ -1,84 +1,83 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Service;
 
 use PhpParser\Node;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Name;
 use PHPStan\Reflection\ReflectionProvider;
 use SaschaEgerer\PhpstanTypo3\Contract\ServiceDefinitionChecker;
 
-final class PrototypeServiceDefinitionChecker implements ServiceDefinitionChecker
+final readonly class PrototypeServiceDefinitionChecker implements ServiceDefinitionChecker
 {
+    public function __construct(private ReflectionProvider $reflectionProvider) {}
 
-	private ReflectionProvider $reflectionProvider;
+    public function isPrototype(ServiceDefinition $serviceDefinition, Node $node): bool
+    {
+        return !$serviceDefinition->isHasTags() && !$serviceDefinition->isHasMethodCalls() && $this->canBePrototypeClass($node);
+    }
 
-	public function __construct(ReflectionProvider $reflectionProvider)
-	{
-		$this->reflectionProvider = $reflectionProvider;
-	}
+    private function extractFirstArgument(StaticCall $node): ?Node
+    {
+        if (!isset($node->args[0])) {
+            return null;
+        }
 
-	public function isPrototype(ServiceDefinition $serviceDefinition, Node $node): bool
-	{
-		return !$serviceDefinition->isHasTags() && !$serviceDefinition->isHasMethodCalls() && $this->canBePrototypeClass($node);
-	}
+        if (!$node->args[0] instanceof Arg) {
+            return null;
+        }
 
-	private function extractFirstArgument(StaticCall $node): ?Node
-	{
-		if (!isset($node->args[0])) {
-			return null;
-		}
+        return $node->args[0]->value;
+    }
 
-		if (!$node->args[0] instanceof Node\Arg) {
-			return null;
-		}
+    private function canBePrototypeClass(Node $node): bool
+    {
+        if (!$node instanceof StaticCall) {
+            return false;
+        }
 
-		return $node->args[0]->value;
-	}
+        $firstArgument = $this->extractFirstArgument($node);
 
-	private function canBePrototypeClass(Node $node): bool
-	{
-		if (!$node instanceof StaticCall) {
-			return false;
-		}
+        if (!$firstArgument instanceof ClassConstFetch) {
+            return false;
+        }
 
-		$firstArgument = $this->extractFirstArgument($node);
+        if (!$firstArgument->class instanceof Name) {
+            return false;
+        }
 
-		if (!$firstArgument instanceof ClassConstFetch) {
-			return false;
-		}
+        $className = $firstArgument->class->toString();
 
-		if (!$firstArgument->class instanceof Node\Name) {
-			return false;
-		}
+        if (!$this->reflectionProvider->hasClass($className)) {
+            return false;
+        }
 
-		$className = $firstArgument->class->toString();
+        $classReflection = $this->reflectionProvider->getClass($className);
 
-		if (!$this->reflectionProvider->hasClass($className)) {
-			return false;
-		}
+        if (!$classReflection->hasConstructor()) {
+            return true;
+        }
 
-		$classReflection = $this->reflectionProvider->getClass($className);
+        $constructorMethod = $classReflection->getConstructor();
 
-		if (!$classReflection->hasConstructor()) {
-			return true;
-		}
+        $constructorParameters = $constructorMethod->getVariants();
 
-		$constructorMethod = $classReflection->getConstructor();
+        $hasRequiredParameter = false;
+        foreach ($constructorParameters as $constructorParameter) {
+            foreach ($constructorParameter->getParameters() as $parameter) {
+                if ($parameter->isOptional()) {
+                    continue;
+                }
 
-		$constructorParameters = $constructorMethod->getVariants();
+                $hasRequiredParameter = true;
+            }
+        }
 
-		$hasRequiredParameter = false;
-		foreach ($constructorParameters as $constructorParameter) {
-			foreach ($constructorParameter->getParameters() as $parameter) {
-				if ($parameter->isOptional()) {
-					continue;
-				}
-				$hasRequiredParameter = true;
-			}
-		}
-
-		return $hasRequiredParameter === false;
-	}
+        return $hasRequiredParameter === false;
+    }
 
 }

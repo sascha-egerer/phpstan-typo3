@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Type;
 
@@ -15,42 +17,39 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 class ObjectStorageDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
+    public function getClass(): string
+    {
+        return ObjectStorage::class;
+    }
 
-	public function getClass(): string
-	{
-		return ObjectStorage::class;
-	}
+    public function isMethodSupported(
+        MethodReflection $methodReflection,
+    ): bool {
+        return $methodReflection->getName() === 'offsetGet';
+    }
 
-	public function isMethodSupported(
-		MethodReflection $methodReflection
-	): bool
-	{
-		return $methodReflection->getName() === 'offsetGet';
-	}
+    public function getTypeFromMethodCall(
+        MethodReflection $methodReflection,
+        MethodCall $methodCall,
+        Scope $scope,
+    ): ?Type {
+        $firstArgument = $methodCall->args[0] ?? null;
 
-	public function getTypeFromMethodCall(
-		MethodReflection $methodReflection,
-		MethodCall $methodCall,
-		Scope $scope
-	): ?Type
-	{
-		$firstArgument = $methodCall->args[0] ?? null;
+        if (!$firstArgument instanceof Arg) {
+            return null;
+        }
 
-		if (!$firstArgument instanceof Arg) {
-			return null;
-		}
+        $argumentType = $scope->getType($firstArgument->value);
 
-		$argumentType = $scope->getType($firstArgument->value);
+        if ((new StringType())->isSuperTypeOf($argumentType)->yes()) {
+            return $methodReflection->getVariants()[0]->getReturnType();
+        }
 
-		if ((new StringType())->isSuperTypeOf($argumentType)->yes()) {
-			return $methodReflection->getVariants()[0]->getReturnType();
-		}
+        if ((new IntegerType())->isSuperTypeOf($argumentType)->yes()) {
+            return $methodReflection->getVariants()[0]->getReturnType();
+        }
 
-		if ((new IntegerType())->isSuperTypeOf($argumentType)->yes()) {
-			return $methodReflection->getVariants()[0]->getReturnType();
-		}
-
-		return new MixedType();
-	}
+        return new MixedType();
+    }
 
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Type;
 
@@ -13,50 +15,38 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 
 class SiteDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
+    /**
+     * @param array<string, string> $siteGetAttributeMapping
+     */
+    public function __construct(private array $siteGetAttributeMapping, private readonly TypeStringResolver $typeStringResolver) {}
 
-	/** @var array<string, string> */
-	private array $siteGetAttributeMapping;
+    public function getClass(): string
+    {
+        return Site::class;
+    }
 
-	private TypeStringResolver $typeStringResolver;
+    public function getTypeFromMethodCall(
+        MethodReflection $methodReflection,
+        MethodCall $methodCall,
+        Scope $scope,
+    ): Type {
+        $argument = $methodCall->getArgs()[0] ?? null;
 
-	/**
-	 * @param array<string, string> $siteGetAttributeMapping
-	 */
-	public function __construct(array $siteGetAttributeMapping, TypeStringResolver $typeStringResolver)
-	{
-		$this->siteGetAttributeMapping = $siteGetAttributeMapping;
-		$this->typeStringResolver = $typeStringResolver;
-	}
+        if ($argument === null || !($argument->value instanceof String_)) {
+            return $methodReflection->getVariants()[0]->getReturnType();
+        }
 
-	public function getClass(): string
-	{
-		return Site::class;
-	}
+        if (isset($this->siteGetAttributeMapping[$argument->value->value])) {
+            return $this->typeStringResolver->resolve($this->siteGetAttributeMapping[$argument->value->value]);
+        }
 
-	public function getTypeFromMethodCall(
-		MethodReflection $methodReflection,
-		MethodCall $methodCall,
-		Scope $scope
-	): Type
-	{
-		$argument = $methodCall->getArgs()[0] ?? null;
+        return $methodReflection->getVariants()[0]->getReturnType();
+    }
 
-		if ($argument === null || !($argument->value instanceof String_)) {
-			return $methodReflection->getVariants()[0]->getReturnType();
-		}
-
-		if (isset($this->siteGetAttributeMapping[$argument->value->value])) {
-			return $this->typeStringResolver->resolve($this->siteGetAttributeMapping[$argument->value->value]);
-		}
-
-		return $methodReflection->getVariants()[0]->getReturnType();
-	}
-
-	public function isMethodSupported(
-		MethodReflection $methodReflection
-	): bool
-	{
-		return $methodReflection->getName() === 'getAttribute';
-	}
+    public function isMethodSupported(
+        MethodReflection $methodReflection,
+    ): bool {
+        return $methodReflection->getName() === 'getAttribute';
+    }
 
 }

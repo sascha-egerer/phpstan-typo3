@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Type;
 
@@ -13,50 +15,38 @@ use TYPO3\CMS\Core\Context\Context;
 
 class ContextDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
+    /**
+     * @param array<string, string> $contextApiGetAspectMapping
+     */
+    public function __construct(private array $contextApiGetAspectMapping, private readonly TypeStringResolver $typeStringResolver) {}
 
-	/** @var array<string, string> */
-	private array $contextApiGetAspectMapping;
+    public function getClass(): string
+    {
+        return Context::class;
+    }
 
-	private TypeStringResolver $typeStringResolver;
+    public function isMethodSupported(
+        MethodReflection $methodReflection,
+    ): bool {
+        return $methodReflection->getName() === 'getAspect';
+    }
 
-	/**
-	 * @param array<string, string> $contextApiGetAspectMapping
-	 */
-	public function __construct(array $contextApiGetAspectMapping, TypeStringResolver $typeStringResolver)
-	{
-		$this->contextApiGetAspectMapping = $contextApiGetAspectMapping;
-		$this->typeStringResolver = $typeStringResolver;
-	}
+    public function getTypeFromMethodCall(
+        MethodReflection $methodReflection,
+        MethodCall $methodCall,
+        Scope $scope,
+    ): Type {
+        $argument = $methodCall->getArgs()[0] ?? null;
 
-	public function getClass(): string
-	{
-		return Context::class;
-	}
+        if ($argument === null || !($argument->value instanceof String_)) {
+            return $methodReflection->getVariants()[0]->getReturnType();
+        }
 
-	public function isMethodSupported(
-		MethodReflection $methodReflection
-	): bool
-	{
-		return $methodReflection->getName() === 'getAspect';
-	}
+        if (isset($this->contextApiGetAspectMapping[$argument->value->value])) {
+            return $this->typeStringResolver->resolve($this->contextApiGetAspectMapping[$argument->value->value]);
+        }
 
-	public function getTypeFromMethodCall(
-		MethodReflection $methodReflection,
-		MethodCall $methodCall,
-		Scope $scope
-	): Type
-	{
-		$argument = $methodCall->getArgs()[0] ?? null;
-
-		if ($argument === null || !($argument->value instanceof String_)) {
-			return $methodReflection->getVariants()[0]->getReturnType();
-		}
-
-		if (isset($this->contextApiGetAspectMapping[$argument->value->value])) {
-			return $this->typeStringResolver->resolve($this->contextApiGetAspectMapping[$argument->value->value]);
-		}
-
-		return $methodReflection->getVariants()[0]->getReturnType();
-	}
+        return $methodReflection->getVariants()[0]->getReturnType();
+    }
 
 }

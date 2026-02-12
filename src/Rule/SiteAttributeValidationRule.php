@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Rule;
 
@@ -8,6 +10,7 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
+use PHPStan\Reflection\ExtendedMethodReflection;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -17,64 +20,57 @@ use TYPO3\CMS\Core\Site\Entity\Site;
  */
 class SiteAttributeValidationRule implements Rule
 {
+    /**
+     * @param array<string, string> $siteGetAttributeMapping
+     */
+    public function __construct(private readonly array $siteGetAttributeMapping) {}
 
-	/** @var array<string, string> */
-	private array $siteGetAttributeMapping;
+    public function getNodeType(): string
+    {
+        return MethodCall::class;
+    }
 
-	/**
-	 * @param array<string, string> $siteGetAttributeMapping
-	 */
-	public function __construct(array $siteGetAttributeMapping)
-	{
-		$this->siteGetAttributeMapping = $siteGetAttributeMapping;
-	}
+    /**
+     * @param MethodCall $node
+     */
+    public function processNode(Node $node, Scope $scope): array
+    {
+        if (!$node->name instanceof Identifier) {
+            return [];
+        }
 
-	public function getNodeType(): string
-	{
-		return MethodCall::class;
-	}
+        $methodReflection = $scope->getMethodReflection($scope->getType($node->var), $node->name->toString());
+        if (!$methodReflection instanceof ExtendedMethodReflection || $methodReflection->getName() !== 'getAttribute') {
+            return [];
+        }
 
-	/**
-	 * @param Node\Expr\MethodCall $node
-	 */
-	public function processNode(Node $node, Scope $scope): array
-	{
-		if (!$node->name instanceof Identifier) {
-			return [];
-		}
+        $declaringClass = $methodReflection->getDeclaringClass();
 
-		$methodReflection = $scope->getMethodReflection($scope->getType($node->var), $node->name->toString());
-		if ($methodReflection === null || $methodReflection->getName() !== 'getAttribute') {
-			return [];
-		}
+        if ($declaringClass->getName() !== Site::class) {
+            return [];
+        }
 
-		$declaringClass = $methodReflection->getDeclaringClass();
+        $argument = $node->getArgs()[0] ?? null;
 
-		if ($declaringClass->getName() !== Site::class) {
-			return [];
-		}
+        if (!($argument instanceof Arg) || !($argument->value instanceof String_)) {
+            return [];
+        }
 
-		$argument = $node->getArgs()[0] ?? null;
+        if (isset($this->siteGetAttributeMapping[$argument->value->value])) {
+            return [];
+        }
 
-		if (!($argument instanceof Arg) || !($argument->value instanceof String_)) {
-			return [];
-		}
-
-		if (isset($this->siteGetAttributeMapping[$argument->value->value])) {
-			return [];
-		}
-
-		return [
-			RuleErrorBuilder::message(sprintf(
-				'There is no site attribute "%s" configured so we can\'t figure out the exact type to return when calling %s::%s',
-				$argument->value->value,
-				$declaringClass->getDisplayName(),
-				$methodReflection->getName()
-			))
-			->tip('You should add custom site attribute to the typo3.siteGetAttributeMapping setting.')
-			->identifier('phpstanTypo3.siteAttributeValidation')
-			->build(),
-		];
-	}
+        return [
+            RuleErrorBuilder::message(sprintf(
+                'There is no site attribute "%s" configured so we can\'t figure out the exact type to return when calling %s::%s',
+                $argument->value->value,
+                $declaringClass->getDisplayName(),
+                $methodReflection->getName()
+            ))
+            ->tip('You should add custom site attribute to the typo3.siteGetAttributeMapping setting.')
+            ->identifier('phpstanTypo3.siteAttributeValidation')
+            ->build(),
+        ];
+    }
 
 }

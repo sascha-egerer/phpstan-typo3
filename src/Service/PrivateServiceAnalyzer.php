@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Service;
 
@@ -11,42 +13,36 @@ use PHPStan\Rules\RuleErrorBuilder;
 use SaschaEgerer\PhpstanTypo3\Contract\ServiceDefinitionChecker;
 use SaschaEgerer\PhpstanTypo3\Contract\ServiceMap;
 
-final class PrivateServiceAnalyzer
+final readonly class PrivateServiceAnalyzer
 {
+    public function __construct(private ServiceMap $serviceMap) {}
 
-	private ServiceMap $serviceMap;
+    /**
+     * @param MethodCall|StaticCall $node
+     *
+     * @return list<IdentifierRuleError>
+     */
+    public function analyze(Node $node, Scope $scope, ServiceDefinitionChecker $serviceDefinitionChecker, string $identifier): array
+    {
+        $serviceId = $this->serviceMap->getServiceIdFromNode($node->getArgs()[0]->value, $scope);
 
-	public function __construct(ServiceMap $symfonyServiceMap)
-	{
-		$this->serviceMap = $symfonyServiceMap;
-	}
+        if ($serviceId === null) {
+            return [];
+        }
 
-	/**
-	 * @param MethodCall|StaticCall $node
-	 *
-	 * @return list<IdentifierRuleError>
-	 */
-	public function analyze(Node $node, Scope $scope, ServiceDefinitionChecker $serviceDefinitionChecker, string $identifier): array
-	{
-		$serviceId = $this->serviceMap->getServiceIdFromNode($node->getArgs()[0]->value, $scope);
+        $serviceDefinition = $this->serviceMap->getServiceDefinitionById($serviceId);
 
-		if ($serviceId === null) {
-			return [];
-		}
+        if (!$serviceDefinition instanceof ServiceDefinition || $serviceDefinition->isPublic()) {
+            return [];
+        }
 
-		$serviceDefinition = $this->serviceMap->getServiceDefinitionById($serviceId);
+        if ($serviceDefinitionChecker->isPrototype($serviceDefinition, $node)) {
+            return [];
+        }
 
-		if ($serviceDefinition === null || $serviceDefinition->isPublic()) {
-			return [];
-		}
-
-		if ($serviceDefinitionChecker->isPrototype($serviceDefinition, $node)) {
-			return [];
-		}
-
-		return [
-			RuleErrorBuilder::message(sprintf('Service "%s" is private.', $serviceId))->identifier($identifier)->build(),
-		];
-	}
+        return [
+            RuleErrorBuilder::message(sprintf('Service "%s" is private.', $serviceId))->identifier($identifier)->build(),
+        ];
+    }
 
 }

@@ -1,27 +1,32 @@
+# top-most EditorConfig file
 root = true
 
+# Unix-style newlines with a newline ending every file
 [*]
-end_of_line = lf
-insert_final_newline = true
 charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{php,phpt}]
+# JSON-Files
+[*.json]
 indent_style = tab
-indent_size = 4
 
-[*.xml]
-indent_style = tab
-indent_size = 4
+# Markdown-Files
+[*.md]
+max_line_length = 80
 
-[*.neon]
-indent_style = tab
-indent_size = 4
-
+# YAML-Files
 [*.{yaml,yml}]
-indent_style = space
 indent_size = 2
 
-[composer.json]
+# NEON-Files
+[*.neon]
+indent_size = 2
+indent_style = tab
+
+[*.xml]
 indent_style = tab
 indent_size = 4

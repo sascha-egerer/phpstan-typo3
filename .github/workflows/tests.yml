@@ -48,9 +48,13 @@ jobs:
         run: |
           composer test:php-lint
 
-      - name: "Run php-cs"
+      - name: "Run rector"
         run: |
-          composer test:php-cs
+          composer test:rector
+
+      - name: "Run php-cs-fixer"
+        run: |
+          composer test:php-cs-fixer
 
       - name: "Run phpstan"
         run: |

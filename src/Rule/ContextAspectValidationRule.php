@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Rule;
 
@@ -8,6 +10,7 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
+use PHPStan\Reflection\ExtendedMethodReflection;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use TYPO3\CMS\Core\Context\Context;
@@ -17,69 +20,62 @@ use TYPO3\CMS\Core\Context\Context;
  */
 class ContextAspectValidationRule implements Rule
 {
+    /**
+     * @param array<string, string> $contextApiGetAspectMapping
+     */
+    public function __construct(private readonly array $contextApiGetAspectMapping) {}
 
-	/** @var array<string, string> */
-	private array $contextApiGetAspectMapping;
+    public function getNodeType(): string
+    {
+        return MethodCall::class;
+    }
 
-	/**
-	 * @param array<string, string> $contextApiGetAspectMapping
-	 */
-	public function __construct(array $contextApiGetAspectMapping)
-	{
-		$this->contextApiGetAspectMapping = $contextApiGetAspectMapping;
-	}
+    /**
+     * @param MethodCall $node
+     */
+    public function processNode(Node $node, Scope $scope): array
+    {
+        if (!$node->name instanceof Identifier) {
+            return [];
+        }
 
-	public function getNodeType(): string
-	{
-		return MethodCall::class;
-	}
+        $methodReflection = $scope->getMethodReflection($scope->getType($node->var), $node->name->toString());
 
-	/**
-	 * @param Node\Expr\MethodCall $node
-	 */
-	public function processNode(Node $node, Scope $scope): array
-	{
-		if (!$node->name instanceof Identifier) {
-			return [];
-		}
+        if (!$methodReflection instanceof ExtendedMethodReflection) {
+            return [];
+        }
 
-		$methodReflection = $scope->getMethodReflection($scope->getType($node->var), $node->name->toString());
+        if (!in_array($methodReflection->getName(), ['getAspect', 'getPropertyFromAspect'], true)) {
+            return [];
+        }
 
-		if ($methodReflection === null) {
-			return [];
-		}
+        $declaringClass = $methodReflection->getDeclaringClass();
 
-		if (!in_array($methodReflection->getName(), ['getAspect', 'getPropertyFromAspect'], true)) {
-			return [];
-		}
+        if ($declaringClass->getName() !== Context::class) {
+            return [];
+        }
 
-		$declaringClass = $methodReflection->getDeclaringClass();
+        $argument = $node->getArgs()[0] ?? null;
 
-		if ($declaringClass->getName() !== Context::class) {
-			return [];
-		}
+        if (!($argument instanceof Arg) || !($argument->value instanceof String_)) {
+            return [];
+        }
 
-		$argument = $node->getArgs()[0] ?? null;
+        if (isset($this->contextApiGetAspectMapping[$argument->value->value])) {
+            return [];
+        }
 
-		if (!($argument instanceof Arg) || !($argument->value instanceof String_)) {
-			return [];
-		}
+        $ruleError = RuleErrorBuilder::message(sprintf(
+            'There is no aspect "%s" configured so we can\'t figure out the exact type to return when calling %s::%s',
+            $argument->value->value,
+            $declaringClass->getDisplayName(),
+            $methodReflection->getName()
+        ))
+            ->tip('You should add custom aspects to the typo3.contextApiGetAspectMapping setting.')
+            ->identifier('phpstanTypo3.contextAspectValidation')
+            ->build();
 
-		if (isset($this->contextApiGetAspectMapping[$argument->value->value])) {
-			return [];
-		}
-
-		$ruleError = RuleErrorBuilder::message(sprintf(
-			'There is no aspect "%s" configured so we can\'t figure out the exact type to return when calling %s::%s',
-			$argument->value->value,
-			$declaringClass->getDisplayName(),
-			$methodReflection->getName()
-		))
-			->tip('You should add custom aspects to the typo3.contextApiGetAspectMapping setting.')
-			->identifier('phpstanTypo3.contextAspectValidation')
-			->build();
-
-		return [$ruleError];
-	}
+        return [$ruleError];
+    }
 
 }

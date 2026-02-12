@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Rule;
 
@@ -13,264 +15,241 @@ use PhpParser\Node\Identifier;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\InitializerExprTypeResolver;
+use PHPStan\Reflection\MissingPropertyFromReflectionException;
+use PHPStan\Reflection\Php\PhpPropertyReflection;
 use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Type\ObjectType;
-use PHPStan\Type\Type;
 use SaschaEgerer\PhpstanTypo3\Rule\ValueObject\ValidatorOptionsConfiguration;
 use SaschaEgerer\PhpstanTypo3\Service\ValidatorClassNameResolver;
+use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 
 /**
  * @implements Rule<MethodCall>
  */
-final class ValidatorResolverOptionsRule implements Rule
+final readonly class ValidatorResolverOptionsRule implements Rule
 {
+    public function __construct(private InitializerExprTypeResolver $initializerExprTypeResolver, private ValidatorClassNameResolver $validatorClassNameResolver) {}
 
-	private InitializerExprTypeResolver $initializerExprTypeResolver;
+    public function getNodeType(): string
+    {
+        return MethodCall::class;
+    }
 
-	private ValidatorClassNameResolver $validatorClassNameResolver;
+    /**
+     * @param MethodCall $node
+     */
+    public function processNode(Node $node, Scope $scope): array
+    {
+        if ($this->shouldSkip($node, $scope)) {
+            return [];
+        }
 
-	public function __construct(
-		InitializerExprTypeResolver $initializerExprTypeResolver,
-		ValidatorClassNameResolver $validatorClassNameResolver
-	)
-	{
-		$this->initializerExprTypeResolver = $initializerExprTypeResolver;
-		$this->validatorClassNameResolver = $validatorClassNameResolver;
-	}
+        $validatorTypeArgument = $node->getArgs()[0] ?? null;
+        $validatorOptionsArgument = $node->getArgs()[1] ?? null;
 
-	public function getNodeType(): string
-	{
-		return MethodCall::class;
-	}
+        if ($validatorTypeArgument === null) {
+            return [];
+        }
 
-	/**
-	 * @param MethodCall $node
-	 */
-	public function processNode(Node $node, Scope $scope): array
-	{
-		if ($this->shouldSkip($node, $scope)) {
-			return [];
-		}
+        $validatorType = $scope->getType($validatorTypeArgument->value);
 
-		$validatorTypeArgument = $node->getArgs()[0] ?? null;
-		$validatorOptionsArgument = $node->getArgs()[1] ?? null;
+        try {
+            $validatorClassName = $this->validatorClassNameResolver->resolve($validatorType);
+        } catch (NoSuchValidatorException) {
+            if ($validatorType->getConstantStrings() !== []) {
+                $validatorClassName = $validatorType->getConstantStrings()[0]->getValue();
+                $message = sprintf('Could not create validator for "%s"', $validatorClassName);
+            } else {
+                $message = 'Could not create validator';
+            }
 
-		if ($validatorTypeArgument === null) {
-			return [];
-		}
+            return [
+                RuleErrorBuilder::message($message)
+                    ->identifier('phpstanTypo3.validatorResolverOptions.noSuchValidator')
+                    ->build(),
+            ];
+        }
 
-		$validatorType = $scope->getType($validatorTypeArgument->value);
+        if ($validatorClassName === null) {
+            return [];
+        }
 
-		try {
-			$validatorClassName = $this->validatorClassNameResolver->resolve($validatorType);
-		} catch (\TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException) {
-			if ($validatorType->getConstantStrings() !== []) {
-				$validatorClassName = $validatorType->getConstantStrings()[0]->getValue();
-				$message = sprintf('Could not create validator for "%s"', $validatorClassName);
-			} else {
-				$message = 'Could not create validator';
-			}
+        $validatorObjectType = new ObjectType($validatorClassName);
+        $validatorClassReflection = $validatorObjectType->getClassReflection();
 
-			return [
-				RuleErrorBuilder::message($message)
-					->identifier('phpstanTypo3.validatorResolverOptions.noSuchValidator')
-					->build(),
-			];
-		}
+        if (!$validatorClassReflection instanceof ClassReflection) {
+            return [];
+        }
 
-		if ($validatorClassName === null) {
-			return [];
-		}
+        if (!$validatorClassReflection->isSubclassOf(AbstractValidator::class)) {
+            return [];
+        }
 
-		$validatorObjectType = new ObjectType($validatorClassName);
-		$validatorClassReflection = $validatorObjectType->getClassReflection();
+        try {
+            $supportedOptions = $validatorClassReflection->getProperty('supportedOptions', $scope);
+        } catch (MissingPropertyFromReflectionException) {
+            return [];
+        }
 
-		if (!$validatorClassReflection instanceof ClassReflection) {
-			return [];
-		}
+        $validatorOptionsConfiguration = $this->extractValidatorOptionsConfiguration($supportedOptions, $scope);
+        $providedOptionsArray = $this->extractProvidedOptions($validatorOptionsArgument, $scope);
 
-		if (!$validatorClassReflection->isSubclassOf(AbstractValidator::class)) {
-			return [];
-		}
+        $unsupportedOptions = array_diff($providedOptionsArray, $validatorOptionsConfiguration->getSupportedOptions());
+        $neededRequiredOptions
+            = array_diff($validatorOptionsConfiguration->getRequiredOptions(), $providedOptionsArray);
 
-		try {
-			$supportedOptions = $validatorClassReflection->getProperty('supportedOptions', $scope);
-		} catch (\PHPStan\Reflection\MissingPropertyFromReflectionException $e) {
-			return [];
-		}
+        $errors = [];
 
-		$validatorOptionsConfiguration = $this->extractValidatorOptionsConfiguration($supportedOptions, $scope);
-		$providedOptionsArray = $this->extractProvidedOptions($validatorOptionsArgument, $scope);
+        foreach ($neededRequiredOptions as $neededRequiredOption) {
+            $errorMessage = sprintf('Required validation option not set: %s', $neededRequiredOption);
+            $errors[] = RuleErrorBuilder::message($errorMessage)
+                ->identifier('phpstanTypo3.validatorResolverOptions.requiredValidatorOptionNotSet')
+                ->build();
+        }
 
-		$unsupportedOptions = array_diff($providedOptionsArray, $validatorOptionsConfiguration->getSupportedOptions());
-		$neededRequiredOptions
-			= array_diff($validatorOptionsConfiguration->getRequiredOptions(), $providedOptionsArray);
+        if ($unsupportedOptions !== []) {
+            $errorMessage = 'Unsupported validation option(s) found: ' . implode(', ', $unsupportedOptions);
+            $errors[] = RuleErrorBuilder::message($errorMessage)
+                ->identifier('phpstanTypo3.validatorResolverOptions.unsupportedValidationOption')
+                ->build();
+        }
 
-		$errors = [];
+        return $errors;
+    }
 
-		if ($neededRequiredOptions !== []) {
-			foreach ($neededRequiredOptions as $neededRequiredOption) {
-				$errorMessage = sprintf('Required validation option not set: %s', $neededRequiredOption);
-				$errors[] = RuleErrorBuilder::message($errorMessage)
-					->identifier('phpstanTypo3.validatorResolverOptions.requiredValidatorOptionNotSet')
-					->build();
-			}
-		}
+    private function shouldSkip(MethodCall $methodCall, Scope $scope): bool
+    {
+        $objectType = $scope->getType($methodCall->var);
+        $validatorResolverType = new ObjectType(ValidatorResolver::class);
 
-		if ($unsupportedOptions !== []) {
-			$errorMessage = 'Unsupported validation option(s) found: ' . implode(', ', $unsupportedOptions);
-			$errors[] = RuleErrorBuilder::message($errorMessage)
-				->identifier('phpstanTypo3.validatorResolverOptions.unsupportedValidationOption')
-				->build();
-		}
+        if ($validatorResolverType->isSuperTypeOf($objectType)->no()) {
+            return true;
+        }
 
-		return $errors;
-	}
+        if (!$methodCall->name instanceof Identifier) {
+            return true;
+        }
 
-	private function shouldSkip(MethodCall $methodCall, Scope $scope): bool
-	{
-		$objectType = $scope->getType($methodCall->var);
-		$validatorResolverType = new ObjectType(ValidatorResolver::class);
+        return $methodCall->name->toString() !== 'createValidator';
+    }
 
-		if ($validatorResolverType->isSuperTypeOf($objectType)->no()) {
-			return true;
-		}
+    /**
+     * @return string[]
+     */
+    private function extractProvidedOptions(?Arg $validatorOptionsArgument, Scope $scope): array
+    {
+        if (!$validatorOptionsArgument instanceof Arg) {
+            return [];
+        }
 
-		if (!$methodCall->name instanceof Identifier) {
-			return true;
-		}
+        $providedOptionsArray = [];
 
-		return $methodCall->name->toString() !== 'createValidator';
-	}
+        $validatorOptionsArgumentType = $scope->getType($validatorOptionsArgument->value);
 
-	/**
-	 * @return string[]
-	 */
-	private function extractProvidedOptions(?Arg $validatorOptionsArgument, Scope $scope): array
-	{
-		if (!$validatorOptionsArgument instanceof Arg) {
-			return [];
-		}
+        if ($validatorOptionsArgumentType->getConstantArrays() === []) {
+            return [];
+        }
 
-		$providedOptionsArray = [];
+        $keysArray = $validatorOptionsArgumentType->getConstantArrays()[0]->getKeyTypes();
 
-		$validatorOptionsArgumentType = $scope->getType($validatorOptionsArgument->value);
+        foreach ($keysArray as $valueType) {
+            $providedOptionsArray[] = (string)$valueType->getValue();
+        }
 
-		if ($validatorOptionsArgumentType->getConstantArrays() === []) {
-			return [];
-		}
+        return $providedOptionsArray;
+    }
 
-		$keysArray = $validatorOptionsArgumentType->getConstantArrays()[0]->getKeyTypes();
+    private function extractValidatorOptionsConfiguration(
+        PropertyReflection $supportedOptions,
+        Scope $scope,
+    ): ValidatorOptionsConfiguration {
+        $collectedSupportedOptions = [];
+        $collectedRequiredOptions = [];
 
-		foreach ($keysArray as $valueType) {
-			$providedOptionsArray[] = (string) $valueType->getValue();
-		}
+        if (!$supportedOptions instanceof PhpPropertyReflection) {
+            return ValidatorOptionsConfiguration::empty();
+        }
 
-		return $providedOptionsArray;
-	}
+        $defaultValues = $supportedOptions->getNativeReflection()->getDefaultValueExpression();
 
-	private function extractValidatorOptionsConfiguration(
-		PropertyReflection $supportedOptions,
-		Scope $scope
-	): ValidatorOptionsConfiguration
-	{
-		$collectedSupportedOptions = [];
-		$collectedRequiredOptions = [];
+        if (!$defaultValues instanceof Array_) {
+            return ValidatorOptionsConfiguration::empty();
+        }
 
-		$nativeReflection = method_exists($supportedOptions, 'getNativeReflection')
-			? $supportedOptions->getNativeReflection()
-			: null;
+        foreach ($defaultValues->items as $defaultValue) {
 
-		// Ensure $nativeReflection is an object before calling method
-		if (!is_object($nativeReflection) || !method_exists($nativeReflection, 'getDefaultValueExpression')) {
-			return ValidatorOptionsConfiguration::empty();
-		}
+            if ($defaultValue->key === null) {
+                continue;
+            }
 
-		$defaultValues = $nativeReflection->getDefaultValueExpression();
+            $supportedOptionKey = $this->resolveOptionKeyValue($defaultValue, $supportedOptions, $scope);
 
-		if (!$defaultValues instanceof Array_) {
-			return ValidatorOptionsConfiguration::empty();
-		}
+            if ($supportedOptionKey === null) {
+                continue;
+            }
 
-		foreach ($defaultValues->items as $defaultValue) {
+            $collectedSupportedOptions[] = $supportedOptionKey;
 
-			if ($defaultValue->key === null) {
-				continue;
-			}
+            $optionDefinition = $defaultValue->value;
+            if (!$optionDefinition instanceof Array_) {
+                continue;
+            }
 
-			$supportedOptionKey = $this->resolveOptionKeyValue($defaultValue, $supportedOptions, $scope);
+            if (!isset($optionDefinition->items[3])) {
+                continue;
+            }
 
-			if ($supportedOptionKey === null) {
-				continue;
-			}
+            $requiredValueType = $scope->getType($optionDefinition->items[3]->value);
 
-			$collectedSupportedOptions[] = $supportedOptionKey;
+            if ($requiredValueType->isBoolean()->no()) {
+                continue;
+            }
 
-			$optionDefinition = $defaultValue->value;
-			if (!$optionDefinition instanceof Array_) {
-				continue;
-			}
+            if ($requiredValueType->isFalse()->yes()) {
+                continue;
+            }
 
-			if (!isset($optionDefinition->items[3])) {
-				continue;
-			}
+            $collectedRequiredOptions[] = $supportedOptionKey;
+        }
 
-			$requiredValueType = $scope->getType($optionDefinition->items[3]->value);
+        return new ValidatorOptionsConfiguration($collectedSupportedOptions, $collectedRequiredOptions);
+    }
 
-			if ($requiredValueType->isBoolean()->no()) {
-				continue;
-			}
+    private function resolveOptionKeyValue(
+        ArrayItem $defaultValue,
+        PhpPropertyReflection $supportedOptions,
+        Scope $scope,
+    ): ?string {
+        if (!$defaultValue->key instanceof Expr) {
+            return null;
+        }
 
-			if ($requiredValueType->isFalse()->yes()) {
-				continue;
-			}
+        if ($defaultValue->key instanceof ClassConstFetch && $defaultValue->key->name instanceof Identifier) {
+            $keyType = $this->initializerExprTypeResolver->getClassConstFetchType(
+                $defaultValue->key->class,
+                $defaultValue->key->name->toString(),
+                $supportedOptions->getDeclaringClass()->getName(),
+                $scope->getType(...)
+            );
 
-			$collectedRequiredOptions[] = $supportedOptionKey;
-		}
+            if ($keyType->getConstantStrings() !== []) {
+                return $keyType->getConstantStrings()[0]->getValue();
+            }
 
-		return new ValidatorOptionsConfiguration($collectedSupportedOptions, $collectedRequiredOptions);
-	}
+            return null;
+        }
 
-	private function resolveOptionKeyValue(
-		ArrayItem $defaultValue,
-		PropertyReflection $supportedOptions,
-		Scope $scope
-	): ?string
-	{
-		if ($defaultValue->key === null) {
-			return null;
-		}
+        $keyType = $scope->getType($defaultValue->key);
 
-		if ($defaultValue->key instanceof ClassConstFetch && $defaultValue->key->name instanceof Identifier) {
-			// Not covered by PHPStan's backward compatibility promise, see: https://phpstan.org/developing-extensions/backward-compatibility-promise
-			// @phpstan-ignore-next-line
-			$keyType = $this->initializerExprTypeResolver->getClassConstFetchType(
-				$defaultValue->key->class,
-				$defaultValue->key->name->toString(),
-				$supportedOptions->getDeclaringClass()->getName(),
-				static function (Expr $expr) use ($scope): Type {
-					return $scope->getType($expr);
-				}
-			);
+        if ($keyType->getConstantStrings() !== []) {
+            return $keyType->getConstantStrings()[0]->getValue();
+        }
 
-			if ($keyType->getConstantStrings() !== []) {
-				return $keyType->getConstantStrings()[0]->getValue();
-			}
-
-			return null;
-		}
-
-		$keyType = $scope->getType($defaultValue->key);
-
-		if ($keyType->getConstantStrings() !== []) {
-			return $keyType->getConstantStrings()[0]->getValue();
-		}
-
-		return null;
-	}
+        return null;
+    }
 
 }

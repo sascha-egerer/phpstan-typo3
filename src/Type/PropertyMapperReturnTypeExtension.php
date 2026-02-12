@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Type;
 
@@ -20,99 +22,92 @@ use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 
-final class PropertyMapperReturnTypeExtension implements DynamicMethodReturnTypeExtension
+final readonly class PropertyMapperReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
+    public function __construct(private ReflectionProvider $reflectionProvider) {}
 
-	private ReflectionProvider $reflectionProvider;
+    public function getClass(): string
+    {
+        return PropertyMapper::class;
+    }
 
-	public function __construct(ReflectionProvider $reflectionProvider)
-	{
-		$this->reflectionProvider = $reflectionProvider;
-	}
+    public function isMethodSupported(MethodReflection $methodReflection): bool
+    {
+        return $methodReflection->getName() === 'convert';
+    }
 
-	public function getClass(): string
-	{
-		return PropertyMapper::class;
-	}
+    public function getTypeFromMethodCall(
+        MethodReflection $methodReflection,
+        MethodCall $methodCall,
+        Scope $scope,
+    ): ?Type {
+        $targetTypeArgument = $methodCall->getArgs()[1] ?? null;
 
-	public function isMethodSupported(MethodReflection $methodReflection): bool
-	{
-		return $methodReflection->getName() === 'convert';
-	}
+        if ($targetTypeArgument === null) {
+            return null;
+        }
 
-	public function getTypeFromMethodCall(
-		MethodReflection $methodReflection,
-		MethodCall $methodCall,
-		Scope $scope
-	): ?Type
-	{
-		$targetTypeArgument = $methodCall->getArgs()[1] ?? null;
+        $argumentValue = $targetTypeArgument->value;
 
-		if ($targetTypeArgument === null) {
-			return null;
-		}
+        if ($argumentValue instanceof ClassConstFetch) {
+            /** @var Name $class */
+            $class = $argumentValue->class;
+            return TypeCombinator::addNull(new ObjectType((string)$class));
+        }
 
-		$argumentValue = $targetTypeArgument->value;
+        if ($argumentValue instanceof String_) {
+            return $this->createTypeFromString($argumentValue);
+        }
 
-		if ($argumentValue instanceof ClassConstFetch) {
-			/** @var Name $class */
-			$class = $argumentValue->class;
-			return TypeCombinator::addNull(new ObjectType((string) $class));
-		}
+        return null;
+    }
 
-		if ($argumentValue instanceof String_) {
-			return $this->createTypeFromString($argumentValue);
-		}
+    private function createTypeFromString(String_ $node): ?Type
+    {
+        if ($node->value === 'array') {
+            return TypeCombinator::addNull(new ArrayType(new MixedType(), new MixedType()));
+        }
 
-		return null;
-	}
+        if ($node->value === 'string') {
+            return TypeCombinator::addNull(new StringType());
+        }
 
-	private function createTypeFromString(String_ $node): ?Type
-	{
-		if ($node->value === 'array') {
-			return TypeCombinator::addNull(new ArrayType(new MixedType(), new MixedType()));
-		}
+        if ($node->value === 'boolean') {
+            return TypeCombinator::addNull(new BooleanType());
+        }
 
-		if ($node->value === 'string') {
-			return TypeCombinator::addNull(new StringType());
-		}
+        if ($node->value === 'integer') {
+            return TypeCombinator::addNull(new IntegerType());
+        }
 
-		if ($node->value === 'boolean') {
-			return TypeCombinator::addNull(new BooleanType());
-		}
+        return $this->createTypeFromClassNameString($node);
+    }
 
-		if ($node->value === 'integer') {
-			return TypeCombinator::addNull(new IntegerType());
-		}
+    private function createTypeFromClassNameString(String_ $node): ?Type
+    {
+        $classLikeName = $node->value;
 
-		return $this->createTypeFromClassNameString($node);
-	}
+        // remove leading slash
+        $classLikeName = ltrim($classLikeName, '\\');
+        if ($classLikeName === '') {
+            return null;
+        }
 
-	private function createTypeFromClassNameString(String_ $node): ?Type
-	{
-		$classLikeName = $node->value;
+        if (!$this->reflectionProvider->hasClass($classLikeName)) {
+            return null;
+        }
 
-		// remove leading slash
-		$classLikeName = ltrim($classLikeName, '\\');
-		if ($classLikeName === '') {
-			return null;
-		}
+        $classReflection = $this->reflectionProvider->getClass($classLikeName);
+        if ($classReflection->getName() !== $classLikeName) {
+            return null;
+        }
 
-		if (!$this->reflectionProvider->hasClass($classLikeName)) {
-			return null;
-		}
+        // possibly string
+        if (ctype_lower($classLikeName[0])) {
+            return null;
+        }
 
-		$classReflection = $this->reflectionProvider->getClass($classLikeName);
-		if ($classReflection->getName() !== $classLikeName) {
-			return null;
-		}
-
-		// possibly string
-		if (ctype_lower($classLikeName[0])) {
-			return null;
-		}
-
-		return TypeCombinator::addNull(new ObjectType($classLikeName));
-	}
+        return TypeCombinator::addNull(new ObjectType($classLikeName));
+    }
 
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace SaschaEgerer\PhpstanTypo3\Rule;
 
@@ -8,6 +10,7 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
+use PHPStan\Reflection\ExtendedMethodReflection;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use Psr\Http\Message\ServerRequestInterface;
@@ -17,67 +20,60 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class RequestAttributeValidationRule implements Rule
 {
+    /**
+     * @param array<string, string> $requestGetAttributeMapping
+     */
+    public function __construct(private readonly array $requestGetAttributeMapping) {}
 
-	/** @var array<string, string> */
-	private array $requestGetAttributeMapping;
+    public function getNodeType(): string
+    {
+        return MethodCall::class;
+    }
 
-	/**
-	 * @param array<string, string> $requestGetAttributeMapping
-	 */
-	public function __construct(array $requestGetAttributeMapping)
-	{
-		$this->requestGetAttributeMapping = $requestGetAttributeMapping;
-	}
+    /**
+     * @param MethodCall $node
+     */
+    public function processNode(Node $node, Scope $scope): array
+    {
+        if (!$node->name instanceof Identifier) {
+            return [];
+        }
 
-	public function getNodeType(): string
-	{
-		return MethodCall::class;
-	}
+        $methodReflection = $scope->getMethodReflection($scope->getType($node->var), $node->name->toString());
+        if (!$methodReflection instanceof ExtendedMethodReflection || $methodReflection->getName() !== 'getAttribute') {
+            return [];
+        }
 
-	/**
-	 * @param Node\Expr\MethodCall $node
-	 */
-	public function processNode(Node $node, Scope $scope): array
-	{
-		if (!$node->name instanceof Identifier) {
-			return [];
-		}
+        $declaringClass = $methodReflection->getDeclaringClass();
 
-		$methodReflection = $scope->getMethodReflection($scope->getType($node->var), $node->name->toString());
-		if ($methodReflection === null || $methodReflection->getName() !== 'getAttribute') {
-			return [];
-		}
+        if (
+            interface_exists(ServerRequestInterface::class)
+            && (!$declaringClass->implementsInterface(ServerRequestInterface::class) && $declaringClass->getName() !== ServerRequestInterface::class)
+        ) {
+            return [];
+        }
 
-		$declaringClass = $methodReflection->getDeclaringClass();
+        $argument = $node->getArgs()[0] ?? null;
 
-		if (interface_exists(ServerRequestInterface::class)) {
-			if (!$declaringClass->implementsInterface(ServerRequestInterface::class)
-				&& $declaringClass->getName() !== ServerRequestInterface::class) {
-				return [];
-			}
-		}
+        if (!($argument instanceof Arg) || !($argument->value instanceof String_)) {
+            return [];
+        }
 
-		$argument = $node->getArgs()[0] ?? null;
+        if (isset($this->requestGetAttributeMapping[$argument->value->value])) {
+            return [];
+        }
 
-		if (!($argument instanceof Arg) || !($argument->value instanceof String_)) {
-			return [];
-		}
+        $ruleError = RuleErrorBuilder::message(sprintf(
+            'There is no request attribute "%s" configured so we can\'t figure out the exact type to return when calling %s::%s',
+            $argument->value->value,
+            $declaringClass->getDisplayName(),
+            $methodReflection->getName()
+        ))
+            ->tip('You should add custom request attribute to the typo3.requestGetAttributeMapping setting.')
+            ->identifier('phpstanTypo3.requestAttributeValidation')
+            ->build();
 
-		if (isset($this->requestGetAttributeMapping[$argument->value->value])) {
-			return [];
-		}
-
-		$ruleError = RuleErrorBuilder::message(sprintf(
-			'There is no request attribute "%s" configured so we can\'t figure out the exact type to return when calling %s::%s',
-			$argument->value->value,
-			$declaringClass->getDisplayName(),
-			$methodReflection->getName()
-		))
-			->tip('You should add custom request attribute to the typo3.requestGetAttributeMapping setting.')
-			->identifier('phpstanTypo3.requestAttributeValidation')
-			->build();
-
-		return [$ruleError];
-	}
+        return [$ruleError];
+    }
 
 }
