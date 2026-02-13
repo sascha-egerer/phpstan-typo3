@@ -4,14 +4,6 @@ TYPO3 CMS class reflection extension for PHPStan &amp; framework-specific rules.
 
 ---
 
-## 🚀 Want to work on projects like this?
-
-We're hiring! Join us and help shape the future of TYPO3 development.
-
-👉 [Check out our open positions](https://www.flowd.de/jobs.html)
-
----
-
 [![Build](https://github.com/sascha-egerer/phpstan-typo3/workflows/Tests/badge.svg)](https://github.com/sascha-egerer/phpstan-typo3/actions)
 
 * [PHPStan](https://phpstan.org/)
