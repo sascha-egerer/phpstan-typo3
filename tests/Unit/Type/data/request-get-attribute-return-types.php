@@ -12,7 +12,6 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 use function PHPStan\Testing\assertType;
 
-// phpcs:ignore Squiz.Classes.ClassFileName.NoMatch
 class MyRequest
 {
     public function getAttributeTests(ServerRequestInterface $request): void
