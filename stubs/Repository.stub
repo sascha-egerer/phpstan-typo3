@@ -13,42 +13,7 @@ class Repository implements RepositoryInterface
     public function findAll();
 
     /**
-     * @phpstan-param int $uid
-     * @phpstan-return T|null
-     */
-    public function findByUid($uid);
-
-    /**
-     * @phpstan-param mixed $identifier
-     * @phpstan-return T|null
-     */
-    public function findByIdentifier($identifier);
-
-    /**
-     * @phpstan-param array<non-empty-string, mixed> $criteria
-     * @phpstan-param array<non-empty-string, QueryInterface::ORDER_*>|null $orderBy
-     * @phpstan-param 0|positive-int|null $limit
-     * @phpstan-param 0|positive-int|null $offset
      * @phpstan-return QueryResultInterface<int, T>
      */
-    public function findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null): QueryResultInterface;
-
-    /**
-     * @phpstan-param array<non-empty-string, mixed> $criteria
-     * @phpstan-param array<non-empty-string, QueryInterface::ORDER_*>|null $orderBy
-     * @phpstan-return T|null
-     */
-    public function findOneBy(array $criteria, ?array $orderBy = null): ?object;
-
-    /**
-     * @phpstan-param array<non-empty-string, mixed> $criteria
-     * @phpstan-return 0|positive-int
-     */
-    public function count(array $criteria): int;
-
-    /**
-     * @phpstan-return QueryInterface<T>
-     */
-    public function createQuery();
-
+    public function findBy();
 }

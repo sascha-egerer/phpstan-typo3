@@ -23,7 +23,7 @@ class MyModel extends AbstractEntity
     public function checkObjectStorageType(): void
     {
         $myModel = new self();
-        /** @var ObjectStorage<MyModel> $objectStorage */
+        /** @var ObjectStorage<self> $objectStorage */
         $objectStorage = new ObjectStorage();
         $objectStorage->attach($myModel);
 
@@ -40,15 +40,15 @@ class MyModel extends AbstractEntity
 
     public function checkArrayAccess(): void
     {
+        assertType('null', $this->testStorage->offsetGet(-2));
         assertType(self::class . '|null', $this->testStorage->offsetGet(0));
-        assertType(self::class . '|null', $this->testStorage->offsetGet('0'));
+        assertType('array{obj: ' . self::class . ', inf: mixed}|' . self::class . '|null', $this->testStorage->offsetGet('0'));
         assertType(self::class . '|null', $this->testStorage->current());
         assertType(self::class . '|null', $this->testStorage[0]);
 
         $myModel = new self();
 
-        assertType('mixed', $this->testStorage->offsetGet($this->testStorage->current()));
-        assertType('mixed', $this->testStorage->offsetGet($myModel));
+        assertType('array{obj: ' . self::class . ', inf: mixed}|null', $this->testStorage->offsetGet($this->testStorage->current() ?? -1));
+        assertType('array{obj: ' . self::class . ', inf: mixed}|null', $this->testStorage->offsetGet($myModel));
     }
-
 }

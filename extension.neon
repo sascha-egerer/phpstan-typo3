@@ -9,10 +9,6 @@ services:
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
     -
-        class: SaschaEgerer\PhpstanTypo3\Type\ObjectStorageDynamicReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicMethodReturnTypeExtension
-    -
         class: SaschaEgerer\PhpstanTypo3\Type\ContextDynamicReturnTypeExtension
         arguments:
             contextApiGetAspectMapping: %typo3.contextApiGetAspectMapping%
@@ -134,6 +130,7 @@ parameters:
     stubFiles:
         - stubs/DomainObjectInterface.stub
         - stubs/ObjectStorage.stub
+        - stubs/ObjectMonitoringInterface.stub
         - stubs/QueryInterface.stub
         - stubs/QueryResultInterface.stub
         - stubs/Repository.stub
