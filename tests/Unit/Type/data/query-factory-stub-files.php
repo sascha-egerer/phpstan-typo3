@@ -8,7 +8,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory;
 
 use function PHPStan\Testing\assertType;
 
-// phpcs:ignore Squiz.Classes.ClassFileName.NoMatch
 class Model extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
     public function foo(): void

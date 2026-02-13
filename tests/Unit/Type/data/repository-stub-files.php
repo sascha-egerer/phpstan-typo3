@@ -2,10 +2,6 @@
 
 declare(strict_types=1);
 
-// phpcs:disable SlevomatCodingStandard.Namespaces.RequireOneNamespaceInFile.MoreNamespacesInFile
-// phpcs:disable Squiz.Classes.ClassFileName.NoMatch
-// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
-
 namespace RepositoryStubFiles\My\Test\Extension\Domain\Model;
 
 class MyModel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
@@ -120,9 +116,9 @@ class FindAllWithoutReturnTestRepository extends \TYPO3\CMS\Extbase\Persistence\
         );
     }
 
-    public function findAll() // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
+    public function findAll()
     {
-        $foo = null; // phpcs:ignore SlevomatCodingStandard.Variables.UselessVariable.UselessVariable
+        $foo = null;
         /**
          * @var list<\RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel>|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface<int, \RepositoryStubFiles\My\Test\Extension\Domain\Model\MyModel> $foo
          */

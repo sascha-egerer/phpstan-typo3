@@ -2,9 +2,6 @@
 
 declare(strict_types=1);
 
-// phpcs:disable Squiz.Classes.ClassFileName.NoMatch
-// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
-
 namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\QueryResultToArrayDynamicReturnTypeExtension;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
@@ -28,9 +25,9 @@ class FrontendUserGroupCustomFindAllRepository extends Repository
     /**
      * @return QueryResultInterface<int, FrontendUserGroup>
      */
-    public function findAll(): QueryResultInterface // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
+    public function findAll(): QueryResultInterface
     {
-        $queryResult = null; // phpcs:ignore SlevomatCodingStandard.Variables.UselessVariable.UselessVariable
+        $queryResult = null;
         /** @var QueryResult<FrontendUserGroup> $queryResult */
         return $queryResult;
     }
@@ -42,9 +39,9 @@ class FrontendUserGroupCustomFindAllRepository extends Repository
  */
 class FrontendUserGroupCustomFindAllWithoutModelTypeRepository extends Repository
 {
-    public function findAll(): QueryResultInterface // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
+    public function findAll(): QueryResultInterface
     {
-        $queryResult = null; // phpcs:ignore SlevomatCodingStandard.Variables.UselessVariable.UselessVariable
+        $queryResult = null;
         /** @var QueryResult<FrontendUserGroup> $queryResult */
         return $queryResult;
     }
@@ -56,9 +53,9 @@ class FrontendUserGroupCustomFindAllWithoutModelTypeRepository extends Repositor
  */
 class FrontendUserGroupCustomFindAllWithoutAnnotationRepository extends Repository
 {
-    public function findAll() // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
+    public function findAll()
     {
-        $queryResult = null; // phpcs:ignore SlevomatCodingStandard.Variables.UselessVariable.UselessVariable
+        $queryResult = null;
         /** @var QueryResult $queryResult */
         return $queryResult;
     }

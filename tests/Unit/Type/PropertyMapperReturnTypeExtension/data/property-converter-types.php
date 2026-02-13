@@ -2,10 +2,6 @@
 
 declare(strict_types=1);
 
-// phpcs:disable SlevomatCodingStandard.Namespaces.RequireOneNamespaceInFile.MoreNamespacesInFile
-// phpcs:disable Squiz.Classes.ClassFileName.NoMatch
-// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
-
 namespace SaschaEgerer\PhpstanTypo3\Tests\Unit\Type\PropertyMapperReturnTypeExtension;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
