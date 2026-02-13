@@ -1,3 +1,2 @@
-parameters:
-   typo3:
-       containerXmlPath: %rootDir%/../../../tests/Unit/Fixtures/container.xml
+includes:
+    - ../container-xml-config.php
