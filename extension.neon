@@ -59,6 +59,10 @@ services:
         tags:
             - phpstan.typeSpecifier.staticMethodTypeSpecifyingExtension
     -
+        class: SaschaEgerer\PhpstanTypo3\Type\MathUtilityForceIntegerInRangeDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicStaticMethodReturnTypeExtension
+    -
         class: SaschaEgerer\PhpstanTypo3\Type\GeneralUtilityGetIndpEnvDynamicReturnTypeExtension
         tags:
             - phpstan.broker.dynamicStaticMethodReturnTypeExtension
