@@ -154,18 +154,11 @@ parameters:
         - TYPO3_mainDir
     earlyTerminatingMethodCalls:
         TYPO3\CMS\Extbase\Mvc\Controller\ActionController:
-            - redirectToUri
-            - redirect
-            - forward
-            - forwardToReferringRequest
             - throwStatus
-        TYPO3\CMS\Core\Utility\HttpUtility:
-            - redirect
-            - setResponseCodeAndExit
         TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher:
             - redirectToUri
-        TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility:
-            - sendZipFileToBrowserAndDelete
+        TYPO3\CMS\Core\Console\CommandApplication:
+            - run
 parametersSchema:
     typo3: structure([
         containerXmlPath: schema(string(), nullable())
