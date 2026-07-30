@@ -2,8 +2,6 @@
 
 namespace SaschaEgerer\PhpstanTypo3\Type;
 
-use PhpParser\Node\Arg;
-use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\BinaryOp\BooleanAnd;
 use PhpParser\Node\Expr\BinaryOp\GreaterOrEqual;
 use PhpParser\Node\Expr\BinaryOp\SmallerOrEqual;
@@ -11,7 +9,6 @@ use PhpParser\Node\Expr\BooleanNot;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Name;
-use PhpParser\Node\Scalar\LNumber;
 use PHPStan\Analyser\Scope;
 use PHPStan\Analyser\SpecifiedTypes;
 use PHPStan\Analyser\TypeSpecifier;
@@ -24,8 +21,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 final class MathUtilityTypeSpecifyingExtension implements StaticMethodTypeSpecifyingExtension, TypeSpecifierAwareExtension
 {
 
-	private const METHOD_FORCE_INTEGER_IN_RANGE = 'forceIntegerInRange';
-	private const METHOD_CONVERT_TO_POSITIVE_INTEGER = 'convertToPositiveInteger';
 	private const METHOD_CAN_BE_INTERPRETED_AS_INTEGER = 'canBeInterpretedAsInteger';
 	private const METHOD_CAN_BE_INTERPRETED_AS_FLOAT = 'canBeInterpretedAsFloat';
 	private const METHOD_IS_INTEGER_IN_RANGE = 'isIntegerInRange';
@@ -47,8 +42,6 @@ final class MathUtilityTypeSpecifyingExtension implements StaticMethodTypeSpecif
 		return in_array(
 			$staticMethodReflection->getName(),
 			[
-				self::METHOD_FORCE_INTEGER_IN_RANGE,
-				self::METHOD_CONVERT_TO_POSITIVE_INTEGER,
 				self::METHOD_CAN_BE_INTERPRETED_AS_INTEGER,
 				self::METHOD_CAN_BE_INTERPRETED_AS_FLOAT,
 				self::METHOD_IS_INTEGER_IN_RANGE,
@@ -59,16 +52,8 @@ final class MathUtilityTypeSpecifyingExtension implements StaticMethodTypeSpecif
 
 	public function specifyTypes(MethodReflection $staticMethodReflection, StaticCall $node, Scope $scope, TypeSpecifierContext $context): SpecifiedTypes
 	{
-		if ($staticMethodReflection->getName() === self::METHOD_FORCE_INTEGER_IN_RANGE) {
-			return $this->specifyTypesForForceIntegerInRange($node, $scope);
-		}
-
 		if ($staticMethodReflection->getName() === self::METHOD_IS_INTEGER_IN_RANGE) {
 			return $this->specifyTypesForIsIntegerInRange($node, $scope);
-		}
-
-		if ($staticMethodReflection->getName() === self::METHOD_CONVERT_TO_POSITIVE_INTEGER) {
-			return $this->specifyTypesForConvertToPositiveInteger($node, $scope);
 		}
 
 		if ($staticMethodReflection->getName() === self::METHOD_CAN_BE_INTERPRETED_AS_INTEGER) {
@@ -76,39 +61,6 @@ final class MathUtilityTypeSpecifyingExtension implements StaticMethodTypeSpecif
 		}
 
 		return $this->specifyTypesForCanBeInterpretedAsFloat($node, $scope);
-	}
-
-	private function specifyTypesForForceIntegerInRange(StaticCall $node, Scope $scope): SpecifiedTypes
-	{
-		$parentNode = $node->getAttribute('parent');
-
-		if (!$parentNode instanceof Assign) {
-			return new SpecifiedTypes();
-		}
-
-		$min = isset($node->getArgs()[1]) ? $node->getArgs()[1]->value : new LNumber(0);
-		$max = isset($node->getArgs()[2]) ? $node->getArgs()[2]->value : new LNumber(2000000000);
-
-		return $this->typeSpecifier->specifyTypesInCondition(
-			$scope,
-			new BooleanAnd(
-				new FuncCall(
-					new Name('is_int'),
-					[new Arg($parentNode->var)]
-				),
-				new BooleanAnd(
-					new GreaterOrEqual(
-						$parentNode->var,
-						$min
-					),
-					new SmallerOrEqual(
-						$parentNode->var,
-						$max
-					)
-				)
-			),
-			TypeSpecifierContext::createTruthy()
-		);
 	}
 
 	private function specifyTypesForIsIntegerInRange(StaticCall $node, Scope $scope): SpecifiedTypes
@@ -151,36 +103,6 @@ final class MathUtilityTypeSpecifyingExtension implements StaticMethodTypeSpecif
 					new SmallerOrEqual(
 						$firstArgument->value,
 						$max
-					)
-				)
-			),
-			TypeSpecifierContext::createTruthy()
-		);
-	}
-
-	private function specifyTypesForConvertToPositiveInteger(StaticCall $node, Scope $scope): SpecifiedTypes
-	{
-		$parentNode = $node->getAttribute('parent');
-
-		if (!$parentNode instanceof Assign) {
-			return new SpecifiedTypes();
-		}
-
-		return $this->typeSpecifier->specifyTypesInCondition(
-			$scope,
-			new BooleanAnd(
-				new FuncCall(
-					new Name('is_int'),
-					[new Arg($parentNode)]
-				),
-				new BooleanAnd(
-					new GreaterOrEqual(
-						$parentNode->var,
-						new LNumber(0)
-					),
-					new SmallerOrEqual(
-						$parentNode->var,
-						new LNumber(PHP_INT_MAX)
 					)
 				)
 			),
