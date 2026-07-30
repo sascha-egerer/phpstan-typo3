@@ -34,6 +34,20 @@ final class MathUtilityType
         assertType('int<4, 2000000000>', $forceIntegerInRange);
     }
 
+    public function forceIntegerInRangeWithNonConstantBoundaries(int $theInt, int $min, int $max): void
+    {
+        $forceIntegerInRange = MathUtility::forceIntegerInRange($theInt, $min, 100);
+        assertType('int<min, 100>', $forceIntegerInRange);
+
+        $forceIntegerInRange = MathUtility::forceIntegerInRange($theInt, 0, $max);
+        assertType('int<0, max>', $forceIntegerInRange);
+    }
+
+    public function forceIntegerInRangeUsedAsExpression(int $theInt): void
+    {
+        assertType('int<10, 20>', MathUtility::forceIntegerInRange($theInt, 10, 20));
+    }
+
     public function isIntegerInRange($a, string $b, float $c, int $d, int $e, int $f, int $min, int $max): void
     {
         if (MathUtility::isIntegerInRange($a, 0, 200)) {
