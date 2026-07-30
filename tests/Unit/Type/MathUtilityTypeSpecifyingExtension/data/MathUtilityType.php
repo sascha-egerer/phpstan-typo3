@@ -39,8 +39,24 @@ final class MathUtilityType
         $forceIntegerInRange = MathUtility::forceIntegerInRange($theInt, $min, 100);
         assertType('int<min, 100>', $forceIntegerInRange);
 
+        // $max may be smaller than the constant minimum at runtime, so no lower bound is guaranteed
+        $forceIntegerInRange = MathUtility::forceIntegerInRange($theInt, 0, $max);
+        assertType('int', $forceIntegerInRange);
+    }
+
+    /**
+     * @param positive-int $max
+     */
+    public function forceIntegerInRangeWithPositiveIntMaxBoundary(int $theInt, int $max): void
+    {
         $forceIntegerInRange = MathUtility::forceIntegerInRange($theInt, 0, $max);
         assertType('int<0, max>', $forceIntegerInRange);
+    }
+
+    public function forceIntegerInRangeWithMaxLowerThanMin(int $theInt): void
+    {
+        $forceIntegerInRange = MathUtility::forceIntegerInRange($theInt, 30, 20);
+        assertType('20', $forceIntegerInRange);
     }
 
     public function forceIntegerInRangeUsedAsExpression(int $theInt): void

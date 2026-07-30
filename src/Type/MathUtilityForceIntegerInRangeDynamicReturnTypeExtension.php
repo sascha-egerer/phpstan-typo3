@@ -35,20 +35,34 @@ class MathUtilityForceIntegerInRangeDynamicReturnTypeExtension implements Dynami
             return null;
         }
 
-        $min = $this->resolveIntegerValue($scope->getType($args[1]->value));
-        $max = isset($args[2]) ? $this->resolveIntegerValue($scope->getType($args[2]->value)) : self::DEFAULT_MAX;
+        [$minLowerBound] = $this->resolveBounds($scope->getType($args[1]->value));
+        [$maxLowerBound, $maxUpperBound] = isset($args[2])
+            ? $this->resolveBounds($scope->getType($args[2]->value))
+            : [self::DEFAULT_MAX, self::DEFAULT_MAX];
 
-        if ($min !== null && $max !== null && $min > $max) {
-            // forceIntegerInRange() clamps to $min first and to $max afterwards, so $max wins
-            return new ConstantIntegerType($max);
-        }
+        // forceIntegerInRange() clamps to $min first and to $max afterwards, so with
+        // $max < $min the result drops below $min and $max becomes the effective minimum
+        $lowerBound = $minLowerBound !== null && $maxLowerBound !== null
+            ? min($minLowerBound, $maxLowerBound)
+            : null;
 
-        return IntegerRangeType::fromInterval($min, $max);
+        return IntegerRangeType::fromInterval($lowerBound, $maxUpperBound);
     }
 
-    private function resolveIntegerValue(Type $type): ?int
+    /**
+     * @return array{?int, ?int}
+     */
+    private function resolveBounds(Type $type): array
     {
-        return $type instanceof ConstantIntegerType ? $type->getValue() : null;
+        if ($type instanceof ConstantIntegerType) {
+            return [$type->getValue(), $type->getValue()];
+        }
+
+        if ($type instanceof IntegerRangeType) {
+            return [$type->getMin(), $type->getMax()];
+        }
+
+        return [null, null];
     }
 
 }
