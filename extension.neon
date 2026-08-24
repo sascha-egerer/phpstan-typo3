@@ -33,6 +33,14 @@ services:
         tags:
             - phpstan.rules.rule
     -
+        class: SaschaEgerer\PhpstanTypo3\Rule\AllowedPhpDisableFunctionsUsageExtension
+        tags:
+            - phpstan.restrictedFunctionUsageExtension
+    -
+        class: SaschaEgerer\PhpstanTypo3\Service\SystemConfigurationProvider
+        arguments:
+            systemSettingsPath: %typo3.systemSettingsPath%
+    -
         class: SaschaEgerer\PhpstanTypo3\Type\RequestDynamicReturnTypeExtension
         arguments:
             requestGetAttributeMapping: %typo3.requestGetAttributeMapping%
@@ -131,6 +139,7 @@ parameters:
             routeEnhancers: array
             settings: array
             websiteTitle: string
+        systemSettingsPath: null
     stubFiles:
         - stubs/DomainObjectInterface.stub
         - stubs/ObjectStorage.stub
@@ -165,6 +174,7 @@ parametersSchema:
         contextApiGetAspectMapping: arrayOf(string())
         requestGetAttributeMapping: arrayOf(string())
         siteGetAttributeMapping: arrayOf(string())
+        systemSettingsPath: schema(string(), nullable())
     ])
 conditionalTags:
     PhpParser\NodeVisitor\NodeConnectingVisitor:
