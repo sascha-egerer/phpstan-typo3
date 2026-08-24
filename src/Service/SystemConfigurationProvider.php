@@ -67,11 +67,15 @@ final class SystemConfigurationProvider
                 throw SystemSettingsFileException::notFound($this->systemSettingsPath);
             }
 
+            if (!is_readable($this->systemSettingsPath)) {
+                throw SystemSettingsFileException::notReadable($this->systemSettingsPath);
+            }
+
             return $this->systemSettingsPath;
         }
 
         foreach (self::DEFAULT_SYSTEM_SETTINGS_PATHS as $defaultSystemSettingsPath) {
-            if (is_file($defaultSystemSettingsPath)) {
+            if (is_file($defaultSystemSettingsPath) && is_readable($defaultSystemSettingsPath)) {
                 return $defaultSystemSettingsPath;
             }
         }

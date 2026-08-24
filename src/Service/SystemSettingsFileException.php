@@ -13,6 +13,13 @@ final class SystemSettingsFileException extends \InvalidArgumentException
         return new self($message);
     }
 
+    public static function notReadable(string $file): self
+    {
+        $message = sprintf('TYPO3 system settings file "%s" could not be read', $file);
+
+        return new self($message);
+    }
+
     public static function invalidContent(string $file): self
     {
         $message = sprintf('TYPO3 system settings file "%s" must return a configuration array', $file);
